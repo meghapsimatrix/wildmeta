@@ -84,7 +84,7 @@ cwb <- function(data,
 
   org_F <- clubSandwich::Wald_test(full_model,
                      constraints = clubSandwich::constrain_zero(indices),
-                     vcov = vclubSandwich::covCR(full_model, type = "CR1"),
+                     vcov = clubSandwich::covCR(full_model, type = "CR1"),
                      test = "Naive-F") %>%
     dplyr::pull(Fstat)
 
