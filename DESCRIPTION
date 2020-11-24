@@ -3,9 +3,9 @@ Title: Cluster Wild Bootstrapping for Meta-Analysis
 Version: 0.0.0.9000
 Authors@R: c(
     person("Megha", "Joshi", email = "megha.j456@gmail.com", role = c("aut", "cre")),
-    person("Pierce", "Cappelli", email = "pierce.cappelli@utexas.edu", role = "aut"),
     person("James", "Pustejovsky", "jepusto@gmail.com", role = c("aut"), 
-           comment = c(ORCID = "0000-0003-0591-9465")))
+           comment = c(ORCID = "0000-0003-0591-9465")),
+    person("Pierce", "Cappelli", email = "pierce.cappelli@utexas.edu", role = "aut"))
 Maintainer: Megha Joshi <megha.j456@gmail.com>
 Description: What the package does (one paragraph).
 License: GPL-3
