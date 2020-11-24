@@ -63,7 +63,7 @@ cwb <- function(data,
       data$new_y <- with(data, pred + res * eta)
 
       boot_mod <- robumeta::robu(as.formula(paste("new_y ~ ",
-                                        paste(full_model$reg_table$labels[!str_detect(full_model$reg_table$labels, "Intercept")],
+                                        paste(full_model$reg_table$labels[!stringr::str_detect(full_model$reg_table$labels, "Intercept")],
                                               collapse = "+"))),
                        studynum = cluster,
                        var.eff.size = var,
@@ -73,7 +73,7 @@ cwb <- function(data,
       cov_mat <- clubSandwich::vcovCR(boot_mod, type = "CR1")
 
       res <- clubSandwich::Wald_test(boot_mod,
-                       constraints = constrain_zero(indices),
+                       constraints = clubSandwich::constrain_zero(indices),
                        vcov = cov_mat,
                        test = "Naive-F")
 
@@ -83,8 +83,8 @@ cwb <- function(data,
   )
 
   org_F <- clubSandwich::Wald_test(full_model,
-                     constraints = constrain_zero(indices),
-                     vcov = vcovCR(full_model, type = "CR1"),
+                     constraints = clubSandwich::constrain_zero(indices),
+                     vcov = vclubSandwich::covCR(full_model, type = "CR1"),
                      test = "Naive-F") %>%
     dplyr::pull(Fstat)
 

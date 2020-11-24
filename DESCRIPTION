@@ -18,7 +18,9 @@ Imports:
     clubSandwich,
     robumeta,
     metafor,
-    purrr
+    purrr,
+    stringr,
+    stats
 Suggests: 
     knitr,
     rmarkdown
