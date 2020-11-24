@@ -32,18 +32,14 @@ cwb <- function(data,
                 indices,
                 R = 999) {
 
-  require(dplyr)
-  require(clubSandwich)
-  require(robumeta)
-
   data$smd <- data %>%
-    pull({{smd}})
+    dplyr::pull({{smd}})
 
   data$var <- data %>%
-    pull({{var}})
+    dplyr::pull({{var}})
 
   data$cluster <- data %>%
-    pull({{cluster}})
+    dplyr::pull({{cluster}})
 
 
   # residuals and transformed residuals -------------------------------------
@@ -60,13 +56,13 @@ cwb <- function(data,
 
   system.time(
 
-    bootstraps <- rerun(.n = R, {
+    bootstraps <- purrr::rerun(.n = R, {
 
       wts <- sample(c(-1, 1), size = length(num_cluster), replace = TRUE)
       data$eta <- rep(wts, k_j)
       data$new_y <- with(data, pred + res * eta)
 
-      boot_mod <- robu(as.formula(paste("new_y ~ ",
+      boot_mod <- robumeta::robu(as.formula(paste("new_y ~ ",
                                         paste(full_model$reg_table$labels[!str_detect(full_model$reg_table$labels, "Intercept")],
                                               collapse = "+"))),
                        studynum = cluster,
@@ -74,29 +70,29 @@ cwb <- function(data,
                        small = FALSE,
                        data = data)
 
-      cov_mat <- vcovCR(boot_mod, type = "CR1")
+      cov_mat <- clubSandwich::vcovCR(boot_mod, type = "CR1")
 
-      res <- Wald_test(boot_mod,
+      res <- clubSandwich::Wald_test(boot_mod,
                        constraints = constrain_zero(indices),
                        vcov = cov_mat,
                        test = "Naive-F")
 
     }) %>%
-      bind_rows()
+      dplyr::bind_rows()
 
   )
 
-  org_F <- Wald_test(full_model,
+  org_F <- clubSandwich::Wald_test(full_model,
                      constraints = constrain_zero(indices),
                      vcov = vcovCR(full_model, type = "CR1"),
                      test = "Naive-F") %>%
-    pull(Fstat)
+    dplyr::pull(Fstat)
 
 
   p_boot <- bootstraps %>%
-    summarize(p_val = mean(Fstat > org_F)) %>%
-    ungroup() %>%
-    mutate(test = "CWB") %>%
+    dplyr::summarize(p_val = mean(Fstat > org_F)) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(test = "CWB") %>%
     dplyr::select(test, p_val)
 
 
