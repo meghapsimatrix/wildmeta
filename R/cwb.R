@@ -15,6 +15,7 @@
 #'
 #' @return A tibble containing the p-value.
 #'
+#' @importFrom dplyr %>%
 #' @export
 #'
 #' @examples
