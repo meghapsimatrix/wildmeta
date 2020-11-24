@@ -18,3 +18,7 @@ Imports:
     clubSandwich,
     robumeta,
     metafor
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

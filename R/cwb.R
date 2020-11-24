@@ -32,6 +32,10 @@ cwb <- function(data,
                 indices,
                 R = 999) {
 
+  require(dplyr)
+  require(clubSandwich)
+  require(robumeta)
+
   data$smd <- data %>%
     pull({{smd}})
 
