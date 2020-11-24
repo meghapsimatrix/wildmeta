@@ -62,7 +62,7 @@ cwb <- function(data,
       data$eta <- rep(wts, k_j)
       data$new_y <- with(data, pred + res * eta)
 
-      boot_mod <- robumeta::robu(as.formula(paste("new_y ~ ",
+      boot_mod <- robumeta::robu(stats::as.formula(paste("new_y ~ ",
                                         paste(full_model$reg_table$labels[!stringr::str_detect(full_model$reg_table$labels, "Intercept")],
                                               collapse = "+"))),
                        studynum = cluster,
