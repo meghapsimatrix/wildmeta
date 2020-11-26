@@ -1,0 +1,17 @@
+destination: docs
+
+template:
+  params:
+    bootswatch: cosmo
+
+navbar:
+  right:
+   - icon: fa-github
+     href: https://github.com/meghapsimatrix/wildmeta
+
+authors:
+  Megha Joshi:
+    href: https://meghapsimatrix.com
+  James Pustejovsky:
+    href: https://www.jepusto.com/
+

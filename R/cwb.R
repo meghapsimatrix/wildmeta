@@ -49,7 +49,6 @@ cwb <- function(data,
   data$pred <- with(data, smd - res)
   split_res <- split(data$res, data$cluster)
 
-
   # Rademacher weights ------------------------------------------------------
 
   num_cluster <- unique(data$cluster)
