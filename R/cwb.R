@@ -44,7 +44,7 @@ cwb <- function(dat,
 
   full_formula <- paste("smd ~ ", covs_full_form)
 
-  full_model <- robumeta::robu(as.formula(full_formula),
+  full_model <- robumeta::robu(stats::as.formula(full_formula),
                                studynum = cluster,
                                var.eff.size = var,
                                small = FALSE,
@@ -56,7 +56,7 @@ cwb <- function(dat,
   null_cov <- terms[which(!(seq_along(terms) %in% indices))]
   null_formula <- paste("smd ~ ", null_cov)
 
-  null_model <- robumeta::robu(as.formula(null_formula),
+  null_model <- robumeta::robu(stats::as.formula(null_formula),
                                studynum = cluster,
                                var.eff.size = var,
                                small = FALSE,
