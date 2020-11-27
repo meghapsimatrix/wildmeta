@@ -18,8 +18,13 @@
 #' @export
 #'
 #' @examples
-#'
-#'
+#' library(clubSandwich)
+#' cwb(dat = SATcoaching,
+#'     smd = d,
+#'     var = V,
+#'     cluster = study,
+#'     covs_full_form = "study_type",
+#'     indices = 2:3)
 #'
 
 
@@ -92,9 +97,7 @@ cwb <- function(dat,
       dat$eta <- rep(wts, k_j)
       dat$new_y <- with(dat, pred + res * eta)
 
-      boot_mod <- robumeta::robu(stats::as.formula(paste("new_y ~ ",
-                                                         paste(full_model$reg_table$labels[!stringr::str_detect(full_model$reg_table$labels, "Intercept")],
-                                                               collapse = "+"))),
+      boot_mod <- robumeta::robu(stats::as.formula(paste("new_y ~ ", covs_full_form)),
                                  studynum = cluster,
                                  var.eff.size = var,
                                  small = FALSE,
