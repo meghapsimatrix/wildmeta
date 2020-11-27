@@ -4,10 +4,10 @@
 \alias{cwb}
 \title{Calculate p-values with cluster wild bootstrapping for meta-regressions}
 \usage{
-cwb(data, smd, var, cluster, full_model, null_model, indices, R = 999)
+cwb(dat, smd, var, cluster, covs_full_form, indices, R = 999, adjust = FALSE)
 }
 \arguments{
-\item{data}{data frame or tibble containing effect sizes, variance of effect sizes, study identification number, and moderating variables.}
+\item{dat}{data frame or tibble containing effect sizes, variance of effect sizes, study identification number, and moderating variables.}
 
 \item{smd}{name of the column containing the standardized mean differences.}
 
@@ -15,16 +15,16 @@ cwb(data, smd, var, cluster, full_model, null_model, indices, R = 999)
 
 \item{cluster}{name of the column containing study identifiers.}
 
-\item{full_model}{full model fit using robumeta or metafor.}
-
-\item{null_model}{null model fit using robumeta or metafor. The null model includes all covariates from the full model that are not to be tested.}
+\item{covs_full_form}{a string containing the right hand side of the meta-regression model (e.g., "X1 + X2 + X3 + X4 + X5").}
 
 \item{indices}{indices of the variables to be tested in single coefficient test or multiple contrast hypothesis test.}
 
 \item{R}{number of bootstrap replications.}
+
+\item{adjust}{logical indicating whether or not to multiply residuals by CR2 adjustment matrices when bootstrapping.}
 }
 \value{
-A tibble containing the p-value.
+A tibble containing the name of the test and a p-value.
 }
 \description{
 Calculates p-values for single coefficient and multiple contrast hypothesis tests using cluster wild bootstrapping.
