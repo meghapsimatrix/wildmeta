@@ -4,7 +4,17 @@
 \alias{cwb}
 \title{Calculate p-values with cluster wild bootstrapping for meta-regressions}
 \usage{
-cwb(dat, smd, var, cluster, covs_full_form, indices, R = 999, adjust = FALSE)
+cwb(
+  dat,
+  smd,
+  var,
+  cluster,
+  covs_full_form,
+  test_vars,
+  indices,
+  R = 999,
+  adjust = FALSE
+)
 }
 \arguments{
 \item{dat}{data frame or tibble containing effect sizes, variance of effect sizes, study identification number, and moderating variables.}
@@ -16,6 +26,8 @@ cwb(dat, smd, var, cluster, covs_full_form, indices, R = 999, adjust = FALSE)
 \item{cluster}{name of the column containing study identifiers.}
 
 \item{covs_full_form}{a string containing the right hand side of the meta-regression model (e.g., "X1 + X2 + X3 + X4 + X5").}
+
+\item{test_vars}{a string or character vector containing the variables to be tested.}
 
 \item{indices}{indices of the variables to be tested in single coefficient test or multiple contrast hypothesis test.}
 
@@ -30,7 +42,12 @@ A tibble containing the name of the test and a p-value.
 Calculates p-values for single coefficient and multiple contrast hypothesis tests using cluster wild bootstrapping.
 }
 \examples{
-
-
+library(clubSandwich)
+cwb(dat = SATcoaching,
+    smd = d,
+    var = V,
+    cluster = study,
+    covs_full_form = "study_type",
+    indices = 2:3)
 
 }

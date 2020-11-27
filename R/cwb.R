@@ -7,6 +7,7 @@
 #' @param var name of the column containing the variances of the standardized mean differences.
 #' @param cluster name of the column containing study identifiers.
 #' @param covs_full_form a string containing the right hand side of the meta-regression model (e.g., "X1 + X2 + X3 + X4 + X5").
+#' @param test_vars a string or character vector containing the variables to be tested.
 #' @param indices indices of the variables to be tested in single coefficient test or multiple contrast hypothesis test.
 #' @param R number of bootstrap replications.
 #' @param adjust logical indicating whether or not to multiply residuals by CR2 adjustment matrices when bootstrapping.
@@ -24,7 +25,9 @@
 #'     var = V,
 #'     cluster = study,
 #'     covs_full_form = "study_type",
-#'     indices = 2:3)
+#'     test_vars = "study_type",
+#'     indices = 2:3,
+#'     R = 99)
 #'
 
 
@@ -33,6 +36,7 @@ cwb <- function(dat,
                 var,
                 cluster,
                 covs_full_form,
+                test_vars,
                 indices,
                 R = 999,
                 adjust = FALSE) {
@@ -58,7 +62,7 @@ cwb <- function(dat,
 
   # Null model --------------------------------------------------------------
   terms <- c("1", unlist(stringr::str_split(covs_full_form, " \\+ ")))
-  null_cov <- terms[which(!(seq_along(terms) %in% indices))]
+  null_cov <- terms[!stringr::str_detect(terms, test_vars)]
   null_formula <- paste("smd ~ ", null_cov)
 
   null_model <- robumeta::robu(stats::as.formula(null_formula),
