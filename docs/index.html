@@ -98,16 +98,30 @@
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
-<p>This is a basic example which shows you how to solve a common problem:</p>
+<p>The following example uses the <code>SATCoaching</code> dataset from the <code>clubSandwich</code> package (Pustejovksy, 2020), originally from DerSimonian and Laird (1983). The standardized mean differences represent the effects of SAT coaching on SAT verbal (SATV) and/or SAT math (SATM) scores. The data contains <code>study_type</code> variable indicating whether groups compared in primary studies were matched, randomized, or non-equivalent. The code below runs cluster wild bootstrapping to test the multiple-contrast hypothesis that the effect of coaching does not differ based on study type.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://meghapsimatrix.github.io/wildmeta/index.html">wildmeta</a></span><span class="op">)</span>
-<span class="co">## basic example code</span></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jepusto/clubSandwich">clubSandwich</a></span><span class="op">)</span>
+
+
+<span class="fu"><a href="reference/cwb.html">cwb</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">SATcoaching</span>, 
+    smd <span class="op">=</span> <span class="va">d</span>, 
+    var <span class="op">=</span> <span class="va">V</span>,
+    cluster <span class="op">=</span> <span class="va">study</span>,
+    covs_full_form <span class="op">=</span> <span class="st">"study_type"</span>,
+    test_vars <span class="op">=</span> <span class="st">"study_type"</span>,
+    indices <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span>,
+    R <span class="op">=</span> <span class="fl">99</span><span class="op">)</span>
+<span class="co">#&gt;   test     p_val</span>
+<span class="co">#&gt; 1  CWB 0.5555556</span></pre></div>
 </div>
 </div>
 <div id="references" class="section level1">
 <h1 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h1>
+<p>DerSimonian, R., &amp; Laird, N. (1983). Evaluating the effect of coaching on SAT scores: A meta-analysis. Harvard Educational Review, 53(1), 1-1</p>
 <p>Hedges, L. V., Tipton, E., &amp; Johnson, M. C. (2010). Robust variance estimation in meta-regression with dependent effect size estimates. Research Synthesis Methods, 1(1), 39–65. <a href="https://doi.org/10.1002/jrsm.5" class="uri">https://doi.org/10.1002/jrsm.5</a></p>
+<p>Pustejovsky, J. E. (2020). clubSandwich: Cluster-robust (sandwich) variance estimators with small-sample corrections <span class="math display"><em>R</em><em>p</em><em>a</em><em>c</em><em>k</em><em>a</em><em>g</em><em>e</em><em>v</em><em>e</em><em>r</em><em>s</em><em>i</em><em>o</em><em>n</em>0.4.2</span>. R package version 0.4.2. <a href="https://CRAN.R-project.org/package=clubSandwich" class="uri">https://CRAN.R-project.org/package=clubSandwich</a></p>
 <p>Tipton, E. (2015). Small sample adjustments for robust variance estimation with meta-regression. Psychological Methods, 20(3), 375–393. <a href="https://doi.org/10.1037/met0000011" class="uri">https://doi.org/10.1037/met0000011</a></p>
 <p>Tipton, E., &amp; Pustejovsky, J. E. (2015). Small-Sample Adjustments for Tests of Moderators and Model Fit Using Robust Variance Estimation in Meta-Regression. Journal of Educational and Behavioral Statistics (Vol. 40). <a href="https://doi.org/10.3102/1076998615606099" class="uri">https://doi.org/10.3102/1076998615606099</a></p>
 </div>
