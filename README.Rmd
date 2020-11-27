@@ -34,17 +34,31 @@ devtools::install_github("meghapsimatrix/wildmeta")
 ```
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+The following example uses the `SATCoaching` dataset from the `clubSandwich` package (Pustejovksy, 2020), originally from DerSimonian and Laird (1983). The standardized mean differences represent the effects of SAT coaching on SAT verbal (SATV) and/or SAT math (SATM) scores. The data contains `study_type` variable indicating whether groups compared in primary studies were matched, randomized, or non-equivalent. The code below runs cluster wild bootstrapping to test the multiple-contrast hypothesis that the effect of coaching does not differ based on study type. 
 
-```{r example}
+```{r example, warning = F, message = F}
 library(wildmeta)
-## basic example code
+library(clubSandwich)
+
+
+cwb(dat = SATcoaching, 
+    smd = d, 
+    var = V,
+    cluster = study,
+    covs_full_form = "study_type",
+    test_vars = "study_type",
+    indices = 2:3,
+    R = 99)
 ```
 
 
 # References
 
+DerSimonian, R., & Laird, N. (1983). Evaluating the effect of coaching on SAT scores: A meta-analysis. Harvard Educational Review, 53(1), 1-1
+
 Hedges, L. V., Tipton, E., & Johnson, M. C. (2010). Robust variance estimation in meta-regression with dependent effect size estimates. Research Synthesis Methods, 1(1), 39–65. https://doi.org/10.1002/jrsm.5
+
+Pustejovsky, J. E. (2020). clubSandwich: Cluster-robust (sandwich) variance estimators with small-sample corrections [R package version 0.4.2]. R package version 0.4.2. https://CRAN.R-project.org/package=clubSandwich
 
 Tipton, E. (2015). Small sample adjustments for robust variance estimation with meta-regression. Psychological Methods, 20(3), 375–393. https://doi.org/10.1037/met0000011
 
