@@ -48,6 +48,8 @@ cwb(dat = SATcoaching,
     var = V,
     cluster = study,
     covs_full_form = "study_type",
-    indices = 2:3)
+    test_vars = "study_type",
+    indices = 2:3,
+    R = 99)
 
 }
