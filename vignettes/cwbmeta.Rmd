@@ -1,10 +1,19 @@
 ---
-title: "cwbmeta"
-output: rmarkdown::html_vignette
+title: "Cluster Wild Bootstrapping for Meta-Analysis"
+output: 
+  rmarkdown::html_vignette:
+    number_sections: true
+    toc: true
+bibliography: references.bib
+csl: apa.csl
 vignette: >
-  %\VignetteIndexEntry{cwbmeta}
+  %\VignetteIndexEntry{Cluster Wild Bootstrapping for Meta-Analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{clubSandwich}
+  %\VignetteDepends{dplyr}
+  %\VignetteDepends{purrr}
+  %\VignetteDepends{robumeta}
 ---
 
 ```{r, include = FALSE}
@@ -14,6 +23,44 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+
+## Cluster Wild Bootstrapping Steps
+
+The general process of conducting cluster wild bootstrapping is as follows [@cameron_bootstrap-based_nodate; @mackinnon2009bootstrap]: 
+
+1. Fit a null model and a full model on the original data
+
+2. Obtain residuals from the null model 
+
+3. Generate an auxiliary random variable that has mean of 0 and variance of 1 and multiply the residuals by the random variable (e.g., Rademacher weights) set to be constant within clusters (CWB)
+  - Can also multiply the residuals by CR2 matrices before multiplying by weights (CWB Adjusted)
+
+4.  Obtain new outcome scores by adding the transformed residuals to the predicted values from the null model fit on the original data
+
+5.  Re-estimate the full model with the new calculated outcome scores and obtain the test statistic
+
+6. Repeat steps 3-5 $R$ times. Calculate p-value:
+
+$$p = \frac{1}{R} \sum_{r = 1}^R I\left(F^{(r)} > F\right)$$
+
+## Example from `wildmeta`
+
+The following example uses the `SATCoaching` dataset from the `clubSandwich` package [@pusto_2020], originally from @dersimonian1983evaluating. The standardized mean differences represent the effects of SAT coaching on SAT verbal (SATV) and/or SAT math (SATM) scores. The data contains `study_type` variable indicating whether groups compared in primary studies were matched, randomized, or non-equivalent. The code below runs cluster wild bootstrapping to test the multiple-contrast hypothesis that the effect of coaching does not differ based on study type. 
+
+
+```{r setup, warning=FALSE, message=FALSE}
 library(wildmeta)
+library(clubSandwich)
+
+
+cwb(dat = SATcoaching, 
+    smd = d, 
+    var = V,
+    cluster = study,
+    covs_full_form = "study_type",
+    test_vars = "study_type",
+    indices = 2:3,
+    R = 99)
 ```
+
+# References
