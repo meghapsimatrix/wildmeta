@@ -9,8 +9,8 @@ cwb(
   smd,
   var,
   cluster,
-  covs_full_form,
-  test_vars,
+  full_model,
+  null_model,
   indices,
   R = 999,
   adjust = FALSE
@@ -25,9 +25,9 @@ cwb(
 
 \item{cluster}{name of the column containing study identifiers.}
 
-\item{covs_full_form}{a string containing the right hand side of the meta-regression model (e.g., "X1 + X2 + X3 + X4 + X5").}
+\item{full_model}{a model fit using \code{robu()} that includes all moderators of interest.}
 
-\item{test_vars}{a string or character vector containing the variables to be tested.}
+\item{null_model}{a model fit using \code{robu()} that includes only the moderators from the full model that are not to be tested.}
 
 \item{indices}{indices of the variables to be tested in single coefficient test or multiple contrast hypothesis test.}
 
@@ -43,12 +43,26 @@ Calculates p-values for single coefficient and multiple contrast hypothesis test
 }
 \examples{
 library(clubSandwich)
+library(robumeta)
+
+full <- robu(d ~ study_type,
+             studynum = study,
+             var.eff.size = V,
+             small = FALSE,
+             data = SATcoaching)
+
+null <- robu(d ~ 1,
+             studynum = study,
+             var.eff.size = V,
+             small = FALSE,
+             data = SATcoaching)
+
 cwb(dat = SATcoaching,
     smd = d,
     var = V,
     cluster = study,
-    covs_full_form = "study_type",
-    test_vars = "study_type",
+    full_model = full,
+    null_model = null,
     indices = 2:3,
     R = 99)
 

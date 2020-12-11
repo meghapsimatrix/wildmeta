@@ -55,18 +55,33 @@ differ based on study type.
 ``` r
 library(wildmeta)
 library(clubSandwich)
+library(robumeta)
+
+set.seed(12102020)
 
 
-cwb(dat = SATcoaching, 
-    smd = d, 
+full <- robu(d ~ study_type,
+             studynum = study,
+             var.eff.size = V,
+             small = FALSE,
+             data = SATcoaching)
+
+null <- robu(d ~ 1,
+             studynum = study,
+             var.eff.size = V,
+             small = FALSE,
+             data = SATcoaching)
+
+cwb(dat = SATcoaching,
+    smd = d,
     var = V,
     cluster = study,
-    covs_full_form = "study_type",
-    test_vars = "study_type",
+    full_model = full,
+    null_model = null,
     indices = 2:3,
     R = 99)
 #>   test     p_val
-#> 1  CWB 0.5555556
+#> 1  CWB 0.5757576
 ```
 
 # References
