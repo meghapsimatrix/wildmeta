@@ -121,28 +121,19 @@
 
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">12102020</span><span class="op">)</span>
 
+
 <span class="va">full</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/robumeta/man/robu.html">robu</a></span><span class="op">(</span><span class="va">d</span> <span class="op">~</span> <span class="va">study_type</span>,
              studynum <span class="op">=</span> <span class="va">study</span>,
              var.eff.size <span class="op">=</span> <span class="va">V</span>,
              small <span class="op">=</span> <span class="cn">FALSE</span>,
              data <span class="op">=</span> <span class="va">SATcoaching</span><span class="op">)</span>
 
-<span class="va">null</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/robumeta/man/robu.html">robu</a></span><span class="op">(</span><span class="va">d</span> <span class="op">~</span> <span class="fl">1</span>,
-             studynum <span class="op">=</span> <span class="va">study</span>,
-             var.eff.size <span class="op">=</span> <span class="va">V</span>,
-             small <span class="op">=</span> <span class="cn">FALSE</span>,
-             data <span class="op">=</span> <span class="va">SATcoaching</span><span class="op">)</span>
 
-<span class="fu"><a href="../reference/cwb.html">cwb</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">SATcoaching</span>,
-    smd <span class="op">=</span> <span class="va">d</span>,
-    var <span class="op">=</span> <span class="va">V</span>,
-    cluster <span class="op">=</span> <span class="va">study</span>,
-    full_model <span class="op">=</span> <span class="va">full</span>,
-    null_model <span class="op">=</span> <span class="va">null</span>,
+<span class="fu"><a href="../reference/cwb.html">cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">full</span>,
     indices <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span>,
     R <span class="op">=</span> <span class="fl">99</span><span class="op">)</span>
 <span class="co">#&gt;   test     p_val</span>
-<span class="co">#&gt; 1  CWB 0.5757576</span></pre></div>
+<span class="co">#&gt; 1  CWB 0.5252525</span></pre></div>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="hasAnchor">
