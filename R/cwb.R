@@ -2,11 +2,6 @@
 #'
 #' @description Calculates p-values for single coefficient and multiple contrast hypothesis tests using cluster wild bootstrapping.
 #'
-#' @param dat data frame or tibble containing effect sizes, variance of effect sizes, study identification number, and moderating variables.
-#' @param smd name of the column containing the standardized mean differences.
-#' @param var name of the column containing the variances of the standardized mean differences.
-#' @param cluster name of the column containing study identifiers.
-#' @param null_model a model fit using `robu()` that includes only the moderators from the full model that are not to be tested.
 #' @param full_model a model fit using `robu()` that includes all moderators of interest.
 #' @param indices indices of the variables to be tested in single coefficient test or multiple contrast hypothesis test.
 #' @param R number of bootstrap replications.
@@ -45,30 +40,39 @@
 #'
 
 
-cwb <- function(dat,
-                smd,
-                var,
-                cluster,
-                full_model,
-                null_model,
+cwb <- function(full_model,
                 indices,
                 R = 999,
                 adjust = FALSE) {
 
-  dat$smd <- dat %>%
-    dplyr::pull({{smd}})
+  full_dat <- full_model$data.full %>%
+    dplyr::mutate(id = rownames(.))
 
-  dat$var <- dat %>%
-    dplyr::pull({{var}})
+  x_dat <- full_model$X.full %>%
+    dplyr::mutate(id = rownames(.)) %>%
+    dplyr::select(-1)
 
-  dat$cluster <- dat %>%
-    dplyr::pull({{cluster}})
+  dat <- full_dat %>%
+    dplyr::left_join(x_dat, by = "id")
+
+  null_formula <- paste(full_model$reg_table[, 1][ - indices], collapse = " + ")
+  null_formula <- stringr::str_replace(null_formula, "X.Intercept.", "1")
+
+  full_formula <- paste(full_model$reg_table[, 1], collapse = " + ")
+  full_formula <- stringr::str_replace(full_formula, "X.Intercept.", "1")
+
+
+  null_model <- robumeta::robu(stats::as.formula(paste("effect.size ~ ", null_formula)),
+                               studynum = study,
+                               var.eff.size = var.eff.size,
+                               small = FALSE,
+                               dat = dat)
 
   # residuals and transformed residuals -------------------------------------
 
   dat$res <- clubSandwich:::residuals_CS.robu(null_model)
-  dat$pred <- with(dat, smd - res)
-  split_res <- split(dat$res, dat$cluster)
+  dat$pred <- with(dat, effect.size - res)
+  split_res <- split(dat$res, dat$study)
 
 
   # Adjust ------------------------------------------------------------------
@@ -76,7 +80,7 @@ cwb <- function(dat,
   if(adjust == TRUE){
     e_tilde_j <- purrr::map(split_res, as.matrix)
     B_j <- attr(clubSandwich::vcovCR(null_model,
-                                     cluster = dat$cluster,
+                                     cluster = dat$study,
                                      type = "CR2",
                                      inverse_var = TRUE), "adjustments")
     dat$res <- unlist(purrr::pmap(list(B_j, e_tilde_j), function(x, y) as.vector(x %*% y)))
@@ -88,8 +92,8 @@ cwb <- function(dat,
   # bootstrap ---------------------------------------------------------------
 
 
-  num_cluster <- unique(dat$cluster)
-  k_j <- as.numeric(table(dat$cluster))
+  num_cluster <- unique(dat$study)
+  k_j <- as.numeric(table(dat$study))
 
   system.time(
 
@@ -99,19 +103,18 @@ cwb <- function(dat,
       dat$eta <- rep(wts, k_j)
       dat$new_y <- with(dat, pred + res * eta)
 
-      boot_mod <- robumeta::robu(stats::as.formula(paste("new_y ~ ",
-                                                         stringr::str_split(as.character(full_model$ml), "~")[[3]])),
-                       studynum = cluster,
-                       var.eff.size = var,
-                       small = FALSE,
-                       dat = dat)
+      boot_mod <- robumeta::robu(stats::as.formula(paste("new_y ~ ", full_formula)),
+                                 studynum = study,
+                                 var.eff.size = var.eff.size,
+                                 small = FALSE,
+                                 dat = dat)
 
       cov_mat <- clubSandwich::vcovCR(boot_mod, type = "CR1")
 
       res <- clubSandwich::Wald_test(boot_mod,
-                       constraints = clubSandwich::constrain_zero(indices),
-                       vcov = cov_mat,
-                       test = "Naive-F")
+                                     constraints = clubSandwich::constrain_zero(indices),
+                                     vcov = cov_mat,
+                                     test = "Naive-F")
 
     }) %>%
       dplyr::bind_rows()
@@ -119,9 +122,9 @@ cwb <- function(dat,
   )
 
   org_F <- clubSandwich::Wald_test(full_model,
-                     constraints = clubSandwich::constrain_zero(indices),
-                     vcov = clubSandwich::vcovCR(full_model, type = "CR1"),
-                     test = "Naive-F") %>%
+                                   constraints = clubSandwich::constrain_zero(indices),
+                                   vcov = clubSandwich::vcovCR(full_model, type = "CR1"),
+                                   test = "Naive-F") %>%
     dplyr::pull(Fstat)
 
 
