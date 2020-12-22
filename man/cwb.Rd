@@ -4,30 +4,10 @@
 \alias{cwb}
 \title{Calculate p-values with cluster wild bootstrapping for meta-regressions}
 \usage{
-cwb(
-  dat,
-  smd,
-  var,
-  cluster,
-  full_model,
-  null_model,
-  indices,
-  R = 999,
-  adjust = FALSE
-)
+cwb(full_model, indices, R = 999, adjust = FALSE)
 }
 \arguments{
-\item{dat}{data frame or tibble containing effect sizes, variance of effect sizes, study identification number, and moderating variables.}
-
-\item{smd}{name of the column containing the standardized mean differences.}
-
-\item{var}{name of the column containing the variances of the standardized mean differences.}
-
-\item{cluster}{name of the column containing study identifiers.}
-
 \item{full_model}{a model fit using \code{robu()} that includes all moderators of interest.}
-
-\item{null_model}{a model fit using \code{robu()} that includes only the moderators from the full model that are not to be tested.}
 
 \item{indices}{indices of the variables to be tested in single coefficient test or multiple contrast hypothesis test.}
 
@@ -51,18 +31,7 @@ full <- robu(d ~ study_type,
              small = FALSE,
              data = SATcoaching)
 
-null <- robu(d ~ 1,
-             studynum = study,
-             var.eff.size = V,
-             small = FALSE,
-             data = SATcoaching)
-
-cwb(dat = SATcoaching,
-    smd = d,
-    var = V,
-    cluster = study,
-    full_model = full,
-    null_model = null,
+cwb(full_model = full,
     indices = 2:3,
     R = 99)
 

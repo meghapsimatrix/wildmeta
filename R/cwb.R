@@ -23,18 +23,7 @@
 #'              small = FALSE,
 #'              data = SATcoaching)
 #'
-#' null <- robu(d ~ 1,
-#'              studynum = study,
-#'              var.eff.size = V,
-#'              small = FALSE,
-#'              data = SATcoaching)
-#'
-#' cwb(dat = SATcoaching,
-#'     smd = d,
-#'     var = V,
-#'     cluster = study,
-#'     full_model = full,
-#'     null_model = null,
+#' cwb(full_model = full,
 #'     indices = 2:3,
 #'     R = 99)
 #'
