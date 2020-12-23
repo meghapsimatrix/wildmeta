@@ -134,6 +134,17 @@
     R <span class="op">=</span> <span class="fl">99</span><span class="op">)</span>
 <span class="co">#&gt;   test     p_val</span>
 <span class="co">#&gt; 1  CWB 0.5252525</span></pre></div>
+<div id="timing" class="section level3">
+<h3 class="hasAnchor">
+<a href="#timing" class="anchor"></a>Timing</h3>
+<p>The <code><a href="../reference/cwb.html">cwb()</a></code> function takes around 30 seconds to 1 minute to run even with high number of bootstrap replications. Below is an example with 999 bootstrap replications.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="../reference/cwb.html">cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">full</span>,
+    indices <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span>,
+    R <span class="op">=</span> <span class="fl">999</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt;    user  system elapsed </span>
+<span class="co">#&gt;  30.764   0.157  31.113</span></pre></div>
+</div>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="hasAnchor">
