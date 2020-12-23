@@ -68,5 +68,15 @@ cwb(full_model = full,
     R = 99)
 ```
 
+### Timing 
+
+The `cwb()` function takes around 30 seconds to 1 minute to run even with high number of bootstrap replications. Below is an example with 999 bootstrap replications. 
+
+```{r}
+system.time(cwb(full_model = full,
+    indices = 2:3,
+    R = 999))
+```
+
 
 # References
