@@ -23,29 +23,56 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Dependence in Meta-Analysis
 
-## Cluster Wild Bootstrapping Steps
+Primary studies often contain multiple dependent effect sizes [@hedges_robust_2010]. Dependent effect sizes can occur through correlated effects structure or hierarchical effects structure or a combination of the two [@hedges_robust_2010; @pustejovsky2020meta]. Correlated effects data structure occurs due to multiple  correlated measures of an outcome, repeated measures of the outcome data, or comparison of multiple comparison groups to the same treatment group [@hedges_robust_2010]. Hierarchical effects structure occurs when primary meta-analysis includes multiple studies conducted by the same lab, researcher, or in the same region [@hedges_robust_2010].
+
+The increasingly popular method to handle such dependence, robust variance estimation (RVE), results in inflated Type 1 error rate when the number of studies is small [@hedges_robust_2010; @tipton_small_2015]. @tipton_small_2015 and @tipton_small-sample_2015 have recommended a small sample correction for RVE, called the HTZ test (CR2 Type correction with Satterthwaite degrees of freedom), which has been shown to control Type 1 error rate.
+
+The simulations that I conducted in my dissertation showed that the HTZ test can be very conservative especially for tests of multiple-contrast hypothesis when the number of studies is small. I examined an alternative method, cluster wild bootstrapping (CWB), which controls Type 1 error adequately while providing better power compared to the HTZ test. 
+
+The aim of this package is to provide applied meta-analysts functions to implement the CWB test. This vignette provides an overview of the algorithm underlying CWB. 
+
+## Bootstrapping
+
+General bootstrapping can be used to estimate measures of uncertainty, even when other methods fail [@boos2003introduction]. Bootstrapping involves re-sampling from the original data many times to create an empirical distribution which is used in place of the distribution of an estimate or test statistic [@boos2003introduction]. 
+
+Several bootstrapping data generating processes are available. The most common one is pair bootstrapping, which involves re-sampling with replacement the set of outcome and covariate data for each case [@freedman1981bootstrapping; @freedman1984bootstrapping]. For data involving clusters, the entire cluster is re-sampled [@cameron_bootstrap-based_nodate]. In meta-analytic studies with small number of clusters, pairs bootstrapping can result in lack of variance in the distribution of covariates rendering estimation of coefficients infeasible [@cameron_bootstrap-based_nodate]. 
+
+Another type of bootstrapping involves re-sampling residuals [@cameron_bootstrap-based_nodate]. In case with clusters, entire vector of residuals for each cluster is re-sampled [@cameron_bootstrap-based_nodate; @mackinnon2009bootstrap]. Such a procedure requires clusters to be of equal size and has an underlying assumption that the errors are independently and identically distributed [@mackinnon2009bootstrap]. 
+
+An ideal way to bootstrap when the number of clusters is small is to use cluster wild bootstrapping, which involves sampling weights and multiplying residuals with the random weights [@cameron_bootstrap-based_nodate; @mackinnon2009bootstrap]. Unlike pairs bootstrapping, we do not change the distribution of the covariates and unlike residual bootstrapping, CWB does not require clusters have the same size and does not have the underlying assumption that the errors are i.i.d [@cameron_bootstrap-based_nodate; @mackinnon2009bootstrap].
+
+
+### Cluster Wild Bootstrapping Steps
+
+[@mackinnon2009bootstrap] recommended imposing the null hypothesis when running bootstrap hypothesis tests as the process of hypothesis testing involves examining where the test statistic lies on the the sampling distribution based on the null hypothesis. For weights to use in cluster wild bootstrapping, @mackinnon2015wild and @webb2013reworking have shown that the Rademacher weights, which take on the values of -1 and 1 with the probability of 0.5 each, outperform all other types of weights for studies with number of clusters as low as 10. 
 
 The general process of conducting cluster wild bootstrapping is as follows [@cameron_bootstrap-based_nodate; @mackinnon2009bootstrap]: 
 
-1. Fit a null model and a full model on the original data
+1. Fit a null model and a full model on the original data.
 
-2. Obtain residuals from the null model 
+2. Obtain residuals from the null model. 
 
 3. Generate an auxiliary random variable that has mean of 0 and variance of 1 and multiply the residuals by the random variable (e.g., Rademacher weights) set to be constant within clusters (CWB)
-  - Can also multiply the residuals by CR2 matrices before multiplying by weights (CWB Adjusted)
+  - The residuals can also be multiplied by CR2 adjustment matrices before multiplying by weights (CWB Adjusted). Adjusting the residuals by CR2 matrices can correct the under-estimation of the error variance when the working model is incorrect [@pustejovsky_small-sample_2018]. 
 
-4.  Obtain new outcome scores by adding the transformed residuals to the predicted values from the null model fit on the original data
+4.  Obtain new outcome scores by adding the transformed residuals to the predicted values from the null model fit on the original data.
 
-5.  Re-estimate the full model with the new calculated outcome scores and obtain the test statistic
+5.  Re-estimate the full model with the new calculated outcome scores and obtain the test statistic.
 
 6. Repeat steps 3-5 $R$ times. Calculate p-value:
 
 $$p = \frac{1}{R} \sum_{r = 1}^R I\left(F^{(r)} > F\right)$$
 
+The results of the simulation studies that I conducted for my dissertation did not show any difference in Type 1 error rates or power when multiplying the results by CR2 adjustments matrices. However, I did not study major mis-specifications of the working model in my simulation study.   
+
+
 ## Example from `wildmeta`
 
-The following example uses the `SATCoaching` dataset from the `clubSandwich` package [@pusto_2020], originally from @dersimonian1983evaluating. The standardized mean differences represent the effects of SAT coaching on SAT verbal (SATV) and/or SAT math (SATM) scores. The data contains `study_type` variable indicating whether groups compared in primary studies were matched, randomized, or non-equivalent. The code below runs cluster wild bootstrapping to test the multiple-contrast hypothesis that the effect of coaching does not differ based on study type. 
+The following example uses the `SATCoaching` dataset from the `clubSandwich` package [@pusto_2020], originally from @dersimonian1983evaluating. The standardized mean differences represent the effects of SAT coaching on SAT verbal (SATV) and/or SAT math (SATM) scores. The data contains `study_type` variable indicating whether groups compared in primary studies were matched, randomized, or non-equivalent. 
+
+The code below runs cluster wild bootstrapping to test the multiple-contrast hypothesis that the effect of coaching does not differ based on study type. The `cwb()` function takes in a full model fit using the `robu()` function from the `robumeta` package as an argument. Further, users need to specify the indices to be tested. In the following examples, indices 2 to 3 correspond to the the second and third category levels of the `study_type` variable. Users can specify the number of bootstrap replications R. The default value is set to 999. In the example below, I set the value to 99 for speed up computation time. 
 
 
 ```{r setup, warning=FALSE, message=FALSE}
@@ -68,11 +95,25 @@ cwb(full_model = full,
     R = 99)
 ```
 
+The users can also specify whether to adjust the residuals with CR2 matrices when bootstrapping as below. The default value for the `adjust` argument is set to `FALSE`.
+
+```{r}
+set.seed(20201228)
+
+cwb(full_model = full,
+    indices = 2:3,
+    R = 99,
+    adjust = TRUE)
+```
+
 ### Timing 
 
 The `cwb()` function takes around 30 seconds to 1 minute to run even with high number of bootstrap replications. Below is an example with 999 bootstrap replications. 
 
+
 ```{r}
+set.seed(20201229)
+
 system.time(cwb(full_model = full,
     indices = 2:3,
     R = 999))
