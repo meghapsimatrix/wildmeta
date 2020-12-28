@@ -12,12 +12,12 @@ effect sizes leads to dependence as the estimates within each study are
 likely correlated (e.g., because the same participants provide multiple
 outcome scores). The increasingly popular method to handle such
 dependence, robust variance estimation (RVE), results in inflated Type 1
-error rate when the number of studies is small (Tipton, 2015). Tipton
-(2015) and Tipton and Pustejovsky (2015) have recommended CR2 type
-correction to RVE with Satterthwaite degrees of freedom. Tipton (2015)
-and Tipton and Pustejovsky (2015) showed that the CR2 correction
-controls Type 1 error rate adequately even when the number of studies is
-small.
+error rate when the number of studies is small (Hedges, Tipton &
+Johnson, 2010; Tipton, 2015). Tipton (2015) and Tipton and Pustejovsky
+(2015) have recommended CR2 type correction to RVE with Satterthwaite
+degrees of freedom. Tipton (2015) and Tipton and Pustejovsky (2015)
+showed that the CR2 correction controls Type 1 error rate adequately
+even when the number of studies is small.
 
 Through simulations that I ran for my dissertation, I showed the the CR2
 test with Satterthwaite degrees of freedom can be conservative. I
