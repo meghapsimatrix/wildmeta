@@ -13,19 +13,19 @@ likely correlated (e.g., because the same participants provide multiple
 outcome scores). The increasingly popular method to handle such
 dependence, robust variance estimation (RVE), results in inflated Type 1
 error rate when the number of studies is small (Hedges, Tipton &
-Johnson, 2010; Tipton, 2015). Tipton (2015) and Tipton and Pustejovsky
-(2015) have recommended CR2 type correction to RVE with Satterthwaite
-degrees of freedom. Tipton (2015) and Tipton and Pustejovsky (2015)
-showed that the CR2 correction controls Type 1 error rate adequately
-even when the number of studies is small.
+Johnson, 2010; Tipton, 2015).
 
-Through simulations that I ran for my dissertation, I showed the the CR2
-test with Satterthwaite degrees of freedom can be conservative. I
-examined another method, cluster wild bootstrapping (CWB), that has been
-studied in the econometrics literature but not in the meta-analytic
-context. The results of my dissertation simulations showed that CWB
-adequately controls for Type 1 error rate and has more power than the
-CR2 test with Satterthwaite degrees of freedom.
+Tipton (2015) and Tipton and Pustejovsky (2015) recommended a small
+sample correction, the HTZ test (CR2 correction with Satterthwaite
+degrees of freedom). The HTZ test has been shown to control Type 1 error
+rate adequately even when the number of studies is small (Tipton, 2015;
+Tipton & Pustejovsky, 2015). Through simulations that I ran for my
+dissertation, I showed the the HTZ test can be conservative. I examined
+another method, cluster wild bootstrapping (CWB), that has been studied
+in the econometrics literature but not in the meta-analytic context. The
+results of my dissertation simulations showed that CWB adequately
+controls for Type 1 error rate and has more power than the CR2 test with
+Satterthwaite degrees of freedom.
 
 The goal of this package is to provide applied meta-analytic researchers
 a function with which they can conduct single coefficient tests or
