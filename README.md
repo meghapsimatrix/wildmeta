@@ -75,7 +75,39 @@ cwb(full_model = full,
 #> 1  CWB 0.5252525
 ```
 
+# Related Work
+
+We want to recognize other packages that provide algorithms to conduct
+bootstrapping. The `multiwayvcov` package implements cluster robust
+variance estimation as well as different types of cluster bootstrapping,
+including pair, residual, and cluster wild bootstrapping (Graham, Arai &
+Hagströmer, 2016). For cluster wild bootstrapping, Rademacher weights,
+Mammen weights, and standard normal weights are available. The functions
+in the package return cluster robust variance-covariance matrices. Our
+package, on the other hand, outputs p-values from bootstrap hypothesis
+tests. Further, our package is particularly created for applied
+meta-analysis whereas the `multiwayvcov` can be used with any regression
+analysis involving clusters.
+
+The `boot` package can be used to generate bootstrap replicates (Canty &
+Ripley, 2020) . The main function in the package, `boot()` requires a
+dataset and a function that calculates the estimate of interest. The
+function returns the bootstrap estimate. The package also contains
+another function, `boot.ci()` that can be used to calculate bootstrap
+confidence intervals. The package allows parallel programming. However,
+the `boot` package does not provide functionality for cluster wild
+bootstrapping.
+
+The `lmboot` package implements pair, residual and wild bootstrapping
+for linear models (Heyman, 2019). The package does not provide
+Rademacher or Mammen weights for wild bootstrapping. The output of the
+function is a bootstrap sampling distribution. Further, the package does
+not work with clustered data.
+
 # References
+
+Canty A. & Ripley B. (2020). boot: Bootstrap R (S-Plus) Functions. R
+package version 1.3-25. <https://CRAN.R-project.org/package=boot>
 
 DerSimonian, R., & Laird, N. (1983). Evaluating the effect of coaching
 on SAT scores: A meta-analysis. Harvard Educational Review, 53(1), 1-1
@@ -84,6 +116,13 @@ Hedges, L. V., Tipton, E., & Johnson, M. C. (2010). Robust variance
 estimation in meta-regression with dependent effect size estimates.
 Research Synthesis Methods, 1(1), 39–65.
 <https://doi.org/10.1002/jrsm.5>
+
+Graham N., Arai M., & Hagströmer, B (2016). multiwayvcov: Multi-Way
+Standard Error Clustering. R package version 1.2.3.
+<https://CRAN.R-project.org/package=multiwayvcov>
+
+Heyman, M. (2019). lmboot: Bootstrap in Linear Models. R package version
+0.0.1. <https://CRAN.R-project.org/package=lmboot>
 
 Pustejovsky, J. E. (2020). clubSandwich: Cluster-robust (sandwich)
 variance estimators with small-sample corrections \[R package version
