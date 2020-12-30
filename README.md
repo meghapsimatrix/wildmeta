@@ -24,8 +24,7 @@ dissertation, I showed the the HTZ test can be conservative. I examined
 another method, cluster wild bootstrapping (CWB), that has been studied
 in the econometrics literature but not in the meta-analytic context. The
 results of my dissertation simulations showed that CWB adequately
-controls for Type 1 error rate and has more power than the CR2 test with
-Satterthwaite degrees of freedom.
+controls for Type 1 error rate and has more power than the HTZ test.
 
 The goal of this package is to provide applied meta-analytic researchers
 a function with which they can conduct single coefficient tests or
@@ -47,7 +46,7 @@ The following example uses the `SATCoaching` dataset from the
 `clubSandwich` package (Pustejovksy, 2020), originally from DerSimonian
 and Laird (1983). The standardized mean differences represent the
 effects of SAT coaching on SAT verbal (SATV) and/or SAT math (SATM)
-scores. The data contains `study_type` variable indicating whether
+scores. The data contains the `study_type` variable indicating whether
 groups compared in primary studies were matched, randomized, or
 non-equivalent. The code below runs cluster wild bootstrapping to test
 the multiple-contrast hypothesis that the effect of coaching does not
@@ -90,7 +89,7 @@ meta-analysis whereas the `multiwayvcov` can be used with any regression
 analysis involving clusters.
 
 The `boot` package can be used to generate bootstrap replicates (Canty &
-Ripley, 2020) . The main function in the package, `boot()` requires a
+Ripley, 2020). The main function in the package, `boot()` requires a
 dataset and a function that calculates the estimate of interest. The
 function returns the bootstrap estimate. The package also contains
 another function, `boot.ci()` that can be used to calculate bootstrap

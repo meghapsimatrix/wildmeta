@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 Primary studies in education and social sciences often contain multiple effect sizes (Hedges, Tipton & Johnson, 2010). Presence of multiple effect sizes leads to dependence as the estimates within each study are likely correlated (e.g., because the same participants provide multiple outcome scores). The increasingly popular method to handle such dependence, robust variance estimation (RVE), results in inflated Type 1 error rate when the number of studies is small (Hedges, Tipton & Johnson, 2010; Tipton, 2015). 
 
-Tipton (2015) and Tipton and Pustejovsky (2015) recommended a small sample correction, the HTZ test (CR2 correction with Satterthwaite degrees of freedom). The HTZ test has been shown to control Type 1 error rate adequately even when the number of studies is small (Tipton, 2015; Tipton & Pustejovsky, 2015). Through simulations that I ran for my dissertation, I showed the the HTZ test can be conservative. I examined another method, cluster wild bootstrapping (CWB), that has been studied in the econometrics literature but not in the meta-analytic context. The results of my dissertation simulations showed that CWB adequately controls for Type 1 error rate and has more power than the CR2 test with Satterthwaite degrees of freedom.
+Tipton (2015) and Tipton and Pustejovsky (2015) recommended a small sample correction, the HTZ test (CR2 correction with Satterthwaite degrees of freedom). The HTZ test has been shown to control Type 1 error rate adequately even when the number of studies is small (Tipton, 2015; Tipton & Pustejovsky, 2015). Through simulations that I ran for my dissertation, I showed the the HTZ test can be conservative. I examined another method, cluster wild bootstrapping (CWB), that has been studied in the econometrics literature but not in the meta-analytic context. The results of my dissertation simulations showed that CWB adequately controls for Type 1 error rate and has more power than the HTZ test.
 
 The goal of this package is to provide applied meta-analytic researchers a function with which they can conduct single coefficient tests or multiple-contrast hypothesis tests using cluster wild bootstrapping. 
 
@@ -34,7 +34,7 @@ devtools::install_github("meghapsimatrix/wildmeta")
 ```
 ## Example
 
-The following example uses the `SATCoaching` dataset from the `clubSandwich` package (Pustejovksy, 2020), originally from DerSimonian and Laird (1983). The standardized mean differences represent the effects of SAT coaching on SAT verbal (SATV) and/or SAT math (SATM) scores. The data contains `study_type` variable indicating whether groups compared in primary studies were matched, randomized, or non-equivalent. The code below runs cluster wild bootstrapping to test the multiple-contrast hypothesis that the effect of coaching does not differ based on study type. 
+The following example uses the `SATCoaching` dataset from the `clubSandwich` package (Pustejovksy, 2020), originally from DerSimonian and Laird (1983). The standardized mean differences represent the effects of SAT coaching on SAT verbal (SATV) and/or SAT math (SATM) scores. The data contains the `study_type` variable indicating whether groups compared in primary studies were matched, randomized, or non-equivalent. The code below runs cluster wild bootstrapping to test the multiple-contrast hypothesis that the effect of coaching does not differ based on study type. 
 
 ```{r example, warning = F, message = F}
 library(wildmeta)
@@ -60,10 +60,9 @@ cwb(full_model = full,
 
 We want to recognize other packages that provide algorithms to conduct bootstrapping. The `multiwayvcov` package implements cluster robust variance estimation as well as different types of cluster bootstrapping, including pair, residual, and cluster wild bootstrapping (Graham, Arai & Hagströmer, 2016). For cluster wild bootstrapping, Rademacher weights, Mammen weights, and standard normal weights are available. The functions in the package return cluster robust variance-covariance matrices. Our package, on the other hand, outputs p-values from bootstrap hypothesis tests. Further, our package is particularly created for applied meta-analysis whereas the `multiwayvcov` can be used with any regression analysis involving clusters. 
 
-The `boot` package can be used to generate bootstrap replicates (Canty & Ripley, 2020) . The main function in the package, `boot()` requires a dataset and a function that calculates the estimate of interest. The function returns the bootstrap estimate. The package also contains another function, `boot.ci()` that can be used to calculate bootstrap confidence intervals. The package allows parallel programming. However, the `boot` package does not provide functionality for cluster wild bootstrapping. 
+The `boot` package can be used to generate bootstrap replicates (Canty & Ripley, 2020). The main function in the package, `boot()` requires a dataset and a function that calculates the estimate of interest. The function returns the bootstrap estimate. The package also contains another function, `boot.ci()` that can be used to calculate bootstrap confidence intervals. The package allows parallel programming. However, the `boot` package does not provide functionality for cluster wild bootstrapping. 
 
 The `lmboot` package implements pair, residual and wild bootstrapping for linear models (Heyman, 2019). The package does not provide Rademacher or Mammen weights for wild bootstrapping. The output of the function is a bootstrap sampling distribution. Further, the package does not work with clustered data. 
-
 
 
 # References
