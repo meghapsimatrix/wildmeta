@@ -159,8 +159,9 @@
 <span class="fu"><a href="../reference/cwb.html">cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">full</span>,
     indices <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span>,
     R <span class="op">=</span> <span class="fl">99</span><span class="op">)</span>
-<span class="co">#&gt;   test     p_val</span>
-<span class="co">#&gt; 1  CWB 0.5252525</span></pre></div>
+<span class="co">#&gt;   test     p_val working_model</span>
+<span class="co">#&gt; 1  CWB 0.5252525            CE</span></pre></div>
+<p>The output of the function includes the name of the test, the bootstrap test p-value, and the name of the working model. CE refers to correlated effects and HE refers to hierarchical effects.</p>
 <p>The users can also specify whether to adjust the residuals with CR2 matrices when bootstrapping as below. The default value for the <code>adjust</code> argument is set to <code>FALSE</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">20201228</span><span class="op">)</span>
@@ -169,8 +170,8 @@
     indices <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span>,
     R <span class="op">=</span> <span class="fl">99</span>,
     adjust <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt;           test     p_val</span>
-<span class="co">#&gt; 1 CWB Adjusted 0.6161616</span></pre></div>
+<span class="co">#&gt;           test     p_val working_model</span>
+<span class="co">#&gt; 1 CWB Adjusted 0.6161616            CE</span></pre></div>
 <div id="timing" class="section level3">
 <h3 class="hasAnchor">
 <a href="#timing" class="anchor"></a>Timing</h3>
@@ -182,7 +183,7 @@
     indices <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span>,
     R <span class="op">=</span> <span class="fl">999</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;  36.739   0.550  44.053</span></pre></div>
+<span class="co">#&gt;  38.087   0.674  47.743</span></pre></div>
 </div>
 </div>
 <div id="references" class="section level1 unnumbered">
