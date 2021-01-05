@@ -95,6 +95,8 @@ cwb(full_model = full,
     R = 99)
 ```
 
+The output of the function includes the name of the test, the bootstrap test p-value, and the name of the working model. CE refers to correlated effects and HE refers to hierarchical effects. 
+
 The users can also specify whether to adjust the residuals with CR2 matrices when bootstrapping as below. The default value for the `adjust` argument is set to `FALSE`.
 
 ```{r}

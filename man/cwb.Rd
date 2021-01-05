@@ -16,7 +16,7 @@ cwb(full_model, indices, R = 999, adjust = FALSE)
 \item{adjust}{logical indicating whether or not to multiply residuals by CR2 adjustment matrices when bootstrapping.}
 }
 \value{
-A tibble containing the name of the test and a p-value.
+A tibble containing the name of the test, p-value, and the name of the working model. CE denotes correlated effects and HE denotes hierarchical effects).
 }
 \description{
 Calculates p-values for single coefficient and multiple contrast hypothesis tests using cluster wild bootstrapping.
