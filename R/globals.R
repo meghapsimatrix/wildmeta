@@ -1,1 +1,1 @@
-utils::globalVariables(c("test", "p_val", "Fstat"))
+utils::globalVariables(c("test", "p_val", "Fstat", ".", "study", "var.eff.size"))
