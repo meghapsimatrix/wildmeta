@@ -34,6 +34,8 @@ cwb <- function(full_model,
                 R = 999,
                 adjust = FALSE) {
 
+  dep <- full_model$modelweights
+
   full_dat <- full_model$data.full %>%
     dplyr::mutate(id = rownames(.))
 
@@ -55,7 +57,8 @@ cwb <- function(full_model,
                                studynum = study,
                                var.eff.size = var.eff.size,
                                small = FALSE,
-                               dat = dat)
+                               modelweights = dep,
+                               data = dat)
 
   # residuals and transformed residuals -------------------------------------
 
@@ -96,7 +99,8 @@ cwb <- function(full_model,
                                  studynum = study,
                                  var.eff.size = var.eff.size,
                                  small = FALSE,
-                                 dat = dat)
+                                 modelweights = dep,
+                                 data = dat)
 
       cov_mat <- clubSandwich::vcovCR(boot_mod, type = "CR1")
 
@@ -126,6 +130,8 @@ cwb <- function(full_model,
   if(adjust == TRUE){
     p_boot$test <- "CWB Adjusted"
   }
+
+  p_boot$working_model <- dep
 
 
   return(p_boot)
