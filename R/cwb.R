@@ -132,6 +132,8 @@ cwb <- function(full_model,
   }
 
   p_boot$working_model <- dep
+  p_boot$working_model <- ifelse(p_boot$working_model == "CORR", "Correlated Effects",
+                                 "Hierarchical Effects")
 
 
   return(p_boot)
