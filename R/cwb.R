@@ -135,6 +135,8 @@ cwb <- function(full_model,
   p_boot$working_model <- ifelse(p_boot$working_model == "CORR", "CE",
                                  "HE")
 
+  p_boot <- p_boot %>%
+    dplyr::select(test, working_model, p_val)
 
   return(p_boot)
 }
