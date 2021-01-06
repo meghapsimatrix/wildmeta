@@ -70,8 +70,8 @@ full <- robu(d ~ study_type,
 cwb(full_model = full,
     indices = 2:3,
     R = 99)
-#>   test     p_val working_model
-#> 1  CWB 0.5252525            CE
+#>   test working_model     p_val
+#> 1  CWB            CE 0.5252525
 ```
 
 # Related Work
