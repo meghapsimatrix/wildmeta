@@ -8,7 +8,7 @@
 #' @param adjust logical indicating whether or not to multiply residuals by CR2 adjustment matrices when bootstrapping.
 #'
 #'
-#' @return A tibble containing the name of the test, p-value, and the name of the working model. CE denotes correlated effects and HE denotes hierarchical effects).
+#' @return A tibble containing the name of the test, p-value, and the name of the working model. CE denotes correlated effects and HE denotes hierarchical effects.
 #'
 #' @importFrom dplyr %>%
 #' @export
