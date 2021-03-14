@@ -22,7 +22,9 @@ Imports:
     metafor,
     purrr,
     stringr,
-    stats
+    stats,
+    tibble,
+    vctrs
 Suggests: 
     knitr,
     rmarkdown

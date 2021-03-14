@@ -35,6 +35,7 @@ cwb <- function(full_model,
                 adjust = FALSE) {
 
   require(dplyr)
+  require(tibble)
 
   # robumeta ----------------------------------------------------------------
 
