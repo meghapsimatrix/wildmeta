@@ -63,7 +63,7 @@ cwb <- function(full_model,
 
     null_model <- robumeta::robu(stats::as.formula(paste("effect_size ~ ", null_formula)),
                                  studynum = study,
-                                 var.eff.size = var.eff.size,
+                                 var.eff.size = v,
                                  small = FALSE,
                                  modelweights = dep,
                                  data = dat)
@@ -149,7 +149,7 @@ cwb <- function(full_model,
       if("robu" %in% class(full_model)){
         boot_mod <- robumeta::robu(stats::as.formula(paste("new_y ~ ", full_formula)),
                                    studynum = study,
-                                   var.eff.size = var.eff.size,
+                                   var.eff.size = v,
                                    small = FALSE,
                                    modelweights = dep,
                                    data = dat)
