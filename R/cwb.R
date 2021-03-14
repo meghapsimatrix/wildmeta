@@ -137,9 +137,7 @@ cwb <- function(full_model,
   num_cluster <- unique(dat$study)
   k_j <- as.numeric(table(dat$study))
 
-  system.time(
-
-    bootstraps <- purrr::rerun(.n = R, {
+  bootstraps <- purrr::rerun(.n = R, {
 
       wts <- sample(c(-1, 1), size = length(num_cluster), replace = TRUE)
       dat$eta <- rep(wts, k_j)
@@ -173,8 +171,6 @@ cwb <- function(full_model,
 
     }) %>%
       dplyr::bind_rows()
-
-  )
 
   org_F <- clubSandwich::Wald_test(full_model,
                                    constraints = clubSandwich::constrain_zero(indices),
