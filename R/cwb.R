@@ -135,40 +135,41 @@ cwb <- function(full_model,
   num_cluster <- unique(dat$study)
   k_j <- as.numeric(table(dat$study))
 
-  bootstraps <- purrr::rerun(.n = R, {
+  bootstraps <- replicate(n = R, {
 
-      wts <- sample(c(-1, 1), size = length(num_cluster), replace = TRUE)
-      dat$eta <- rep(wts, k_j)
-      dat$new_y <- with(dat, pred + res * eta)
+    wts <- sample(c(-1, 1), size = length(num_cluster), replace = TRUE)
+    dat$eta <- rep(wts, k_j)
+    dat$new_y <- with(dat, pred + res * eta)
 
 
-      if("robu" %in% class(full_model)){
-        boot_mod <- robumeta::robu(stats::as.formula(paste("new_y ~ ", full_formula)),
-                                   studynum = study,
-                                   var.eff.size = v,
-                                   small = FALSE,
-                                   modelweights = dep,
-                                   data = dat)
-      }
+    if("robu" %in% class(full_model)){
+      boot_mod <- robumeta::robu(stats::as.formula(paste("new_y ~ ", full_formula)),
+                                 studynum = study,
+                                 var.eff.size = v,
+                                 small = FALSE,
+                                 modelweights = dep,
+                                 data = dat)
+    }
 
-      else if("rma" %in% class(full_model)){
+    else if("rma" %in% class(full_model)){
 
-        boot_mod <- metafor::rma.mv(yi = stats::as.formula(paste("new_y ~ ", full_formula)),
-                                    V = v,
-                                    random = ~ 1 | study,
-                                    data = dat)
+      boot_mod <- metafor::rma.mv(yi = stats::as.formula(paste("new_y ~ ", full_formula)),
+                                  V = v,
+                                  random = ~ 1 | study,
+                                  data = dat)
 
-      }
+    }
 
-      cov_mat <- clubSandwich::vcovCR(boot_mod, type = "CR1")
+    cov_mat <- clubSandwich::vcovCR(boot_mod, type = "CR1")
 
-      res <- clubSandwich::Wald_test(boot_mod,
-                                     constraints = clubSandwich::constrain_zero(indices),
-                                     vcov = cov_mat,
-                                     test = "Naive-F")
+    res <- clubSandwich::Wald_test(boot_mod,
+                                   constraints = clubSandwich::constrain_zero(indices),
+                                   vcov = cov_mat,
+                                   test = "Naive-F")
 
-    }) %>%
-      dplyr::bind_rows()
+  }, simplify = FALSE) %>%
+    dplyr::bind_rows()
+
 
   org_F <- clubSandwich::Wald_test(full_model,
                                    constraints = clubSandwich::constrain_zero(indices),
