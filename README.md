@@ -48,9 +48,10 @@ and Laird (1983). The standardized mean differences represent the
 effects of SAT coaching on SAT verbal (SATV) and/or SAT math (SATM)
 scores. The data contains the `study_type` variable indicating whether
 groups compared in primary studies were matched, randomized, or
-non-equivalent. The code below runs cluster wild bootstrapping to test
-the multiple-contrast hypothesis that the effect of coaching does not
-differ based on study type.
+non-equivalent. Below, we use the `robu()` function from the `robumeta`
+package to fit the full model. The we run cluster wild bootstrapping to
+test the multiple-contrast hypothesis that the effect of coaching does
+not differ based on study type.
 
 ``` r
 library(wildmeta)

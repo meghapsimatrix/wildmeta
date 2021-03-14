@@ -108,13 +108,39 @@ cwb(full_model = full,
     adjust = TRUE)
 ```
 
+
+### Metafor
+
+In the examples above, we used the `robu()` function from `robumeta` to fit the full model. In this section, we fit the model using the `rma.mv()` function from the `metafor` package. Furthermore, we add another covariate `hrs` in the full model, indicating the hours of coaching. However, the multiple-contrast hypothesis remains the same. We are testing that the effect of coaching does not differ based on study type
+
+```{r}
+library(metafor)
+set.seed(03142021)
+
+full_metafor <- rma.mv(yi = d ~ study_type + hrs,
+                     V = V, 
+                     random = ~ 1| study,
+                     data = SATcoaching)
+
+
+cwb(full_model = full_metafor, 
+    indices = 2:3, 
+    R = 99)
+```
+
+
 ### Timing 
 
 The `cwb()` function takes around 30 seconds to 1 minute to run even with high number of bootstrap replications. Below is an example with 999 bootstrap replications. 
 
-
 ```{r}
 set.seed(20201229)
+
+full <- robu(d ~ study_type,
+             studynum = study,
+             var.eff.size = V,
+             small = FALSE,
+             data = SATcoaching)
 
 system.time(cwb(full_model = full,
     indices = 2:3,

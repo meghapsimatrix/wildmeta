@@ -7,7 +7,7 @@
 cwb(full_model, indices, R = 999, adjust = FALSE)
 }
 \arguments{
-\item{full_model}{a model fit using \code{robu()} that includes all moderators of interest.}
+\item{full_model}{a model fit using \code{robu()} or \code{rma.mv()} that includes all moderators of interest.}
 
 \item{indices}{indices of the variables to be tested in single coefficient test or multiple contrast hypothesis test.}
 
