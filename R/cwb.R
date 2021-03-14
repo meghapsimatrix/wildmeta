@@ -107,7 +107,7 @@ cwb <- function(full_model,
                                   random = ~ 1 | study,
                                   data = dat)
 
-    dat$res <- residuals(null_model)
+    dat$res <- stats::residuals(null_model)
 
   }
 
