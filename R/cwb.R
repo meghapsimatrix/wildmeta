@@ -2,7 +2,7 @@
 #'
 #' @description Calculates p-values for single coefficient and multiple contrast hypothesis tests using cluster wild bootstrapping.
 #'
-#' @param full_model a model fit using `robu()` that includes all moderators of interest.
+#' @param full_model a model fit using `robu()` or `rma.mv()` that includes all moderators of interest.
 #' @param indices indices of the variables to be tested in single coefficient test or multiple contrast hypothesis test.
 #' @param R number of bootstrap replications.
 #' @param adjust logical indicating whether or not to multiply residuals by CR2 adjustment matrices when bootstrapping.
@@ -34,36 +34,88 @@ cwb <- function(full_model,
                 R = 999,
                 adjust = FALSE) {
 
-  dep <- full_model$modelweights
-
-  full_dat <- full_model$data.full %>%
-    dplyr::mutate(id = rownames(.))
-
-  x_dat <- full_model$X.full %>%
-    dplyr::mutate(id = rownames(.)) %>%
-    dplyr::select(-1)
-
-  dat <- full_dat %>%
-    dplyr::left_join(x_dat, by = "id")
-
-  null_formula <- paste(full_model$reg_table[, 1][ - indices], collapse = " + ")
-  null_formula <- stringr::str_replace(null_formula, "X.Intercept.", "1")
-
-  full_formula <- paste(full_model$reg_table[, 1], collapse = " + ")
-  full_formula <- stringr::str_replace(full_formula, "X.Intercept.", "1")
 
 
-  null_model <- robumeta::robu(stats::as.formula(paste("effect.size ~ ", null_formula)),
-                               studynum = study,
-                               var.eff.size = var.eff.size,
-                               small = FALSE,
-                               modelweights = dep,
-                               data = dat)
+  # robumeta ----------------------------------------------------------------
+
+  if("robu" %in% class(full_model)){
+
+    dep <- full_model$modelweights
+
+    full_dat <- full_model$data.full %>%
+      dplyr::mutate(id = rownames(.)) %>%
+      dplyr::rename(effect_size = 1,
+                    v = 2)
+
+    x_dat <- full_model$X.full %>%
+      dplyr::mutate(id = rownames(.)) %>%
+      dplyr::select(-1)
+
+    dat <- full_dat %>%
+      dplyr::left_join(x_dat, by = "id")
+
+    null_formula <- paste(full_model$reg_table[, 1][ - indices], collapse = " + ")
+    null_formula <- stringr::str_replace(null_formula, "X.Intercept.", "1")
+
+    full_formula <- paste(full_model$reg_table[, 1], collapse = " + ")
+    full_formula <- stringr::str_replace(full_formula, "X.Intercept.", "1")
+
+
+    null_model <- robumeta::robu(stats::as.formula(paste("effect_size ~ ", null_formula)),
+                                 studynum = study,
+                                 var.eff.size = var.eff.size,
+                                 small = FALSE,
+                                 modelweights = dep,
+                                 data = dat)
+
+    dat$res <- clubSandwich:::residuals_CS.robu(null_model)
+
+
+  }
+
+
+  # metafor -----------------------------------------------------------------
+
+  if("rma" %in% class(full_model)){
+
+    dep <- "metafor"
+
+    y_dat <- dplyr::bind_cols(full_model$yi,
+                              full_model$vi,
+                              .name_repair = ~ vctrs::vec_as_names(..., repair = "unique",
+                                                                   quiet = TRUE)) %>%
+      dplyr::rename(effect_size = 1,
+                    v = 2)
+
+    x_dat <- tibble::as_tibble(full_model$X) %>%
+      dplyr::select(-1)
+
+    study <- tibble::tibble(study = clubSandwich:::findCluster.rma.mv(full_model))
+
+    dat <- dplyr::bind_cols(y_dat, x_dat, study)
+    dat$study <- as.character(dat$study)
+
+    full_form <- rownames(full_model$beta)
+    full_form <- stringr::str_replace(full_form, "intrcpt", "1")
+
+
+    null_formula <- paste(full_form[- indices], collapse = " + ")
+    full_formula <- paste(full_form, collapse = " + ")
+
+
+
+    null_model <- metafor::rma.mv(yi = stats::as.formula(paste("effect_size ~ ", null_formula)),
+                                  V = v,
+                                  random = ~ 1 | study,
+                                  data = dat)
+
+    dat$res <- residuals(full_model)
+
+  }
+
 
   # residuals and transformed residuals -------------------------------------
-
-  dat$res <- clubSandwich:::residuals_CS.robu(null_model)
-  dat$pred <- with(dat, effect.size - res)
+  dat$pred <- with(dat, effect_size - res)
   split_res <- split(dat$res, dat$study)
 
 
@@ -82,8 +134,6 @@ cwb <- function(full_model,
 
 
   # bootstrap ---------------------------------------------------------------
-
-
   num_cluster <- unique(dat$study)
   k_j <- as.numeric(table(dat$study))
 
@@ -95,12 +145,24 @@ cwb <- function(full_model,
       dat$eta <- rep(wts, k_j)
       dat$new_y <- with(dat, pred + res * eta)
 
-      boot_mod <- robumeta::robu(stats::as.formula(paste("new_y ~ ", full_formula)),
-                                 studynum = study,
-                                 var.eff.size = var.eff.size,
-                                 small = FALSE,
-                                 modelweights = dep,
-                                 data = dat)
+
+      if("robu" %in% class(full_model)){
+        boot_mod <- robumeta::robu(stats::as.formula(paste("new_y ~ ", full_formula)),
+                                   studynum = study,
+                                   var.eff.size = var.eff.size,
+                                   small = FALSE,
+                                   modelweights = dep,
+                                   data = dat)
+      }
+
+      if("rma" %in% class(full_model)){
+
+        boot_mod <- metafor::rma.mv(yi = stats::as.formula(paste("new_y ~ ", full_formula)),
+                                    V = v,
+                                    random = ~ 1 | study,
+                                    data = dat)
+
+      }
 
       cov_mat <- clubSandwich::vcovCR(boot_mod, type = "CR1")
 
@@ -131,12 +193,16 @@ cwb <- function(full_model,
     p_boot$test <- "CWB Adjusted"
   }
 
-  p_boot$working_model <- dep
-  p_boot$working_model <- ifelse(p_boot$working_model == "CORR", "CE",
-                                 "HE")
+  p_boot <- p_boot %>%
+    dplyr::mutate(working_model = dep) %>%
+    dplyr::mutate(working_model = dplyr::case_when(working_model == "CORR" ~ "CE",
+                                                   working_model == "HIER" ~ "HE",
+                                                   TRUE ~ "metafor"))
+
 
   p_boot <- p_boot %>%
     dplyr::select(test, working_model, p_val)
+
 
   return(p_boot)
 }
