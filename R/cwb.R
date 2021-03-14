@@ -34,8 +34,6 @@ cwb <- function(full_model,
                 R = 999,
                 adjust = FALSE) {
 
-  require(dplyr)
-  require(tibble)
 
   # robumeta ----------------------------------------------------------------
 
@@ -77,7 +75,7 @@ cwb <- function(full_model,
 
   # metafor -----------------------------------------------------------------
 
-  if("rma" %in% class(full_model)){
+  else if("rma" %in% class(full_model)){
 
     dep <- "metafor"
 
@@ -96,13 +94,12 @@ cwb <- function(full_model,
     dat <- dplyr::bind_cols(y_dat, x_dat, study)
     dat$study <- as.character(dat$study)
 
-    full_form <- rownames(full_model$beta)
-    full_form <- stringr::str_replace(full_form, "intrcpt", "1")
 
+    null_formula <- paste(rownames(full_model$beta)[ - indices], collapse = " + ")
+    null_formula <- stringr::str_replace(null_formula, "intrcpt", "1")
 
-    null_formula <- paste(full_form[- indices], collapse = " + ")
-    full_formula <- paste(full_form, collapse = " + ")
-
+    full_formula <- paste(rownames(full_model$beta), collapse = " + ")
+    full_formula <- stringr::str_replace(full_formula, "intrcpt", "1")
 
 
     null_model <- metafor::rma.mv(yi = stats::as.formula(paste("effect_size ~ ", null_formula)),
@@ -154,7 +151,7 @@ cwb <- function(full_model,
                                    data = dat)
       }
 
-      if("rma" %in% class(full_model)){
+      else if("rma" %in% class(full_model)){
 
         boot_mod <- metafor::rma.mv(yi = stats::as.formula(paste("new_y ~ ", full_formula)),
                                     V = v,
