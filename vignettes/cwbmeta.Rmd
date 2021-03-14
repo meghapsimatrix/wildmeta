@@ -117,7 +117,7 @@ In the examples above, we used the `robu()` function from `robumeta` to fit the 
 library(metafor)
 set.seed(03142021)
 
-full_metafor <- rma.mv(yi = d ~ study_type + hrs,
+full_metafor <- rma.mv(yi = d ~ study_type,
                      V = V, 
                      random = ~ 1| study,
                      data = SATcoaching)
