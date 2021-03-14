@@ -111,7 +111,7 @@ cwb(full_model = full,
 
 ### Metafor
 
-In the examples above, we used the `robu()` function from `robumeta` to fit the full model. In this section, we fit the model using the `rma.mv()` function from the `metafor` package. Furthermore, we add another covariate `hrs` in the full model, indicating the hours of coaching. However, the multiple-contrast hypothesis remains the same. We are testing that the effect of coaching does not differ based on study type
+In the examples above, we used the `robu()` function from `robumeta` to fit the full model. In this section, we fit the model using the `rma.mv()` function from the `metafor` package. 
 
 ```{r}
 library(metafor)
