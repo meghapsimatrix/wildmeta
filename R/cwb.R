@@ -34,7 +34,7 @@ cwb <- function(full_model,
                 R = 999,
                 adjust = FALSE) {
 
-
+  require(dplyr)
 
   # robumeta ----------------------------------------------------------------
 
@@ -109,7 +109,7 @@ cwb <- function(full_model,
                                   random = ~ 1 | study,
                                   data = dat)
 
-    dat$res <- residuals(full_model)
+    dat$res <- residuals(null_model)
 
   }
 
