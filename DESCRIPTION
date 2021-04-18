@@ -24,7 +24,9 @@ Imports:
     stringr,
     stats,
     tibble,
-    vctrs
+    vctrs,
+    tidyr,
+    tidyselect
 Suggests: 
     knitr,
     rmarkdown
