@@ -9,7 +9,7 @@ template:
 
 navbar:
   right:
-   - icon: fa-github
+   - icon: "fab fa-github"
      href: https://github.com/meghapsimatrix/wildmeta
 
 authors:
