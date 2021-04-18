@@ -80,16 +80,25 @@ cwb(full_model = full,
 # Related Work
 
 We want to recognize other packages that provide algorithms to conduct
-bootstrapping. The `multiwayvcov` package implements cluster robust
-variance estimation as well as different types of cluster bootstrapping,
-including pair, residual, and cluster wild bootstrapping (Graham, Arai &
-Hagströmer, 2016). For cluster wild bootstrapping, Rademacher weights,
-Mammen weights, and standard normal weights are available. The functions
-in the package return cluster robust variance-covariance matrices. Our
-package, on the other hand, outputs p-values from bootstrap hypothesis
-tests. Further, our package is particularly created for applied
-meta-analysis whereas the `multiwayvcov` can be used with any regression
-analysis involving clusters.
+bootstrapping. The
+[`fwildclusterboot`](https://s3alfisc.github.io/fwildclusterboot/index.html)
+package runs the fast version of cluster wild bootstrapping proposed by
+Roodman et al. (2019) and is based on the Stata’s boottest package. The
+package runs bootstrapping for linear regression models and fixed
+effects models. To the best of our knowledge, meta-analytic models,
+weighted linear regression models, and multiple contrast hypothesis
+tests are not supported by the package.
+
+The `multiwayvcov` package implements cluster robust variance estimation
+as well as different types of cluster bootstrapping, including pair,
+residual, and cluster wild bootstrapping (Graham, Arai & Hagströmer,
+2016). For cluster wild bootstrapping, Rademacher weights, Mammen
+weights, and standard normal weights are available. The functions in the
+package return cluster robust variance-covariance matrices. Our package,
+on the other hand, outputs p-values from bootstrap hypothesis tests.
+Further, our package is particularly created for applied meta-analysis
+whereas the `multiwayvcov` can be used with any regression analysis
+involving clusters.
 
 The `boot` package can be used to generate bootstrap replicates (Canty &
 Ripley, 2020). The main function in the package, `boot()` requires a
