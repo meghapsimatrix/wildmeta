@@ -192,7 +192,7 @@ cwb <- function(full_model,
     dplyr::mutate(working_model = dep) %>%
     dplyr::mutate(working_model = dplyr::case_when(working_model == "CORR" ~ "CE",
                                                    working_model == "HIER" ~ "HE",
-                                                   TRUE ~ "metafor"))
+                                                   working_model == "metafor" ~ "HE"))
 
 
   p_boot <- p_boot %>%
