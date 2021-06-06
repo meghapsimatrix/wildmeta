@@ -6,25 +6,33 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-Primary studies in education and social sciences often contain multiple
-effect sizes (Hedges, Tipton & Johnson, 2010). Presence of multiple
-effect sizes leads to dependence as the estimates within each study are
-likely correlated (e.g., because the same participants provide multiple
-outcome scores). The increasingly popular method to handle such
-dependence, robust variance estimation (RVE), results in inflated Type 1
-error rate when the number of studies is small (Hedges, Tipton &
-Johnson, 2010; Tipton, 2015).
+Typical methods to conduct meta-analysis—-pooling effect sizes or
+analyzing moderating effects with meta-regression—-work under the
+assumption that the effect size estimates are independent. However,
+primary studies often report multiple estimates of effect sizes.
+Presence of multiple effect sizes leads to dependence as the estimates
+within each study are likely correlated (e.g., because the same
+participants provide multiple outcome scores). The increasingly popular
+method to handle such dependence, robust variance estimation (RVE),
+results in inflated Type 1 error rate when the number of studies is
+small (Hedges, Tipton & Johnson, 2010; Tipton, 2015).
 
-Tipton (2015) and Tipton and Pustejovsky (2015) recommended a small
-sample correction, the HTZ test (CR2 correction with Satterthwaite
-degrees of freedom). The HTZ test has been shown to control Type 1 error
-rate adequately even when the number of studies is small (Tipton, 2015;
-Tipton & Pustejovsky, 2015). Through simulations that I ran for my
-dissertation, I showed the the HTZ test can be conservative. I examined
+Tipton (2015) and Tipton and Pustejovsky (2015) examined several small
+sample correction methods. Tipton (2015) recommended CR2 type correction
+for RVE as well as the use of Satterthwaite degrees of freedom for
+single coefficient tests. Tipton and Pustejovsky (2015) examined
+corrections for multiple-contrast hypothesis tests. Tipton and
+Pustejovsky (2015) found that the HTZ test, which is an extension of the
+CR2 correction method with the Satterthwaite degrees of freedom,
+controlled Type 1 error rate adequately even when the number of studies
+was small. However, Joshi, Pustejovsky and Beretvas (2021) showed,
+through simulations, that the HTZ test can be conservative. We examined
 another method, cluster wild bootstrapping (CWB), that has been studied
 in the econometrics literature but not in the meta-analytic context. The
-results of my dissertation simulations showed that CWB adequately
-controls for Type 1 error rate and has more power than the HTZ test.
+results of the simulations from Joshi, Pustejovsky and Beretvas (2021)
+showed that CWB adequately controlled for Type 1 error rate and had more
+power than the HTZ test especially for multiple-contrast hypothesis
+tests.
 
 The goal of this package is to provide applied meta-analytic researchers
 a function with which they can conduct single coefficient tests or
@@ -140,6 +148,10 @@ Research Synthesis Methods, 1(1), 39–65.
 
 Heyman, M. (2019). lmboot: Bootstrap in Linear Models. R package version
 0.0.1. <https://CRAN.R-project.org/package=lmboot>
+
+Joshi, M., Pustejovsky, J. E., & Beretvas, S. N. (2021). Cluster wild
+bootstrapping to handle dependent effect sizes in meta-Analysis with
+small number of studies. Working paper.
 
 Pustejovsky, J. E. (2020). clubSandwich: Cluster-robust (sandwich)
 variance estimators with small-sample corrections \[R package version
