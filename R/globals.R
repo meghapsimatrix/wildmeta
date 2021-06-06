@@ -1,2 +1,2 @@
 utils::globalVariables(c("test", "p_val", "Fstat", ".", "study", "v",
-                         "working_model"))
+                         "working_model", "boot_F"))
