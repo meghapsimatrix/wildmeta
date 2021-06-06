@@ -90,9 +90,11 @@ full <- robu(d ~ study_type,
              data = SATcoaching)
 
 
-cwb(full_model = full,
-    indices = 2:3,
-    R = 99)
+boot_dat <- cwb(full_model = full,
+                indices = 2:3,
+                R = 99)
+
+boot_dat
 ```
 
 The output of the function includes the name of the test, the bootstrap test p-value, and the name of the working model. CE refers to correlated effects and HE refers to hierarchical effects. 
@@ -146,6 +148,15 @@ full <- robu(d ~ study_type,
 system.time(cwb(full_model = full,
     indices = 2:3,
     R = 999))
+```
+
+
+# Plot 
+
+The function `plot_boot_distribution()` in this package lets users plot the distribution of the bootstrap replicates.
+
+```{r, fig.width = 5, fig.height = 4}
+plot_boot_distribution(boot_dat, fill = "darkred", alpha = 0.5)
 ```
 
 

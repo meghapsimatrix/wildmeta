@@ -197,10 +197,7 @@ cwb <- function(full_model,
 
   p_boot <- p_boot %>%
     dplyr::select(test, working_model, p_val) %>%
-    dplyr::mutate(boot_F = tidyr::nest(bootstraps %>%
-                                         dplyr:: ungroup() %>%
-                                         dplyr::select(Fstat),
-                                       data = tidyselect::everything()))
+    dplyr::mutate(boot_F = list(bootstraps$Fstat))
 
 
   return(p_boot)
