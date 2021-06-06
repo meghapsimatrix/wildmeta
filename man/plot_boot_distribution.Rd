@@ -29,6 +29,6 @@ cwb_dat <- cwb(full_model = full,
                indices = 2:3,
                R = 99)
 
-plot_boot_distribution(boot_dat = cwb_dat)
+# plot_boot_distribution(boot_dat = cwb_dat)
 
 }
