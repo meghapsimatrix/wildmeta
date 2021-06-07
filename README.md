@@ -6,8 +6,8 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-Typical methods to conduct meta-analysis—-pooling effect sizes or
-analyzing moderating effects with meta-regression—-work under the
+Typical methods to conduct meta-analysis—pooling effect sizes or
+analyzing moderating effects with meta-regression—work under the
 assumption that the effect size estimates are independent. However,
 primary studies often report multiple estimates of effect sizes.
 Presence of multiple effect sizes leads to dependence as the estimates
