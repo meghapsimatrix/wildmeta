@@ -20,16 +20,16 @@ small (Hedges, Tipton & Johnson, 2010; Tipton, 2015).
 Tipton (2015) and Tipton & Pustejovsky (2015) examined several small
 sample correction methods. Tipton (2015) recommended CR2 type correction
 for RVE as well as the use of Satterthwaite degrees of freedom for
-single coefficient tests.Tipton & Pustejovsky (2015) examined
+single coefficient tests. Tipton & Pustejovsky (2015) examined
 corrections for [multiple-contrast hypothesis
 tests](https://cran.r-project.org/web/packages/clubSandwich/vignettes/Wald-tests-in-clubSandwich.html).
-Tipton & Pustejovsky (2015) found that the HTZ test, which is an
-extension of the CR2 correction method with the Satterthwaite degrees of
-freedom, controlled Type 1 error rate adequately even when the number of
-studies was small. However, Joshi, Pustejovsky & Beretvas (2021) showed,
-through simulations, that the HTZ test can be conservative. We examined
-another method, cluster wild bootstrapping (CWB), that has been studied
-in the econometrics literature but not in the meta-analytic context. The
+The authors found that the HTZ test, which is an extension of the CR2
+correction method with the Satterthwaite degrees of freedom, controlled
+Type 1 error rate adequately even when the number of studies was small.
+However, Joshi, Pustejovsky & Beretvas (2021) showed, through
+simulations, that the HTZ test can be conservative. We examined another
+method, cluster wild bootstrapping (CWB), that has been studied in the
+econometrics literature but not in the meta-analytic context. The
 results of the simulations from Joshi, Pustejovsky & Beretvas (2021)
 showed that CWB adequately controlled for Type 1 error rate and had more
 power than the HTZ test especially for multiple-contrast hypothesis
