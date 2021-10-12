@@ -56,6 +56,7 @@ null_model <- update(full_model,
 null_model
 
 
+
 # this works fine
 yi_boot <- rnorm(nrow(dat))
 boot_model <- update(full_model,
