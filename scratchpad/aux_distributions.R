@@ -25,5 +25,15 @@ if(auxiliary_dist == "Rademacher"){
                replace = TRUE,
                prob = rep(1/6, 6))
 
+} else if(auxiliary_dist = "uniform"){
+
+  wts <- runif(n = length(num_cluster),
+               min = -sqrt(3),
+               max = sqrt(3))
+
+} else if(auxiliary_dist = "standard normal"){
+
+  wts <- rnorm(n = length(num_cluster))
+
 }
 
