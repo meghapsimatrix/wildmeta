@@ -45,7 +45,6 @@ null_model <- metafor::rma.mv(yi = stats::as.formula(paste("effect_size ~ ", nul
 null_model <- update(full_model,
                      yi = stats::as.formula(paste("effect_size ~ ", null_formula)))  # but what if there are other things in the formula
 
-null_model
 
 
 # it works if i do this but...
