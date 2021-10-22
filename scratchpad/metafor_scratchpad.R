@@ -3,25 +3,52 @@ library(robumeta)
 library(metafor)
 library(tidyverse)
 
+# Drop rows with missing predictors
+dat <- SATcoaching[complete.cases(SATcoaching),]
 
+full_model <- rma.mv(yi = d ~ 0 + study_type + hrs + test,
+                     V = V,
+                     random = ~ study_type| study,
+                     data = dat)
+summary(full_model)
+
+X <- full_model$X
+Cmat <- constrain_equal(1:3, coefs = coef(full_model))
+
+# See R/helpers.R for constrain_predictors
+Xnull <- constrain_predictors(X, Cmat)
+
+null_auto <- update(full_model, yi = full_model$yi, mods = ~ 0 + Xnull)
+null_auto
+
+# Check that null_auto gives the same fitted values as directly specifying the null model
+null_hand <- update(full_model, yi = d ~ hrs + test)
+all.equal(predict(null_auto), predict(null_hand))
+
+
+# Things get a little bit trickier if there are rows with missing predictors
 full_model <- rma.mv(yi = d ~ 0 + study_type + hrs + test,
                      V = V,
                      random = ~ study_type| study,
                      data = SATcoaching)
 summary(full_model)
 
+
 X <- full_model$X
 Cmat <- constrain_equal(1:3, coefs = coef(full_model))
+Xnull <- constrain_predictors(X, Cmat)
 
-q <- nrow(Cmat)
-p <- ncol(Cmat)
-XtX_inv <- chol2inv(chol(crossprod(X)))
-Cnull <- diag(nrow = p) - XtX_inv %*% t(Cmat) %*% chol2inv(chol(Cmat %*% XtX_inv %*% t(Cmat))) %*% Cmat
-qr(X %*% Cnull)
-Xnull <- qr.X(qr(X %*% Cnull), ncol = p - q)
+update(full_model, yi = full_model$yi, mods = ~ 0 + Xnull)
+# Doesn't work because the random effects in full_model involve all
+# nrow(SATcoaching) observations, but nrow(X) only includes the
+# observations with non-missing values
 
-null_model <- update(full_model, yi = full_model$yi, mods = ~ 0 + Xnull)
-null_model
+# This will work for rma.mv() models, I think.
+Xnull_f <- matrix(NA, nrow = nrow(full_model$X.f), ncol = ncol(Xnull))
+Xnull_f[full_model$not.na,] <- Xnull
+null_with_NAs <- update(full_model, yi = full_model$yi.f, mods = ~ 0 + Xnull_f)
+# Check that predictions agree with above
+all.equal(predict(null_auto)$pred, predict(null_with_NAs)$pred)
 
 
 indices <- 2
