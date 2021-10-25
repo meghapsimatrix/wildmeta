@@ -7,7 +7,7 @@ source("R/helpers.R")
 set.seed(12102020)
 
 
-full_model <- robu(d ~ 0 + study_type + hrs + test,
+full_model <- robu(d ~ study_type + hrs + test,
              studynum = study,
              var.eff.size = V,
              small = FALSE,
@@ -31,18 +31,42 @@ Xnull <- constrain_predictors(Xmat = X_mat, Cmat = C_mat)
 update(full_model, formula = effect_size ~ Xnull)
 
 # some issue here
-robumeta::robu(effect_size ~ Xnull,
-               studynum = study,
-               var.eff.size = v,
-               small = FALSE,
-               modelweights = dep)
+#Error in solve.default(sumXWX) :
+#  system is computationally singular: reciprocal condition number = 3.96487e-17
 
-# this works
-robumeta::robu(effect_size ~ hrs + test,
+dat <- tibble(effect_size = effect_size,
+              study = study,
+              v = v)
+
+dat <- bind_cols(dat, as.data.frame(Xnull))
+
+null_formula <- paste("effect_size ~ 0 + ", paste(colnames(as.data.frame(Xnull)), collapse = " + "))
+
+
+null_mod <- robumeta::robu(as.formula(null_formula),
                studynum = study,
                var.eff.size = v,
                small = FALSE,
                modelweights = dep,
                data = dat)
+
+# this works
+hrs <- full_model$X.full$hrs
+test <- full_model$X.full$test
+
+dat <- dat %>%
+  mutate(hrs = hrs,
+         test = test)
+
+null_mod_hand <- robumeta::robu(effect_size ~ 0 + hrs + test,
+               studynum = study,
+               var.eff.size = v,
+               small = FALSE,
+               modelweights = dep,
+               data = dat)
+
+all.equal(residuals(null_mod), residuals(null_mod_hand))
+
+
 
 
