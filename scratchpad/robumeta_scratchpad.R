@@ -7,11 +7,14 @@ source("R/helpers.R")
 set.seed(12102020)
 
 
-full_model <- robu(d ~ study_type + hrs + test,
+full_model <- robu(d ~ 0 + study_type + hrs + test,
              studynum = study,
              var.eff.size = V,
              small = FALSE,
              data = SATcoaching)
+
+
+
 
 C_mat <- constrain_equal(1:3, coefs = full_model$b.r)
 
