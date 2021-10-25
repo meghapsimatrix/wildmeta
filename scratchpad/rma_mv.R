@@ -4,6 +4,10 @@ run_CWB.rma.mv <- function(full_model,
                            auxiliary_dist = "Rademacher",
                            adjust = FALSE) {
 
+  # JAMES
+  # need something here to make the constrain matrix if users add indices?
+  # like 1:3 in C_mat instead of constrain_equal(...)?
+
   X_mat <- full_model$X
   effect_size <- full_model$yi
   v <- full_model$vi
@@ -55,12 +59,13 @@ run_CWB.rma.mv <- function(full_model,
     eta <- rep(wts, k_j)
     y_boot <- pred + res * eta
 
-    # for missing data
+    # JAMES for missing data
     y_new <- rep(NA, length = nrow(full_model$X.f))
     y_new[full_model$not.na] <- y_boot
 
     # JAMES CHECK THIS:
-    # some way to do this so it's not dropping intercept so it can use the constrain matrix original>
+    # some way to do this so it's not dropping intercept
+    # so it can use the original constrain matrix for F tests below?
 
     if(intercept == 0){
 
