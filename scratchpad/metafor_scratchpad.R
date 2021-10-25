@@ -14,6 +14,7 @@ summary(full_model)
 
 X <- full_model$X
 Cmat <- constrain_equal(1:3, coefs = coef(full_model))
+C_mat <- constrain_equal(1:3, coefs = coef(full_model))
 
 # See R/helpers.R for constrain_predictors
 Xnull <- constrain_predictors(X, Cmat)
@@ -49,6 +50,8 @@ Xnull_f[full_model$not.na,] <- Xnull
 null_with_NAs <- update(full_model, yi = full_model$yi.f, mods = ~ 0 + Xnull_f)
 # Check that predictions agree with above
 all.equal(predict(null_auto)$pred, predict(null_with_NAs)$pred)
+
+#all.equal(predict(null_hand)$pred, predict(null_model)$pred)
 
 
 indices <- 2
