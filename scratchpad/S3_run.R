@@ -22,7 +22,8 @@ full_model<- rma.mv(yi = d ~ 0 + study_type + hrs + test,
 
 C_mat <- constrain_equal(1:3, coefs = coef(full_model))
 
-
+# JAMES sometimes this throws convergence issues -
+# so something like safely or something? - and output the # of bootstraps successfully run in waldtest
 boots <- run_cwb(full_model,
                  C_mat,
                  R = 99)
