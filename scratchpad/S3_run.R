@@ -8,6 +8,7 @@ source("R/helpers.R")
 source("scratchpad/rma_mv.R")  # check this function :D
 source("scratchpad/plot_wildmeta.R")
 source("scratchpad/robu.R") # check this function too :D
+source("scratchpad/Wald_test_wildmeta.R")
 
 
 # metafor -----------------------------------------------------------------
@@ -29,6 +30,17 @@ boots <- run_cwb(full_model,
 plot(boots, fill = "darkred", alpha = 0.6)
 
 
+# need to figure out how to make Wald_test_cwb talk to run_cwb :D
+Wald_test_cwb(full_model,
+              C_mat,
+              R = 99)
+
+# compare to club CR2
+Wald_test(full_model,
+          C_mat,
+          vcov = "CR2")
+
+
 #intercept
 
 full_model <- rma.mv(yi = d ~ study_type + hrs + test,
@@ -38,14 +50,17 @@ full_model <- rma.mv(yi = d ~ study_type + hrs + test,
 
 C_mat <- constrain_zero(2:3, coefs = coef(full_model))
 
-
+# sometimes this throws convergence issues -
+# so something like safely or something?
 boots <- run_cwb(full_model,
                  C_mat,
                  R = 99)
 
 plot(boots, fill = "darkred", alpha = 0.6)
 
-
+Wald_test_cwb(full_model,
+              C_mat,
+              R = 99)
 
 
 # robumeta ----------------------------------------------------------------
@@ -67,6 +82,13 @@ boots <- run_cwb(full_model,
 
 plot(boots, fill = "darkred", alpha = 0.6)
 
+Wald_test_cwb(full_model,
+              C_mat,
+              R = 99)
+
+Wald_test(full_model,
+          C_mat,
+          vcov = "CR2")
 
 # intercept
 full_model <- robu(d ~ study_type + hrs + test,
@@ -85,3 +107,6 @@ boots <- run_cwb(full_model,
 plot(boots, fill = "darkred", alpha = 0.6)
 
 
+Wald_test_cwb(full_model,
+              C_mat,
+              R = 99)
