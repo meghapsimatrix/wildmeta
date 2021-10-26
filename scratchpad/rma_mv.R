@@ -4,9 +4,15 @@ run_CWB.rma.mv <- function(full_model,
                            auxiliary_dist = "Rademacher",
                            adjust = FALSE) {
 
+  intercept <- sum(str_detect(rownames(full_model$beta), "intrcpt"))
+
   # JAMES
   # need something here to make the constrain matrix if users add indices?
   # like 1:3 in C_mat instead of constrain_equal(...)?
+
+
+
+  # assembling data ---------------------------------------------------------
 
   X_mat <- full_model$X
   effect_size <- full_model$yi
@@ -14,9 +20,8 @@ run_CWB.rma.mv <- function(full_model,
 
   study <- clubSandwich:::findCluster.rma.mv(full_model)
 
-  intercept <- sum(str_detect(rownames(full_model$beta), "intrcpt"))
 
-  # Null model --------------------------------------------------------------
+  # null model --------------------------------------------------------------
 
   Xnull <- constrain_predictors(X_mat, C_mat)
 
@@ -29,10 +34,10 @@ run_CWB.rma.mv <- function(full_model,
   null_model <- update(full_model, yi = full_model$yi.f,  mods = ~ 0 + Xnull_f)
 
 
+
+  # residuals and predicted values ------------------------------------------
+
   res <- stats::residuals(null_model)
-
-
-  # residuals and transformed residuals -------------------------------------
   pred <- effect_size - res
   split_res <- split(res, study)
 
