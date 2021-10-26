@@ -33,6 +33,8 @@ Wald_test_cwb <- function(full_model,
   # output boots too somehow - list
   # and figure out print?
 
+  class(p_boot) <- "Wald_test_wildmeta"
+
   return(p_boot)
 
 }
