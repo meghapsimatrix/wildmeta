@@ -22,7 +22,7 @@ full_model<- rma.mv(yi = d ~ 0 + study_type + hrs + test,
 
 C_mat <- constrain_equal(1:3, coefs = coef(full_model))
 
-
+# sometimes i get convergence issues
 boots <- run_cwb(full_model,
                  C_mat,
                  R = 99)
