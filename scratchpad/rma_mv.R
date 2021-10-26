@@ -1,4 +1,4 @@
-run_CWB.rma.mv <- function(full_model,
+run_cwb.rma.mv <- function(full_model,
                            C_mat,
                            R,
                            auxiliary_dist = "Rademacher",

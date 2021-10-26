@@ -1,4 +1,4 @@
-run_CWB <- function(full_model,
+run_cwb <- function(full_model,
                     C_mat,
                     R,
                     auxiliary_dist = "Rademacher",
@@ -9,7 +9,7 @@ run_CWB <- function(full_model,
 }
 
 
-Wald_test_CWB <- function(full_mod, constraints, ...) {
+Wald_test_cwb <- function(full_mod, constraints, ...) {
 
   UseMethod(Wald_test_CWB)
 }

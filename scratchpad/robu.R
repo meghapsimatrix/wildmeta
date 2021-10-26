@@ -1,4 +1,4 @@
-run_CWB.robu <- function(full_model,
+run_cwb.robu <- function(full_model,
                          C_mat,
                          R,
                          auxiliary_dist = "Rademacher",
