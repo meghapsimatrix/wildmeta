@@ -1,4 +1,4 @@
-run_cwb <- function(model,
+run_cwb_new <- function(model,
                         cluster,
                         f = NULL,
                         ...,
