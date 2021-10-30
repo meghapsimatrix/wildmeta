@@ -8,9 +8,7 @@ library(tidyverse)
 
 source("R/S3_methods.R")
 source("R/helpers.R")
-source("R/cwb_rma_mv.R")  # check this function :D
 source("R/plot_wildmeta.R")
-source("R/cwb_robu.R") # check this function too :D
 source("R/Wald_test_wildmeta.R")
 
 
@@ -24,6 +22,8 @@ full_model<- rma.mv(yi = d ~ 0 + study_type + hrs + test,
                      data = SATcoaching)
 
 C_mat <- constrain_equal(1:3, coefs = coef(full_model))
+constraints <- C_mat
+R <- 12
 
 # JAMES sometimes this throws convergence issues -
 # so something like safely or something? - and output the # of bootstraps successfully run in waldtest
