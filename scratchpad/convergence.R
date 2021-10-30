@@ -31,7 +31,7 @@ full_model <- safermamv(rma.mv(yi = d ~ 0 + study_type + hrs + test,
                                random = ~ study_type| study,
                                data = SATcoaching))
 
-full_model$error
+full_model
 
 
 SATcoaching <- SATcoaching %>%

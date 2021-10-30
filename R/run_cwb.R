@@ -2,12 +2,11 @@ run_cwb_new <- function(model,
                         cluster,
                         f = NULL,
                         ...,
-                        R = 10,
+                        R,
                         auxiliary_dist = "Rademacher",
                         adjust = "CR0",
                         simplify = FALSE) {
 
-  # JAMES - do we want another function to make the null model then?
 
   # coerce cluster variable to factor
   if (!is.factor(cluster)) cluster <- as.factor(cluster)

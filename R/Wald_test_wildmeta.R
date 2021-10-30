@@ -1,8 +1,15 @@
 Wald_test_cwb <- function(full_model,
-                      constraints,
-                      R,
-                      auxiliary_dist = "Rademacher",
-                      adjust = FALSE){
+                          constraints,
+                          R,
+                          auxiliary_dist = "Rademacher",
+                          adjust = FALSE){
+
+  # added the null model
+  null_model <- estimate_null(full_model,
+                              C_mat = constraints,
+                              R = R)
+
+  # for run_cwb_new need to pull out the clusters
 
   boots <- run_cwb(full_model,
                    C_mat,
@@ -18,8 +25,6 @@ Wald_test_cwb <- function(full_model,
 
   org_F <- org_F$Fstat
 
-
-  # JEP: You don't need the dplyr for any of this!
   p_val <- mean(Fstat > org_F)
   test <- "CWB"
 
@@ -28,11 +33,8 @@ Wald_test_cwb <- function(full_model,
     test <- "CWB Adjusted"
   }
 
-  p_boot <- list(p_val, test)
+  p_boot <- o_val
 
-
-  # output boots too somehow - list
-  # and figure out print?
   attr(p_boot, "bootstraps") <- boots
   attr(p_boot, "test") <- test
 

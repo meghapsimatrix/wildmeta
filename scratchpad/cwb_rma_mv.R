@@ -6,23 +6,7 @@ run_cwb.rma.mv <- function(full_model,
                            test_adjust = "CR0",
                            test_type = "chi-sq") {
 
-  # assembling data ---------------------------------------------------------
 
-  X_mat <- full_model$X
-  effect_size <- full_model$yi
-  v <- full_model$vi
-
-  study <- clubSandwich:::findCluster.rma.mv(full_model)
-
-
-  # null model --------------------------------------------------------------
-
-  Xnull <- constrain_predictors(X_mat, C_mat)
-
-  Xnull_f <- matrix(NA, nrow = nrow(full_model$X.f), ncol = ncol(Xnull))
-  Xnull_f[full_model$not.na,] <- Xnull
-
-  null_model <- update(full_model, yi = full_model$yi.f,  mods = ~ 0 + Xnull_f)
 
 
 

@@ -71,17 +71,19 @@ cluster_id <- clubSandwich:::findCluster.rma.mv(full_model)
 run_cwb_new(
   full_model,
   cluster = cluster_id,
+  R = 12
 )
 
 # With CR2 adjustment
 run_cwb_new(
   full_model,
   cluster = cluster_id,
-  adjust = "CR2"
+  adjust = "CR2",
+  R = 12
 )
 
 # Verify wild bootstrap process
-bs <- run_cwb_new(full_model, cluster = cluster_id)
+bs <- run_cwb_new(full_model, cluster = cluster_id, R = 12)
 
 bs %>%
   # back out the auxiliary random variables

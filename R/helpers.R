@@ -65,3 +65,88 @@ return_wts <- function(auxiliary_dist, cluster_var) {
 }
 
 
+
+
+# estimate null model -----------------------------------------------------
+
+estimate_null.rma.mv <- function(full_model,
+                                 C_mat,
+                                 R) {
+
+  # assembling data ---------------------------------------------------------
+
+  X_mat <- full_model$X
+  effect_size <- full_model$yi
+  v <- full_model$vi
+
+  study <- clubSandwich:::findCluster.rma.mv(full_model)
+
+
+  # null model --------------------------------------------------------------
+
+  Xnull <- constrain_predictors(X_mat, C_mat)
+
+  Xnull_f <- matrix(NA, nrow = nrow(full_model$X.f), ncol = ncol(Xnull))
+  Xnull_f[full_model$not.na,] <- Xnull
+
+  null_model <- update(full_model, yi = full_model$yi.f,  mods = ~ 0 + Xnull_f)
+
+  return(null_model)
+
+}
+
+
+estimate_null.robu <- function(full_model,
+                               C_mat,
+                               R) {
+
+
+  # info about model --------------------------------------------------------
+
+  dep <- full_model$modelweights
+  intercept <- sum(str_detect(full_model$reg_table[, 1], "X.Intercept."))
+
+  # assembling data ---------------------------------------------------------
+
+  full_dat <- full_model$data.full %>%
+    dplyr::mutate(id = rownames(.)) %>%
+    dplyr::rename(effect_size = 1,
+                  v = 2)
+
+  x_dat <- full_model$X.full %>%
+    dplyr::mutate(id = rownames(.)) %>%
+    dplyr::select(-1)
+
+  dat <- full_dat %>%
+    dplyr::left_join(x_dat, by = "id")
+
+
+  # full formula ------------------------------------------------------------
+
+  full_formula <- paste(full_model$reg_table[, 1], collapse = " + ")
+  full_formula <- stringr::str_replace(full_formula, "X.Intercept.", "1")
+
+
+  # null_model --------------------------------------------------------------
+
+  X_mat <- full_model$X.full %>%
+    select(-1) %>%
+    as.matrix()
+
+  Xnull <- constrain_predictors(Xmat = X_mat, Cmat = C_mat)
+
+  dat <- bind_cols(dat, as.data.frame(Xnull))
+
+  null_formula <- paste("effect_size ~ 0 + ", paste(colnames(as.data.frame(Xnull)), collapse = " + "))
+
+  null_model <- robumeta::robu(stats::as.formula(null_formula),
+                               studynum = study,
+                               var.eff.size = v,
+                               small = FALSE,
+                               modelweights = dep,
+                               data = dat)
+
+  return(null_model)
+
+
+}
