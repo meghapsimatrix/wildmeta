@@ -17,6 +17,8 @@ Wald_test_cwb <- function(full_model,
                    auxiliary_dist = auxiliary_dist,
                    adjust = adjust)
 
+  # then need to calculate the bootstrapped F here
+
 
   org_F <- clubSandwich::Wald_test(full_model,
                                    constraints = C_mat,
