@@ -33,7 +33,7 @@ Wald_test_cwb <- function(full_model,
     test <- "CWB Adjusted"
   }
 
-  p_boot <- o_val
+  p_boot <- p_val
 
   attr(p_boot, "bootstraps") <- boots
   attr(p_boot, "test") <- test
