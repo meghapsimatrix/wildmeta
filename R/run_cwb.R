@@ -29,7 +29,7 @@ run_cwb_new <- function(model,
 
   # bootstrap ---------------------------------------------------------------
   num_cluster <- unique(cluster)
-  k_j <- as.numeric(table(cluster))
+  #k_j <- as.numeric(table(cluster))
 
   bootstraps <- replicate(n = R, {
 
