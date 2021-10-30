@@ -29,11 +29,9 @@ run_cwb_new <- function(model,
 
   # bootstrap ---------------------------------------------------------------
   num_cluster <- unique(cluster)
-  #k_j <- as.numeric(table(cluster))
 
   bootstraps <- replicate(n = R, {
 
-    # JAMES does this fix the order thing?
     wts <- return_wts(auxiliary_dist = auxiliary_dist, cluster_var = num_cluster)
     eta <- wts[cluster]
     y_boot <- pred + res * eta
