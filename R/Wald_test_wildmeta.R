@@ -6,8 +6,8 @@ Wald_test_cwb <- function(full_model,
 
   # added the null model
   null_model <- estimate_null(full_model,
-                              C_mat = constraints,
-                              R = R)
+                        C_mat = constraints,
+                        R = R)
 
   # for run_cwb_new need to pull out the clusters
 

@@ -73,13 +73,10 @@ estimate_null.rma.mv <- function(full_model,
                                  C_mat,
                                  R) {
 
-  # assembling data ---------------------------------------------------------
+  # info -------------------------------------------------------------------
 
   X_mat <- full_model$X
-  effect_size <- full_model$yi
-  v <- full_model$vi
-
-  study <- clubSandwich:::findCluster.rma.mv(full_model)
+  cluster <- clubSandwich:::findCluster.rma.mv(full_model)
 
 
   # null model --------------------------------------------------------------
@@ -119,6 +116,8 @@ estimate_null.robu <- function(full_model,
 
   dat <- full_dat %>%
     dplyr::left_join(x_dat, by = "id")
+
+  cluster <- full_model$data.full$study
 
 
   # full formula ------------------------------------------------------------
