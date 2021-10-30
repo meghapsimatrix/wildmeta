@@ -3,6 +3,9 @@ library(robumeta)
 library(metafor)
 library(tidyverse)
 
+# JEP: CTRL + Shift + L to load all package functions
+# (equivalent to sourcing entire R/ directory)
+
 source("R/S3_methods.R")
 source("R/helpers.R")
 source("scratchpad/rma_mv.R")  # check this function :D
@@ -28,10 +31,17 @@ boots <- run_cwb(full_model,
                  C_mat,
                  R = 99)
 
+# JEP: Show the observed test statistic also
 plot(boots, fill = "darkred", alpha = 0.6)
 
 
 # need to figure out how to make Wald_test_cwb talk to run_cwb :D
+# JEP: One way to do this would be to make the results of Wald_test_cwb()
+# include the bootstrap distribution, the test statistic, the p-value,
+# with a special class of CWB_Wald or something.
+# And then write a print.CWB_Wald() method to show just the results of the test,
+# a plot.CWB_Wald() method to make the graph, etc.
+
 Wald_test_cwb(full_model,
               C_mat,
               R = 99)

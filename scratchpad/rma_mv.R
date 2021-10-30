@@ -2,14 +2,18 @@ run_cwb.rma.mv <- function(full_model,
                            C_mat,
                            R,
                            auxiliary_dist = "Rademacher",
-                           adjust = FALSE) {
+                           boot_adjust = "CR0",
+                           test_adjust = "CR0",
+                           test_type = "chi-sq") {
 
-  intercept <- sum(str_detect(rownames(full_model$beta), "intrcpt"))
+  # intercept <- sum(str_detect(rownames(full_model$beta), "intrcpt"))
 
   # JAMES
   # need something here to make the constrain matrix if users add indices?
   # like 1:3 in C_mat instead of constrain_equal(...)?
-
+  # JEP: Couldn't they just use constrain_zero(indices)?
+  # I wrote constrain_equal() and constrain_zero() to avoid overloading the
+  # syntax for constraints=
 
 
   # assembling data ---------------------------------------------------------
@@ -31,6 +35,9 @@ run_cwb.rma.mv <- function(full_model,
   # JAMES - does it matter if we do 0 here for all kinds of models or no?
   # likes if original model has an intercept
   # I think it doesn't matter bc we are not doing constraint test but just wanted to check
+  # JEP: We need to use 0 here because Xnull_f will typically include an intercept term
+  # (or a set of separate intercepts) unless C_mat constrains it.
+
   null_model <- update(full_model, yi = full_model$yi.f,  mods = ~ 0 + Xnull_f)
 
 
@@ -39,17 +46,21 @@ run_cwb.rma.mv <- function(full_model,
 
   res <- stats::residuals(null_model)
   pred <- effect_size - res
-  split_res <- split(res, study)
 
 
   # Adjust ------------------------------------------------------------------
 
-  if(adjust == TRUE){
+  if (adjust == TRUE) {
+    split_res <- split(res, study)
+    # JEP: Is the as.matrix() coercion necessary?
     e_tilde_j <- purrr::map(split_res, as.matrix)
     B_j <- attr(clubSandwich::vcovCR(null_model,
                                      cluster = study,
                                      type = "CR2",
                                      inverse_var = TRUE), "adjustments")
+
+    # JEP: What if the cluster ID is not in sort order?
+    # I think might need to use unsplit() here.
     res <- unlist(purrr::pmap(list(B_j, e_tilde_j), function(x, y) as.vector(x %*% y)))
 
   }
@@ -61,6 +72,7 @@ run_cwb.rma.mv <- function(full_model,
   bootstraps <- replicate(n = R, {
 
     wts <- return_wts(auxiliary_dist = auxiliary_dist, cluster_var = num_cluster)
+    # JEP: What if the clusters are not in sort order?
     eta <- rep(wts, k_j)
     y_boot <- pred + res * eta
 
@@ -71,17 +83,9 @@ run_cwb.rma.mv <- function(full_model,
     # JAMES CHECK THIS:
     # some way to do this so it's not dropping intercept
     # so it can use the original constrain matrix for F tests below?
+    # JEP: Can't you just leave mods unspecified?
 
-    if(intercept == 0){
-
-    boot_mod <- update(full_model, yi = y_new, mods = ~ 0 + full_model$X.f)
-
-    } else{
-
-    boot_mod <- update(full_model, yi = y_new, mods = ~ full_model$X.f)
-
-    }
-
+    boot_mod <- update(full_model, yi = y_new)
 
     cov_mat <- clubSandwich::vcovCR(boot_mod, type = "CR1")
 

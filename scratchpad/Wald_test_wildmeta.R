@@ -18,12 +18,13 @@ Wald_test_cwb <- function(full_model,
     dplyr::pull(Fstat)
 
 
+  # JEP: You don't need the dplyr for any of this!
   p_boot <- data.frame(Fstat = as.numeric(boots)) %>%
     dplyr::summarize(p_val = mean(Fstat > org_F)) %>%
     dplyr::mutate(test = "CWB") %>%
     dplyr::select(test, p_val)
 
-  if(adjust == TRUE){
+  if (adjust == TRUE) {
     p_boot$test <- "CWB Adjusted"
   }
 
@@ -32,8 +33,9 @@ Wald_test_cwb <- function(full_model,
 
   # output boots too somehow - list
   # and figure out print?
+  attr(p_boot, "bootstraps") <- boots
 
-  #class(p_boot) <- "Wald_test_wildmeta"
+  class(p_boot) <- "Wald_test_wildmeta"
 
   return(p_boot)
 
