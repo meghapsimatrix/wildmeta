@@ -6,16 +6,6 @@ run_cwb.rma.mv <- function(full_model,
                            test_adjust = "CR0",
                            test_type = "chi-sq") {
 
-  # intercept <- sum(str_detect(rownames(full_model$beta), "intrcpt"))
-
-  # JAMES
-  # need something here to make the constrain matrix if users add indices?
-  # like 1:3 in C_mat instead of constrain_equal(...)?
-  # JEP: Couldn't they just use constrain_zero(indices)?
-  # I wrote constrain_equal() and constrain_zero() to avoid overloading the
-  # syntax for constraints=
-
-
   # assembling data ---------------------------------------------------------
 
   X_mat <- full_model$X
@@ -31,12 +21,6 @@ run_cwb.rma.mv <- function(full_model,
 
   Xnull_f <- matrix(NA, nrow = nrow(full_model$X.f), ncol = ncol(Xnull))
   Xnull_f[full_model$not.na,] <- Xnull
-
-  # JAMES - does it matter if we do 0 here for all kinds of models or no?
-  # likes if original model has an intercept
-  # I think it doesn't matter bc we are not doing constraint test but just wanted to check
-  # JEP: We need to use 0 here because Xnull_f will typically include an intercept term
-  # (or a set of separate intercepts) unless C_mat constrains it.
 
   null_model <- update(full_model, yi = full_model$yi.f,  mods = ~ 0 + Xnull_f)
 
@@ -79,11 +63,6 @@ run_cwb.rma.mv <- function(full_model,
     # JAMES for missing data
     y_new <- rep(NA, length = nrow(full_model$X.f))
     y_new[full_model$not.na] <- y_boot
-
-    # JAMES CHECK THIS:
-    # some way to do this so it's not dropping intercept
-    # so it can use the original constrain matrix for F tests below?
-    # JEP: Can't you just leave mods unspecified?
 
     boot_mod <- update(full_model, yi = y_new)
 

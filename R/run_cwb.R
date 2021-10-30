@@ -7,6 +7,8 @@ run_cwb_new <- function(model,
                         adjust = "CR0",
                         simplify = FALSE) {
 
+  # JAMES - do we want another function to make the null model then?
+
   # coerce cluster variable to factor
   if (!is.factor(cluster)) cluster <- as.factor(cluster)
 
@@ -17,7 +19,7 @@ run_cwb_new <- function(model,
 
   # Adjust ------------------------------------------------------------------
 
-  if (adjust %in% c("CR1","CR2","CR3","CR4")) {
+  if (adjust %in% c("CR1", "CR2", "CR3", "CR4")) {
     split_res <- split(res, cluster)
     B_j <- attr(clubSandwich::vcovCR(model,
                                      cluster = cluster,

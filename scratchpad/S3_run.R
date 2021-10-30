@@ -8,10 +8,10 @@ library(tidyverse)
 
 source("R/S3_methods.R")
 source("R/helpers.R")
-source("scratchpad/rma_mv.R")  # check this function :D
-source("scratchpad/plot_wildmeta.R")
-source("scratchpad/robu.R") # check this function too :D
-source("scratchpad/Wald_test_wildmeta.R")
+source("R/cwb_rma_mv.R")  # check this function :D
+source("R/plot_wildmeta.R")
+source("R/cwb_robu.R") # check this function too :D
+source("R/Wald_test_wildmeta.R")
 
 
 # metafor -----------------------------------------------------------------
@@ -89,13 +89,15 @@ C_mat <- constrain_equal(1:3, coefs = full_model$b.r)
 
 boots <- run_cwb(full_model,
                  C_mat,
-                 R = 99)
+                 R = 12)
+
+
 
 plot(boots, fill = "darkred", alpha = 0.6)
 
-Wald_test_cwb(full_model,
-              C_mat,
-              R = 99)
+check <- Wald_test_cwb(full_model,
+                       C_mat,
+                       R = 12)
 
 Wald_test(full_model,
           C_mat,

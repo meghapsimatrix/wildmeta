@@ -1,5 +1,6 @@
 library(metafor)
 library(robumeta)
+library(clubSandwich)
 
 devtools::load_all()
 
@@ -39,6 +40,7 @@ run_cwb_new(
 # Verify wild bootstrap process
 bs <- run_cwb_new(full_model, cluster = full_model$data.full$study, R = 20)
 
+library(tidyverse)
 bs %>%
   # back out the auxiliary random variables
   map_dfc(~ (.x - fitted.values(full_model)) / residuals(full_model)) %>%
