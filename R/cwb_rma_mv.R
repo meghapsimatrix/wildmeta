@@ -71,7 +71,7 @@ run_cwb.rma.mv <- function(full_model,
     res <- clubSandwich::Wald_test(boot_mod,
                                    constraints = C_mat,
                                    vcov = cov_mat,
-                                   test = "Naive-F")
+                                   test = "Naive-F") # test-type?
 
   }, simplify = FALSE) %>%
     dplyr::bind_rows()
