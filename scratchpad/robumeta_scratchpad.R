@@ -68,7 +68,7 @@ null_mod_hand <- robumeta::robu(effect_size ~ 0 + hrs + test,
                modelweights = dep,
                data = dat)
 
-all.equal(residuals(null_mod), residuals(null_mod_hand))
+all.equal(residuals(null_model), residuals(null_mod_hand))
 
 
 

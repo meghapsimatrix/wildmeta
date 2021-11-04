@@ -97,55 +97,48 @@ estimate_null.robu <- function(full_model,
                                C_mat,
                                R) {
 
-
-  # info about model --------------------------------------------------------
-
   dep <- full_model$modelweights
-  intercept <- sum(str_detect(full_model$reg_table[, 1], "X.Intercept."))
 
   # assembling data ---------------------------------------------------------
 
-  full_dat <- full_model$data.full %>%
-    dplyr::mutate(id = rownames(.)) %>%
-    dplyr::rename(effect_size = 1,
-                  v = 2)
-
-  x_dat <- full_model$X.full %>%
-    dplyr::mutate(id = rownames(.)) %>%
-    dplyr::select(-1)
-
-  dat <- full_dat %>%
-    dplyr::left_join(x_dat, by = "id")
-
-  cluster <- full_model$data.full$study
-
-
-  # full formula ------------------------------------------------------------
-
-  full_formula <- paste(full_model$reg_table[, 1], collapse = " + ")
-  full_formula <- stringr::str_replace(full_formula, "X.Intercept.", "1")
-
+  es_dat <- full_model$data.full[, c("effect.size", "var.eff.size", "study")]
 
   # null_model --------------------------------------------------------------
 
-  X_mat <- full_model$X.full %>%
-    select(-1) %>%
-    as.matrix()
-
+  X_mat <- as.matrix(full_model$X.full[, -1])
   Xnull <- constrain_predictors(Xmat = X_mat, Cmat = C_mat)
 
-  dat <- bind_cols(dat, as.data.frame(Xnull))
+  null_dat <- bind_cols(es_dat, as.data.frame(Xnull))
 
-  null_formula <- paste("effect_size ~ 0 + ", paste(colnames(as.data.frame(Xnull)), collapse = " + "))
+  null_formula <- paste("effect.size ~ 0 + ", paste(colnames(as.data.frame(Xnull)), collapse = " + "))
 
   null_model <- robumeta::robu(stats::as.formula(null_formula),
                                studynum = study,
-                               var.eff.size = v,
+                               var.eff.size = var.eff.size,
                                small = FALSE,
                                modelweights = dep,
-                               data = dat)
+                               data = null_dat)
 
   return(null_model)
 
+
+}
+
+
+# get the cluster ---------------------------------------------------------
+
+get_cluster.robu <- function(full_model){
+
+  cluster <- full_model$data.full$study
+
+  return(cluster)
+}
+
+
+get_cluster.rma.mv <- function(full_model){
+
+  cluster <- clubSandwich:::findCluster.rma.mv(full_model)
+
+  return(cluster)
 
 }

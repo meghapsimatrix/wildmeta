@@ -10,12 +10,11 @@ Wald_test_cwb <- function(full_model,
                               R = R)
 
   # for run_cwb_new need to pull out the clusters
+  cluster <- get_cluster(null_model)
 
-  boots <- run_cwb(full_model,
-                   C_mat,
-                   R = R,
-                   auxiliary_dist = auxiliary_dist,
-                   adjust = adjust)
+  boots <- run_cwb(null_model,
+                   cluster = cluster,
+                   R = R)
 
   # then need to calculate the bootstrapped F here
 

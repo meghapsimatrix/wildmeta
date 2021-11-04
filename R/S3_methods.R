@@ -21,3 +21,10 @@ estimate_null <- function(full_model,
 
   UseMethod("estimate_null")
 }
+
+
+get_cluster <- function(full_model){
+
+  UseMethod("get_cluster")
+
+}

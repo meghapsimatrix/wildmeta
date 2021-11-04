@@ -23,22 +23,44 @@ fitted.values(full_model)
 residuals(full_model)
 
 # No adjustment
-run_cwb_new(
+run_cwb(
   full_model,
   cluster = full_model$data.full$study,
   R = 12
 )
 
 # With CR2 adjustment
-run_cwb_new(
+run_cwb(
   full_model,
   cluster = full_model$data.full$study,
   R = 12,
   adjust = "CR2"
 )
 
+
+C_mat <- constrain_equal(1:3, coefs = full_model$b.r)
+
+
+# added the null model
+null_model <- estimate_null(full_model,
+                            C_mat = constraints,
+                            R = R)
+
+null_model
+
+null_model$fitted.values <- fitted.robu(null_model)
+null_model$residuals <- residuals.robu(null_model)
+
+cluster <- get_cluster(null_model)
+
+run_cwb(
+  null_model,
+  cluster = cluster,
+  R = 12
+)
+
 # Verify wild bootstrap process
-bs <- run_cwb_new(full_model, cluster = full_model$data.full$study, R = 20)
+bs <- run_cwb(full_model, cluster = full_model$data.full$study, R = 20)
 
 library(tidyverse)
 bs %>%
@@ -68,14 +90,14 @@ residuals(full_model)
 
 cluster_id <- clubSandwich:::findCluster.rma.mv(full_model)
 
-run_cwb_new(
+run_cwb(
   full_model,
   cluster = cluster_id,
   R = 12
 )
 
 # With CR2 adjustment
-run_cwb_new(
+run_cwb(
   full_model,
   cluster = cluster_id,
   adjust = "CR2",
@@ -83,7 +105,7 @@ run_cwb_new(
 )
 
 # Verify wild bootstrap process
-bs <- run_cwb_new(full_model, cluster = cluster_id, R = 12)
+bs <- run_cwb(full_model, cluster = cluster_id, R = 12)
 
 bs %>%
   # back out the auxiliary random variables

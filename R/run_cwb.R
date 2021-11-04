@@ -1,17 +1,19 @@
-run_cwb_new <- function(model,
-                        cluster,
-                        f = NULL,
-                        ...,
-                        R,
-                        auxiliary_dist = "Rademacher",
-                        adjust = "CR0",
-                        simplify = FALSE) {
+run_cwb <- function(model,
+                    cluster,
+                    f = NULL,
+                    ...,
+                    R,
+                    auxiliary_dist = "Rademacher",
+                    adjust = "CR0",
+                    simplify = FALSE) {
 
 
   # coerce cluster variable to factor
   if (!is.factor(cluster)) cluster <- as.factor(cluster)
 
-  # residuals and predicted values ------------------------------------------
+  # # residuals and predicted values ------------------------------------------
+  # model$fitted.values <- fitted.robu(model)
+  # model$residuals <- residuals.robu(model)
 
   res <- stats::residuals(model)
   pred <- stats::fitted.values(model)
@@ -36,8 +38,8 @@ run_cwb_new <- function(model,
     eta <- wts[cluster]
     y_boot <- pred + res * eta
 
-    y_new <- rep(NA, length = nrow(model$X.f))
-    y_new[model$not.na] <- y_boot
+    #y_new <- rep(NA, length = nrow(model$X.f))  # how is this working with robu?
+    #y_new[model$not.na] <- y_boot
 
   }, simplify = simplify & is.null(f))
 
