@@ -1,12 +1,12 @@
 Wald_test_cwb <- function(full_model,
-                          constraints,
+                          constraint_matrix,
                           R,
                           auxiliary_dist = "Rademacher",
                           adjust = "CR0"){
 
   # added the null model
   null_model <- estimate_null(full_model,
-                              C_mat = constraints,
+                              C_mat = constraint_matrix,
                               R = R)
 
   # for run_cwb_new need to pull out the clusters
