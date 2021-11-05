@@ -19,7 +19,8 @@ Wald_test_cwb <- function(full_model,
                    R = R,
                    adjust = adjust,
                    auxiliary_dist = auxiliary_dist,
-                   f = get_boot_F,  # this goes to sapply
+                   f = get_boot_F.rma.mv,  # this goes to sapply
+                   full_model = full_model,
                    C_mat = constraint_matrix, # this is additional argument for sapply
                    simplify = TRUE)
 
