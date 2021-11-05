@@ -28,3 +28,10 @@ get_cluster <- function(full_model){
   UseMethod("get_cluster")
 
 }
+
+
+get_boot_F <- function(full_model,
+                       C_mat){
+
+  UseMethod("get_boot_F")
+}

@@ -142,3 +142,55 @@ get_cluster.rma.mv <- function(full_model){
   return(cluster)
 
 }
+
+
+# get the F  --------------------------------------------------------------
+
+get_boot_F.robu <- function(full_model,
+                            C_mat){
+
+  # info about model --------------------------------------------------------
+
+  dep <- full_model$modelweights
+  intercept <- sum(str_detect(full_model$reg_table[, 1], "X.Intercept."))
+
+  dat <- full_model$data.full
+
+  # full formula ------------------------------------------------------------
+
+  full_formula <- paste(full_model$reg_table[, 1], collapse = " + ")
+  full_formula <- stringr::str_replace(full_formula, "X.Intercept.", "1")
+
+
+
+  # restimate the full model ------------------------------------------------
+
+  if(intercept == 0){
+
+    boot_formula <- stats::as.formula(paste("new_y ~ 0 + ", full_formula))
+
+  } else {
+
+    boot_formula <- stats::as.formula(paste("new_y ~", full_formula))
+
+  }
+
+  boot_mod <- robumeta::robu(boot_formula,
+                             studynum = study,
+                             var.eff.size = var.eff.size,
+                             small = FALSE,
+                             modelweights = dep,
+                             data = dat)
+
+  cov_mat <- clubSandwich::vcovCR(boot_mod, type = "CR1")
+
+  res <- clubSandwich::Wald_test(boot_mod,
+                                 constraints = C_mat,
+                                 vcov = cov_mat,
+                                 test = "Naive-F")
+
+  return(res)
+
+
+
+}
