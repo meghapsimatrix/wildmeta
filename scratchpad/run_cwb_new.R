@@ -46,6 +46,13 @@ auxiliary_dist <- "Rademacher"
 simplify <- FALSE
 f <- get_boot_F
 
+
+sapply(bootstraps,
+       FUN = get_boot_F,
+       full_model = full_model,
+       C_mat = C_mat,
+       simplify = simplify)
+
 # added the null model
 null_model <- estimate_null(full_model,
                             C_mat = constraint_matrix,
