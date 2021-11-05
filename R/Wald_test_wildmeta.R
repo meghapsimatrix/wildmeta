@@ -13,6 +13,7 @@ Wald_test_cwb <- function(full_model,
   # will there be an issue with missing data in clusters for rma.mv?
   cluster <- get_cluster(null_model)
 
+  # sapply and lapply not working :D
   boots <- run_cwb(null_model,
                    cluster = cluster,
                    R = R,
