@@ -39,17 +39,35 @@ run_cwb(
 
 
 C_mat <- constrain_equal(1:3, coefs = full_model$b.r)
-
+constraint_matrix <- C_mat
+R <- 12
+adjust <- "CR0"
+auxiliary_dist <- "Rademacher"
+simplify <- FALSE
+f <- get_boot_F
 
 # added the null model
 null_model <- estimate_null(full_model,
-                            C_mat = constraints,
+                            C_mat = constraint_matrix,
                             R = R)
 
 null_model
 
 null_model$fitted.values <- fitted.robu(null_model)
 null_model$residuals <- residuals.robu(null_model)
+
+
+model$fitted.values <- fitted.robu(model)
+model$residuals <- residuals.robu(model)
+
+boot_stats <- lapply(bootstraps,
+                     f,
+                     full_model = full_model,
+                     C_mat = constraint_matrix)
+
+
+#
+# lapply(bootstraps, f, C_mat)
 
 cluster <- get_cluster(null_model)
 

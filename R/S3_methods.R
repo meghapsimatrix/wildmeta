@@ -35,3 +35,17 @@ get_boot_F <- function(full_model,
 
   UseMethod("get_boot_F")
 }
+
+
+get_fitted <- function(model){
+
+  UseMethod("get_fitted")
+
+}
+
+get_res <- function(model){
+
+  UseMethod("get_res")
+
+}
+

@@ -108,7 +108,7 @@ estimate_null.robu <- function(full_model,
   X_mat <- as.matrix(full_model$X.full[, -1])
   Xnull <- constrain_predictors(Xmat = X_mat, Cmat = C_mat)
 
-  null_dat <- bind_cols(es_dat, as.data.frame(Xnull))
+  null_dat <- cbind(es_dat, as.data.frame(Xnull))
 
   null_formula <- paste("effect.size ~ 0 + ", paste(colnames(as.data.frame(Xnull)), collapse = " + "))
 
@@ -146,7 +146,8 @@ get_cluster.rma.mv <- function(full_model){
 
 # get the F  --------------------------------------------------------------
 
-get_boot_F.robu <- function(full_model,
+get_boot_F.robu <- function(y_boot,
+                            full_model,
                             C_mat){
 
   # info about model --------------------------------------------------------
@@ -155,6 +156,7 @@ get_boot_F.robu <- function(full_model,
   intercept <- sum(str_detect(full_model$reg_table[, 1], "X.Intercept."))
 
   dat <- full_model$data.full
+  dat$new_y <- y_boot
 
   # full formula ------------------------------------------------------------
 
@@ -193,4 +195,62 @@ get_boot_F.robu <- function(full_model,
 
 
 
+}
+
+
+get_boot_F.rma.mv <- function(y_boot,
+                              full_model,
+                              C_mat){
+
+
+  y_new <- rep(NA, length = nrow(full_model$X.f))
+  y_new[full_model$not.na] <- y_boot
+
+  # need to do this safely :D
+  boot_mod <- update(full_model, yi = y_new)
+
+  cov_mat <- clubSandwich::vcovCR(boot_mod, type = "CR1")
+
+  res <- clubSandwich::Wald_test(boot_mod,
+                                 constraints = C_mat,
+                                 vcov = cov_mat,
+                                 test = "Naive-F") # test-type?
+
+  return(res)
+
+
+
+}
+
+
+
+# get fitted values -------------------------------------------------------
+
+
+get_fitted.robu <- function(model){
+
+  fits <- fitted.robu(null_model)  # where is this from?
+
+  return(fits)
+}
+
+get_fitted.rma.mv <- function(model){
+
+  fits <- stats::fitted.values(model)
+
+  return(fits)
+}
+
+
+get_res.robu <- function(model){
+
+  res <- residuals.robu(full_model)
+  return(res)
+}
+
+get_res.rma.mv <- function(model){
+
+
+  res <- stats::residuals(model)
+  return(res)
 }

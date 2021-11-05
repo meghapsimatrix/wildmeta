@@ -12,11 +12,13 @@ run_cwb <- function(model,
   if (!is.factor(cluster)) cluster <- as.factor(cluster)
 
   # # residuals and predicted values ------------------------------------------
+
+  # need to figure out the robu situation
   # model$fitted.values <- fitted.robu(model)
   # model$residuals <- residuals.robu(model)
 
-  res <- stats::residuals(model)
-  pred <- stats::fitted.values(model)
+  res <- get_res(model)
+  pred <- get_fitted(model)
 
   # Adjust ------------------------------------------------------------------
 
@@ -47,7 +49,7 @@ run_cwb <- function(model,
     return(bootstraps)
   }
 
-  boot_stats <- lapply(bootstraps, f, ..., simplify = simplify)
+  boot_stats <- sapply(bootstraps, f, ..., simplify = simplify) # lapply doesn;t have simplify as argument
 
   return(boot_stats)
 }

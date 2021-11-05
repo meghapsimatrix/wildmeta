@@ -10,13 +10,18 @@ Wald_test_cwb <- function(full_model,
                               R = R)
 
   # for run_cwb_new need to pull out the clusters
+  # will there be an issue with missing data in clusters for rma.mv?
   cluster <- get_cluster(null_model)
 
   boots <- run_cwb(null_model,
                    cluster = cluster,
-                   R = R)
+                   R = R,
+                   adjust = adjust,
+                   auxiliary_dist = auxiliary_dist,
+                   f = get_boot_F,  # this goes to sapply
+                   C_mat = constraint_matrix, # this is additional argument for sapply
+                   simplify = TRUE)
 
-  # then need to calculate the bootstrapped F here
 
 
   org_F <- clubSandwich::Wald_test(full_model,
@@ -26,11 +31,11 @@ Wald_test_cwb <- function(full_model,
 
   org_F <- org_F$Fstat
 
-  p_val <- mean(Fstat > org_F)
+  p_val <- mean(boots > org_F)
   test <- "CWB"
 
 
-  if (adjust == TRUE) {
+  if (adjust != "CR0") {
     test <- "CWB Adjusted"
   }
 
