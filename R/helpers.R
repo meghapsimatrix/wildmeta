@@ -153,7 +153,7 @@ get_boot_F.robu <- function(y_boot,
   # info about model --------------------------------------------------------
 
   dep <- full_model$modelweights
-  intercept <- sum(str_detect(full_model$reg_table[, 1], "X.Intercept."))
+  intercept <- sum(stringr::str_detect(full_model$reg_table[, 1], "X.Intercept."))
 
   dat <- full_model$data.full
   dat$new_y <- y_boot
@@ -207,7 +207,7 @@ get_boot_F.rma.mv <- function(y_boot,
   y_new[full_model$not.na] <- y_boot
 
   # need to do this safely :D
-  boot_mod <- update(full_model, yi = y_new)
+  boot_mod <- update(full_model, formula = y_new ~ .)
 
   cov_mat <- clubSandwich::vcovCR(boot_mod, type = "CR1")
 

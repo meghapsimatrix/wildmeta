@@ -47,7 +47,7 @@ simplify <- FALSE
 f <- get_boot_F
 
 # added the null model
-null_model <- estimate_null(full_model,
+null_model <- estimate_null.robu(full_model,
                             C_mat = constraint_matrix,
                             R = R)
 
@@ -60,8 +60,15 @@ null_model$residuals <- residuals.robu(null_model)
 model$fitted.values <- fitted.robu(model)
 model$residuals <- residuals.robu(model)
 
+bootstraps <- run_cwb(
+  null_model,
+  cluster = full_model$data.full$study,
+  R = 12,
+  adjust = "CR2"
+)
+
 boot_stats <- lapply(bootstraps,
-                     f,
+                     FUN = get_boot_F.robu,
                      full_model = full_model,
                      C_mat = constraint_matrix)
 
@@ -123,9 +130,9 @@ run_cwb(
 )
 
 # Verify wild bootstrap process
-bs <- run_cwb(full_model, cluster = cluster_id, R = 12)
+bootstraps <- run_cwb(full_model, cluster = cluster_id, R = 12)
 
-bs %>%
+bootstraps %>%
   # back out the auxiliary random variables
   map_dfc(~ (.x - fitted.values(full_model)) / residuals(full_model)) %>%
   # check that auxiliaries are constant within cluster
@@ -138,3 +145,12 @@ bs %>%
   select(-cluster) %>%
   unlist() %>%
   sd()
+
+constraint_matrix <- constrain_equal(1:3, coefs = as.numeric(full_model$b))
+
+get_boot_F.rma.mv(y_boot = bootstraps[[1]], full_model = full_model, C_mat = constraint_matrix)
+
+boot_stats <- lapply(bootstraps,
+                     FUN = get_boot_F.rma.mv,
+                     full_model = full_model,
+                     C_mat = constraint_matrix)

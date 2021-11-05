@@ -10,19 +10,29 @@ full_model <- rma.mv(yi = d ~ 0 + study_type + hrs + test,
 
 full_model
 
+tryCatch(rma.mv(yi = d ~ 0 + study_type + hrs + test,
+                V = V,
+                random = ~ study_type| study,
+                data = SATcoaching), error = function(e) NA)
 
-possibly_rma <- possibly(rma.mv, otherwise = NA)
+tryCatch(rma.mv(yi = d ~ what,
+                V = V,
+                random = ~ study_type | study,
+                data = SATcoaching), error = function(e) NA)
 
-possibly_rma(rma.mv(yi = d ~ 0 + study_type + hrs + test,
-                    V = V,
-                    random = ~ study_type| study,
-                    data = SATcoaching))
+
+possibly_rma <- possibly(rma.mv, otherwise = NA, quiet = FALSE)
+
+possibly_rma(yi = d ~ 0 + study_type + hrs + test,
+             V = V,
+             random = ~ study_type | study,
+             data = SATcoaching)
 
 
 possibly_lm <- possibly(lm, otherwise = NA)
 
-possibly_lm(lm(d ~ 0 +  study_type + hrs + test, data = SATcoaching))
-possibly_lm(lm(d ~ 0 + what, data = SATcoaching))
+possibly_lm(d ~ 0 +  study_type + hrs + test, data = SATcoaching)
+possibly_lm(d ~ 0 + what, data = SATcoaching)
 
 
 possibly_robu <- possibly(robu, otherwise = NA)
