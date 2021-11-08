@@ -64,7 +64,7 @@ null_model <- estimate_null(full_model,
 
 cluster_id <- clubSandwich:::findCluster.rma.mv(full_model)
 
-set.seed(11082021)  # does set seed even work with the bootstraps? -
+#set.seed(11092021)  # does set seed even work with the bootstraps? -
                     # do I need to add an argument where i generate the weights?
 boots <- run_cwb(null_model,
                  cluster = cluster_id,
@@ -81,6 +81,15 @@ sapply(boots,
 # is it only returning the last value?
 
 
+get_boot_F.rma.mv(full_model,
+                  y_boot = boots[[1]],
+                  C_mat = C_mat)
+
+get_boot_F.rma.mv(full_model,
+                  y_boot = boots[[12]],
+                  C_mat = C_mat)
+
+
 res <- Wald_test_cwb(full_model = full_model,
                      constraint_matrix = C_mat,
                      R = 12)
@@ -92,7 +101,7 @@ plot_cwb(res)
 # i think it's just returning the last F?
 
 
-y_boot <- boots[[12]]
+y_boot <- boots[[1]]
 
 y_new <- rep(NA, length = nrow(full_model$X.f))
 y_new[full_model$not.na] <- y_boot
@@ -114,7 +123,7 @@ res
 
 
 
-y_boot <- boots[[1]]
+y_boot <- boots[[12]]
 
 y_new <- rep(NA, length = nrow(full_model$X.f))
 y_new[full_model$not.na] <- y_boot
