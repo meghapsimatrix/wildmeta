@@ -51,11 +51,10 @@ f <- get_boot_F
 # added the null model
 null_model <- estimate_null.robu(full_model,
                             C_mat = constraint_matrix,
-                            R = R)
-=======
+
 # Drop rows with missing predictors
 dat <- SATcoaching[complete.cases(SATcoaching),]
->>>>>>> c4b3dc51601af04f1b04e057c2a84640ffb37123
+
 
 full_model <- rma.mv(yi = d ~ 0 + study_type + hrs + test,
                      V = V,

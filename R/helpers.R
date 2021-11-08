@@ -191,6 +191,8 @@ get_boot_F.robu <- function(y_boot,
                                  vcov = cov_mat,
                                  test = "Naive-F")
 
+  res <- res$Fstat
+
   return(res)
 
 
@@ -206,15 +208,26 @@ get_boot_F.rma.mv <- function(y_boot,
   y_new <- rep(NA, length = nrow(full_model$X.f))
   y_new[full_model$not.na] <- y_boot
 
-  # need to do this safely :D
-  boot_mod <- update(full_model, formula = y_new ~ .)
+
+  boot_mod <- tryCatch(update(full_model, formula = y_new ~ .),
+                       error = function(e) NA)
+
+  if(!is.na(boot_mod)){
 
   cov_mat <- clubSandwich::vcovCR(boot_mod, type = "CR1")
 
   res <- clubSandwich::Wald_test(boot_mod,
                                  constraints = C_mat,
                                  vcov = cov_mat,
-                                 test = "Naive-F") # test-type?
+                                 test = "Naive-F")
+
+  res <- res$Fstat
+
+
+  } else{
+
+    res <- NA
+  }
 
   return(res)
 
