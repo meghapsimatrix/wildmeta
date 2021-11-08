@@ -1,3 +1,5 @@
+#' @export
+
 estimate_null <- function(full_model,
                           C_mat) {
 
