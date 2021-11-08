@@ -5,12 +5,8 @@ library(tidyverse)
 
 devtools::load_all()
 
-
-source("R/S3_methods.R")
 source("R/helpers.R")
-source("R/run_cwb.R")  # check this function :D
 source("R/plot_wildmeta.R")
-source("R/Wald_test_wildmeta.R") # check this function too :D
 
 # robumeta ----------------------------------------------------------------
 
@@ -68,7 +64,8 @@ null_model <- estimate_null(full_model,
 
 cluster_id <- clubSandwich:::findCluster.rma.mv(full_model)
 
-
+set.seed(11082021)  # does set seed even work with the bootstraps? -
+                    # do I need to add an argument where i generate the weights?
 boots <- run_cwb(null_model,
                  cluster = cluster_id,
                  R = 12,
