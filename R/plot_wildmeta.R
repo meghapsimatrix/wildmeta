@@ -1,4 +1,38 @@
-plot.wildmeta <- function(boots, ...){
+#' @title Plot distribution of bootstrap test statistics
+#'
+#' @description Creates a density plot showing the distribution of bootstrap test statistics.
+#'
+#' @param results Results from Wald_test_cwb function
+#' @param ... Any other arguments to be passed to ggplot2::geom_density()
+#'
+#'
+#' @return A ggplot2 graph.
+#'
+#' @export
+#'
+#' @examples
+#' library(clubSandwich)
+#' library(robumeta)
+#'
+#' model <- robu(d ~ 0 + study_type + hrs + test,
+#'              studynum = study,
+#'               var.eff.size = V,
+#'               small = FALSE,
+#'               data = SATcoaching)
+#'
+#' res <- Wald_test_cwb(full_model = full_model,
+#'                      constraint_matrix = C_mat,
+#'                      R = 12)
+#'
+#' plot_cwb(res, fill = "darkred", alpha = 0.5)
+#'
+
+
+
+
+plot_cwb.Wald_test_wildmeta <- function(results, ...){
+
+  boots <- attributes(results)$bootstraps
 
   bootstraps <- tibble::tibble(boot_F = boots)
 

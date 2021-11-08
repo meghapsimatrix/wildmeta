@@ -1,20 +1,3 @@
-# run_cwb <- function(full_model,
-#                     C_mat,
-#                     R,
-#                     auxiliary_dist = "Rademacher",
-#                     adjust = FALSE) {
-#
-#   UseMethod("run_cwb")
-#
-# }
-#
-#
-# Wald_test_cwb <- function(full_mod, constraints, ...) {
-#
-#   UseMethod("Wald_test_cwb")
-# }
-
-
 estimate_null <- function(full_model,
                           C_mat) {
 
@@ -46,6 +29,12 @@ get_fitted <- function(model){
 get_res <- function(model){
 
   UseMethod("get_res")
+
+}
+
+plot_cwb <- function(results, ...){
+
+  UseMethod("plot_cwb")
 
 }
 

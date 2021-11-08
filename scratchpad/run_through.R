@@ -48,6 +48,10 @@ res$p_val
 
 str(res)
 
+attributes(res)$bootstraps
+
+plot_cwb(res, fill = "darkred", alpha = 0.5)
+
 
 # metafor -----------------------------------------------------------------
 
@@ -86,6 +90,7 @@ res <- Wald_test_cwb(full_model = full_model,
 
 res
 
+plot_cwb(res)
 
 # i think it's just returning the last F?
 
