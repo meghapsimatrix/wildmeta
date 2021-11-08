@@ -3,7 +3,7 @@ library(robumeta)
 library(metafor)
 library(tidyverse)
 
-<<<<<<< HEAD
+
 devtools::load_all()
 
 #--------------------------------------------------------------

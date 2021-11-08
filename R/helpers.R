@@ -70,8 +70,7 @@ return_wts <- function(auxiliary_dist, cluster_var) {
 # estimate null model -----------------------------------------------------
 
 estimate_null.rma.mv <- function(full_model,
-                                 C_mat,
-                                 R) {
+                                 C_mat) {
 
   # info -------------------------------------------------------------------
 
@@ -94,8 +93,7 @@ estimate_null.rma.mv <- function(full_model,
 
 
 estimate_null.robu <- function(full_model,
-                               C_mat,
-                               R) {
+                               C_mat) {
 
   dep <- full_model$modelweights
 
@@ -239,10 +237,19 @@ get_boot_F.rma.mv <- function(y_boot,
 
 # get fitted values -------------------------------------------------------
 
+fitted.robu <- function(object, ...) {
+  as.numeric(object$data.full$pred)
+}
+
+residuals.robu <- function(object, ...) {
+  as.numeric(object$data.full$e)
+}
+
+
 
 get_fitted.robu <- function(model){
 
-  fits <- fitted.robu(null_model)  # where is this from?
+  fits <- fitted.robu(model)
 
   return(fits)
 }
@@ -257,7 +264,8 @@ get_fitted.rma.mv <- function(model){
 
 get_res.robu <- function(model){
 
-  res <- residuals.robu(full_model)
+  res <- residuals.robu(model)
+
   return(res)
 }
 
