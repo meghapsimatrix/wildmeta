@@ -12,6 +12,44 @@ source("R/run_cwb.R")  # check this function :D
 source("R/plot_wildmeta.R")
 source("R/Wald_test_wildmeta.R") # check this function too :D
 
+# robumeta ----------------------------------------------------------------
+
+full_model <- robu(d ~ 0 + study_type + hrs + test,
+                   studynum = study,
+                   var.eff.size = V,
+                   small = FALSE,
+                   data = SATcoaching)
+
+C_mat <- constrain_equal(1:3, coefs = full_model$b.r)
+
+null_model <- estimate_null(full_model,
+                            C_mat)
+
+cluster_id <- null_model$data.full$study
+
+
+boots <- run_cwb(null_model,
+                 cluster = cluster_id,
+                 R = 12,
+                 simplify = FALSE)
+
+sapply(boots,
+       FUN = get_boot_F,
+       full_model = full_model,
+       C_mat = C_mat)
+
+res <- Wald_test_cwb(full_model = full_model,
+              constraint_matrix = C_mat,
+              R = 12)
+
+# need to do the whole print thing
+
+res$p_val
+
+str(res)
+
+
+# metafor -----------------------------------------------------------------
 
 
 full_model <- rma.mv(yi = d ~ 0 + study_type + hrs + test,
@@ -20,48 +58,79 @@ full_model <- rma.mv(yi = d ~ 0 + study_type + hrs + test,
                      data = SATcoaching)
 
 C_mat <- constrain_equal(1:3, coefs = coef(full_model))
-constraint_matrix <- C_mat
 
-# See R/helpers.R for constrain_predictors
-null_model <- estimate_null(full_model, C_mat)
+null_model <- estimate_null(full_model,
+                            C_mat)
 
-cluster_id <- clubSandwich:::findCluster.rma.mv(null_model)
-
-bootstraps <- run_cwb(
-  null_model,
-  cluster =  cluster_id,
-  R = 12,
-  adjust = "CR2",
-  simplify = FALSE
-)
-
-boot_stats <- lapply(bootstraps,
-                     FUN = get_boot_F.rma.mv,
-                     full_model = full_model,
-                     C_mat = constraint_matrix)
+cluster_id <- clubSandwich:::findCluster.rma.mv(full_model)
 
 
-
-# robumeta ----------------------------------------------------------------
-
-model <- robu(d ~ 0 + study_type + hrs + test,
-              studynum = study,
-              var.eff.size = V,
-              small = FALSE,
-              data = SATcoaching)
+boots <- run_cwb(null_model,
+                 cluster = cluster_id,
+                 R = 12,
+                 simplify = FALSE)
 
 
-bootstraps <- run_cwb(
-  model = full_model,
-  cluster =  full_model$data.full$study,
-  R = 2,
-  adjust = "CR2",
-  simplify = FALSE
-)
+# why is it all the same?
+sapply(boots,
+       FUN = get_boot_F.rma.mv,
+       full_model = full_model,
+       C_mat = C_mat)
 
-bootstraps
+# is it only returning the last value?
 
-boot_stats <- lapply(bootstraps,
-                     FUN = get_boot_F.robu,
-                     full_model = full_model,
-                     C_mat = constraint_matrix)
+
+res <- Wald_test_cwb(full_model = full_model,
+                     constraint_matrix = C_mat,
+                     R = 12)
+
+res
+
+
+# i think it's just returning the last F?
+
+
+y_boot <- boots[[12]]
+
+y_new <- rep(NA, length = nrow(full_model$X.f))
+y_new[full_model$not.na] <- y_boot
+
+
+boot_mod <- tryCatch(update(full_model, formula = y_new ~ .),
+                     error = function(e) NA)
+
+
+cov_mat <- clubSandwich::vcovCR(boot_mod, type = "CR1")
+res <- clubSandwich::Wald_test(boot_mod,
+                               constraints = C_mat,
+                               vcov = cov_mat,
+                               test = "Naive-F")
+
+res <- res$Fstat
+res
+
+
+
+
+y_boot <- boots[[1]]
+
+y_new <- rep(NA, length = nrow(full_model$X.f))
+y_new[full_model$not.na] <- y_boot
+
+
+boot_mod <- tryCatch(update(full_model, formula = y_new ~ .),
+                     error = function(e) NA)
+
+
+cov_mat <- clubSandwich::vcovCR(boot_mod, type = "CR1")
+res <- clubSandwich::Wald_test(boot_mod,
+                               constraints = C_mat,
+                               vcov = cov_mat,
+                               test = "Naive-F")
+
+res <- res$Fstat
+res
+
+
+
+

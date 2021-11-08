@@ -144,8 +144,8 @@ get_cluster.rma.mv <- function(full_model){
 
 # get the F  --------------------------------------------------------------
 
-get_boot_F.robu <- function(y_boot,
-                            full_model,
+get_boot_F.robu <- function(full_model,
+                            y_boot,
                             C_mat){
 
   # info about model --------------------------------------------------------
@@ -155,6 +155,8 @@ get_boot_F.robu <- function(y_boot,
 
   dat <- full_model$data.full
   dat$new_y <- y_boot
+  X <- full_model$Xreg
+  dat <- cbind(dat, X)
 
   # full formula ------------------------------------------------------------
 
@@ -198,10 +200,9 @@ get_boot_F.robu <- function(y_boot,
 }
 
 
-get_boot_F.rma.mv <- function(y_boot,
-                              full_model,
+get_boot_F.rma.mv <- function(full_model,
+                              y_boot,
                               C_mat){
-
 
   y_new <- rep(NA, length = nrow(full_model$X.f))
   y_new[full_model$not.na] <- y_boot
@@ -210,7 +211,7 @@ get_boot_F.rma.mv <- function(y_boot,
   boot_mod <- tryCatch(update(full_model, formula = y_new ~ .),
                        error = function(e) NA)
 
-  if(!is.na(boot_mod)){
+  if(inherits(boot_mod, "rma.mv")){
 
   cov_mat <- clubSandwich::vcovCR(boot_mod, type = "CR1")
 

@@ -6,25 +6,22 @@ Wald_test_cwb <- function(full_model,
 
   # added the null model
   null_model <- estimate_null(full_model,
-                              C_mat = constraint_matrix,
-                              R = R)
+                              C_mat = constraint_matrix)
 
   # for run_cwb_new need to pull out the clusters
   # will there be an issue with missing data in clusters for rma.mv?
   cluster <- get_cluster(null_model)
 
-  # sapply and lapply not working :D
+
   boots <- run_cwb(null_model,
                    cluster = cluster,
                    R = R,
                    adjust = adjust,
                    auxiliary_dist = auxiliary_dist,
-                   f = get_boot_F.rma.mv,  # this goes to sapply
+                   f = get_boot_F,  # this goes to sapply
                    full_model = full_model,
                    C_mat = constraint_matrix, # this is additional argument for sapply
                    simplify = TRUE)
-
-
 
   org_F <- clubSandwich::Wald_test(full_model,
                                    constraints = C_mat,
@@ -33,7 +30,7 @@ Wald_test_cwb <- function(full_model,
 
   org_F <- org_F$Fstat
 
-  p_val <- mean(boots > org_F)
+  p_val <- mean(boots > org_F, na.rm = TRUE)
   test <- "CWB"
 
 
