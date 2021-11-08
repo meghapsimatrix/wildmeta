@@ -1,3 +1,33 @@
+#' @title Calculate p-values with cluster wild bootstrapping for meta-regression models.
+#'
+#' @description Calculates p-values for single coefficient and multiple contrast hypothesis tests using cluster wild bootstrapping.
+#'
+#' @param full_model Model fit using `robu()` or `rma.mv()` that includes all moderators of interest.
+#' @param constraint_matrix A q X p constraint matrix be tested. Can be specified using constrain_equal, constrain_zero, or constrain_pairwise from the clubSandwich package
+#' @param R number of bootstrap replications.
+#' @param auxiliary_distribution Character string indicating the auxiliary distribution to be used for cluster wild bootstrapping, with available options: "Rademacher", "Mammen", "Webb six", "uniform", "standard normal". The default is set to "Rademacher." We recommend the Rademacher distribution for models that have at least 10 clusters. For models with less than 10 clusters, we recommend the use of "Webb six" distribution.
+#' @param adjust 	Character string specifying which small-sample adjustment should be used to multiply the residuals by, with available options "CR0", "CR1", "CR2", "CR3", or "CR4". The default is set to CRO, which will multiply the residuals by identity matrices and therefore, wil not add any adjustments to the boostrapping algorithm.
+#'
+#'
+#' @return A tibble containing the name of the test and the p-value.
+#'
+#' @export
+#'
+#' @examples
+#' library(clubSandwich)
+#' library(robumeta)
+#'
+#' model <- robu(d ~ 0 + study_type + hrs + test,
+#'              studynum = study,
+#'               var.eff.size = V,
+#'               small = FALSE,
+#'               data = SATcoaching)
+#'
+#' Wald_test_cwb(full_model = full_model,
+#'               constraint_matrix = C_mat,
+#'               R = 12)
+#'
+
 Wald_test_cwb <- function(full_model,
                           constraint_matrix,
                           R,
