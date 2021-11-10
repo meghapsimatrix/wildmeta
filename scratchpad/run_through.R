@@ -40,7 +40,10 @@ res <- Wald_test_cwb(full_model = full_model,
 
 # need to do the whole print thing
 
+res
+
 res$p_val
+res$test
 
 str(res)
 

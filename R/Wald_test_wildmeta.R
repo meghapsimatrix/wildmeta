@@ -72,7 +72,7 @@ Wald_test_cwb <- function(full_model,
 
   p_boot <- data.frame(test = test, p_val = p_val)
 
-  class(p_boot) <- c("Wald_test_wilmeta", class(p_boot))
+  class(p_boot) <- c("Wald_test_wildmeta", class(p_boot))
   attr(p_boot, "bootstraps") <- boots
 
 
