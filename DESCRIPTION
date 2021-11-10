@@ -10,11 +10,12 @@ Authors@R:  Authors@R: c(
            family = "Pustejovsky", 
            email = "jepusto@gmail.com", 
            role = c("aut"), 
-           comment = c(ORCID = "0000-0003-0591-9465"))),
+           comment = c(ORCID = "0000-0003-0591-9465")),
     person(given = "Pierce", 
            family = "Cappelli", 
            email = "pierce.cappelli@utexas.edu, 
-           role = c("aut")),
+           role = c("aut"))
+           )
 Maintainer: Megha Joshi <megha.j456@gmail.com>
 Description: What the package does (one paragraph).
 URL: https://meghapsimatrix.github.io/wildmeta/index.html
