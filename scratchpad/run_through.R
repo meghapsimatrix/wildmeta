@@ -62,7 +62,11 @@ C_mat <- constrain_equal(1:3, coefs = coef(full_model))
 null_model <- estimate_null(full_model,
                             C_mat)
 
+null_hand <- update(full_model, yi = d ~ hrs + test)
+all.equal(predict(null_model), predict(null_hand))
+
 cluster_id <- clubSandwich:::findCluster.rma.mv(full_model)
+cluster_id
 
 #set.seed(11092021)  # does set seed even work with the bootstraps? -
                     # do I need to add an argument where i generate the weights?
@@ -71,12 +75,18 @@ boots <- run_cwb(null_model,
                  R = 12,
                  simplify = FALSE)
 
+boots
+
+save(boots, file = "scratchpad/boots.Rdata")
 
 # why is it all the same?
 sapply(boots,
        FUN = get_boot_F,
        full_model = full_model,
        C_mat = C_mat)
+
+
+map_dbl(boots, .f = get_boot_F, full_model = full_model, C_mat = C_mat)
 
 # is it only returning the last value?
 
@@ -142,4 +152,37 @@ res
 
 
 
+# metafor simpler ---------------------------------------------------------
+
+
+
+full_model <- rma.mv(yi = d ~ 0 + study_type,
+                     V = V,
+                     random = ~ 1 | study,
+                     data = SATcoaching)
+
+C_mat <- constrain_equal(1:3, coefs = coef(full_model))
+
+null_model <- estimate_null(full_model,
+                            C_mat)
+
+
+
+cluster_id <- clubSandwich:::findCluster.rma.mv(full_model)
+cluster_id
+
+#set.seed(11092021)  # does set seed even work with the bootstraps? -
+# do I need to add an argument where i generate the weights?
+boots <- run_cwb(null_model,
+                 cluster = cluster_id,
+                 R = 12,
+                 simplify = FALSE)
+
+boots
+
+# why is it all the same?
+sapply(boots,
+       FUN = get_boot_F,
+       full_model = full_model,
+       C_mat = C_mat)
 
