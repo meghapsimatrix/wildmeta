@@ -23,6 +23,8 @@
 #'               small = FALSE,
 #'               data = SATcoaching)
 #'
+#' C_mat <- constrain_equal(1:3, coefs = coef(model))
+#'
 #' Wald_test_cwb(full_model = full_model,
 #'               constraint_matrix = C_mat,
 #'               R = 12)
@@ -70,10 +72,10 @@ Wald_test_cwb <- function(full_model,
 
   p_boot <- data.frame(test = test, p_val = p_val)
 
+  class(p_boot) <- c("Wald_test_wilmeta", class(p_boot))
   attr(p_boot, "bootstraps") <- boots
-  attr(p_boot, "test") <- test
 
-  class(p_boot) <- "Wald_test_wildmeta"
+
 
   return(p_boot)
 

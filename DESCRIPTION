@@ -1,7 +1,7 @@
 Package: wildmeta
 Title: Cluster Wild Bootstrapping for Meta-Analysis
 Version: 0.0.0.9000
-Authors@R:  Authors@R: c(
+Authors@R: c(
     person(given = "Megha", 
            family = "Joshi", 
            email = "megha.j456@gmail.com", 
@@ -14,7 +14,7 @@ Authors@R:  Authors@R: c(
     person(given = "Pierce", 
            family = "Cappelli", 
            email = "pierce.cappelli@utexas.edu", 
-           role = c("aut")))
+           role = "aut"))
 Maintainer: Megha Joshi <megha.j456@gmail.com>
 Description: What the package does (one paragraph).
 URL: https://meghapsimatrix.github.io/wildmeta/index.html
