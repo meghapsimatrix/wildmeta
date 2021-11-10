@@ -13,25 +13,34 @@ load("scratchpad/boots.Rdata")
 
 boots
 
-full_model <- rma.mv(yi = d ~ 0 + study_type + hrs + test,
+full <- rma.mv(yi = d ~ 0 + study_type + hrs + test,
                      V = V,
                      random = ~ study_type| study,
                      data = SATcoaching)
 
-C_mat <- constrain_equal(1:3, coefs = coef(full_model))
+constraints <- constrain_equal(1:3, coefs = coef(full))
 
 sapply(boots,
        FUN = get_boot_F,
-       full_model = full_model,
-       C_mat = C_mat)
+       full_model = full,
+       C_mat = constraints)
 
 
 sapply(boots,
        FUN = get_boot_F.rma.mv,
-       full_model = full_model,
-       C_mat = C_mat)
+       full_model = full,
+       C_mat = constraints)
 
-y_boot <- boots[[3]]
+boots_1 <- boots[[5]]
+
+
+get_boot_F(full,
+           boots_1,
+           constraints)
+
+y_boot <- boots_1
+full_model <- full
+C_mat <- constraints
 
 y_new <- rep(NA, length = nrow(full_model$X.f))
 y_new[full_model$not.na] <- y_boot
