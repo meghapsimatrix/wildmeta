@@ -74,7 +74,7 @@ boots <- run_cwb(null_model,
 
 # why is it all the same?
 sapply(boots,
-       FUN = get_boot_F.rma.mv,
+       FUN = get_boot_F,
        full_model = full_model,
        C_mat = C_mat)
 
@@ -82,12 +82,10 @@ sapply(boots,
 
 
 get_boot_F.rma.mv(full_model,
-                  y_boot = boots[[1]],
+                  y_boot = boots[[2]],
                   C_mat = C_mat)
 
-get_boot_F.rma.mv(full_model,
-                  y_boot = boots[[12]],
-                  C_mat = C_mat)
+
 
 
 res <- Wald_test_cwb(full_model = full_model,
