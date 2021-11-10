@@ -34,7 +34,7 @@ plot_cwb.Wald_test_wildmeta <- function(results, ...){
 
   boots <- attributes(results)$bootstraps
 
-  bootstraps <- tibble::tibble(boot_F = boots)
+  bootstraps <- data.frame(boot_F = boots)
 
   ggplot2::ggplot(bootstraps, ggplot2::aes(x = boot_F)) +
     ggplot2::geom_density(...) +
