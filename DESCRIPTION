@@ -1,11 +1,20 @@
 Package: wildmeta
 Title: Cluster Wild Bootstrapping for Meta-Analysis
 Version: 0.0.0.9000
-Authors@R: c(
-    person(given = "Megha", family = "Joshi", email = "megha.j456@gmail.com", role = c("aut", "cre")),
-    person(given = "James", family = "Pustejovsky", email = "jepusto@gmail.com", role = c("aut"), 
-           comment = c(ORCID = "0000-0003-0591-9465")),
-    person(given = "Pierce", family = "Cappelli", email = "pierce.cappelli@utexas.edu", role = "aut"))
+Authors@R:  Authors@R: c(
+    person(given = "Megha", 
+           family = "Joshi", 
+           email = "megha.j456@gmail.com", 
+           role = c("aut", "cre")),
+    person(given = "James", 
+           family = "Pustejovsky", 
+           email = "jepusto@gmail.com", 
+           role = c("aut"), 
+           comment = c(ORCID = "0000-0003-0591-9465"))),
+    person(given = "Pierce", 
+           family = "Cappelli", 
+           email = "pierce.cappelli@utexas.edu, 
+           role = c("aut")),
 Maintainer: Megha Joshi <megha.j456@gmail.com>
 Description: What the package does (one paragraph).
 URL: https://meghapsimatrix.github.io/wildmeta/index.html
@@ -16,17 +25,12 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: 
-    dplyr,
     clubSandwich,
     robumeta,
     metafor,
-    purrr,
     stringr,
     stats,
-    tibble,
-    vctrs,
-    tidyr,
-    tidyselect
+    vctrs
 Suggests: 
     knitr,
     rmarkdown
