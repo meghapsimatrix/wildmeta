@@ -2,13 +2,11 @@ library(clubSandwich)
 library(metafor)
 library(robumeta)
 
-devtools::load_all()
+#devtools::load_all()
 
-source("R/helpers.R")
+#source("R/helpers.R")
 
-get_boot_stats <- function(y_boot,
-                           model,
-                           C_mat){
+get_boot_stats <- function(y_boot, model, C_mat){
 
 
   y_new <- rep(NA, length = nrow(model$X.f))
@@ -58,13 +56,16 @@ constraints <- constrain_equal(1:3, coefs = coef(full))
 
 load("scratchpad/boots.Rdata")
 
-rm(res)
+#rm(res)
 #y_boot <- boots[[12]]
 
 #why is it spitting out the same number
+#rm(y_new)
 
 get_boot_stats(y_boot = boots[[2]], model = full, C_mat = constraints)
 get_boot_stats(y_boot = boots[[12]], model = full, C_mat = constraints)
 
 
+y_boot <- boots[[2]]
+model <- full
 
