@@ -49,8 +49,7 @@ simplify <- FALSE
 f <- get_boot_F
 
 # added the null model
-null_model <- estimate_null.robu(full_model,
-                            C_mat = constraint_matrix,
+null_model <- estimate_null.robu(full_model, C_mat = constraint_matrix)
 
 # Drop rows with missing predictors
 dat <- SATcoaching[complete.cases(SATcoaching),]
