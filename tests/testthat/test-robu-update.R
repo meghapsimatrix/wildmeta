@@ -1,5 +1,3 @@
-context("robumeta updating functions")
-
 library(robumeta)
 
 data("SATcoaching", package = "clubSandwich")
@@ -40,7 +38,9 @@ test_that("update_robu.default works for CE models",{
                   var.eff.size = V,
                   small = FALSE,
                   data = SATcoaching)
-
+  mod <- meta_CE
+  y <- SATcoaching$d
+  res <- update_robu(mod, y = y)
   check_update(meta_CE, y = SATcoaching$d)
 
   reg_CE <- robu(d ~ 0 + study_type + hrs + test,
