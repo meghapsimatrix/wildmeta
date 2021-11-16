@@ -20,7 +20,7 @@ trace_product <- function(A, B) {
 # robu model-fitting functions
 #------------------------------------------------------
 
-CE_handmade <- function(X, y, v, cluster, rho) {
+CE_handmade <- function(X, y, v, cluster, rho, vcov = NULL) {
 
   k_j <- as.numeric(table(cluster))
   m <- length(k_j)
@@ -83,14 +83,19 @@ CE_handmade <- function(X, y, v, cluster, rho) {
   res$num_minus <- num_minus
   res$den <- den
   res$nobs <- sum(k_j)
+  res$vcov_type <- vcov
 
   class(res) <- c("handmade.robu.CE","handmade.robu")
+
+  if (!is.null(vcov)) {
+    res$vcov <- clubSandwich::vcovCR(res, cluster = cluster, type = vcov)
+  }
 
   return(res)
 
 }
 
-HE_handmade <- function(X, y, v, cluster) {
+HE_handmade <- function(X, y, v, cluster, vcov = NULL) {
 
   w_ij <- 1 / v
 
@@ -154,40 +159,99 @@ HE_handmade <- function(X, y, v, cluster) {
   res$v <- v
   res$w_ij <- w_ij
   res$cluster <- cluster
-  res$QE <- QE
-  res$Q1 <- Q1
   res$constants <- list(A1 = A1, B1 = B1, C1 = C1, A2 = A2, B2 = B2, C2 = C2, p = p)
-  res$more <- list(XJX = XJX, XWJWX = XWJWX, XJWX = XJWX,
-                   kjXJWX = kjXJWX, VXJX = VXJX,
-                   XWWX = XWWX, trW = trW)
   res$nobs <- N
+  res$vcov_type <- vcov
 
   class(res) <- c("handmade.robu.HE","handmade.robu")
+
+  if (!is.null(vcov)) {
+    res$vcov <- clubSandwich::vcovCR(res, cluster = cluster, type = vcov)
+  }
 
   return(res)
 
 }
 
+user_handmade <- function(X, y, v, weights, cluster, vcov = NULL) {
+
+  # fit WLS regression
+  mod_user <- lm.wfit(x = X, y = y, w = weights)
+
+  res <- mod_user[c("coefficients","residuals","fitted.values","weights")]
+
+  res$X <- X
+  res$v <- v
+  res$w_ij <- weights
+  res$cluster <- cluster
+  res$nobs <- nrow(X)
+  res$vcov_type <- vcov
+
+  class(res) <- c("handmade.robu.user","handmade.robu")
+
+  if (!is.null(vcov)) {
+    res$vcov <- clubSandwich::vcovCR(res, cluster = cluster, type = vcov)
+  }
+
+  return(res)
+
+}
+
+
 #-------------------------------------------------------------------------------
 # Methods for handmade.robu objects
 
-model.matrix.handmade.robu <- function(object, ...) object$X
+#' @export
+
+model.matrix.handmade_robu <- function(object, ...) {
+  object$X
+}
+
+#' @importFrom sandwich bread
+#' @export
+#'
 
 bread.handmade.robu <- function(x, ...) {
   x$nobs * chol2inv(chol(crossprod(x$X, x$w_ij * x$X)))
+}
+
+
+#' @importFrom clubSandwich vcovCR
+#' @export
+
+vcovCR.handmade.robu <- function(obj, cluster = obj$cluster,
+                                 type = obj$vcov_type,
+                                 target = NULL,
+                                 inverse_var = NULL,
+                                 form = "sandwich", ...) {
+
+  if (is.null(inverse_var)) {
+    inverse_var <- is.null(target) & (!inherits(obj, "handmade.robu.user"))
+  }
+
+  if (is.null(target) & inherits(obj, "handmade.robu.user")) {
+      V <- obj$v
+      target <- tapply(V, cluster, function(x) diag(x, nrow = length(x)))
+  }
+
+  clubSandwich:::vcov_CR(
+    obj, cluster = cluster, type = type,
+    target = target, inverse_var = inverse_var,
+    form = form
+  )
 }
 
 #-------------------------------------------------------------------------------
 # Updating methods for robu objects
 # Re-fitted model is a handmade.robu object
 
-update_robu <- function(mod, y) {
+update_robu <- function(mod, y, vcov = NULL) {
   UseMethod("update_robu")
 }
 
 #' @export
 
-update_robu.default <- function(mod, y) {
+update_robu.default <- function(mod, y, vcov = NULL) {
 
   modelweights <- switch(mod$mod_label[[1]],
                          "RVE: Correlated Effects Model" = "CORR",
@@ -204,12 +268,15 @@ update_robu.default <- function(mod, y) {
   if (modelweights == "CORR") {
     res <- CE_handmade(X = X, y = y, v = v,
                        cluster = cluster,
-                       rho = mod$mod_info$rho)
+                       rho = mod$mod_info$rho, vcov = vcov)
   } else if (modelweights == "HIER") {
     res <- HE_handmade(X = X, y = y, v = v,
-                       cluster = cluster)
+                       cluster = cluster, vcov = vcov)
   } else if (modelweights == "user") {
-
+    weights <- mod$data.full$userweights[resort]
+    res <- user_handmade(X = X, y = y, v = v,
+                         weights = weights,
+                         cluster = cluster, vcov = vcov)
   }
 
   res
@@ -220,7 +287,7 @@ update_robu.default <- function(mod, y) {
 
 #' @export
 
-update_robu.handmade.robu.CE <- function(mod, y) {
+update_robu.handmade.robu.CE <- function(mod, y, vcov = mod$vcov_type) {
 
   mod_prelim <- lm.wfit(x = mod$X, y = y, w = mod$w_tilde_j)
   res <- residuals(mod_prelim)
@@ -237,11 +304,21 @@ update_robu.handmade.robu.CE <- function(mod, y) {
 
   res <- mod_CE[c("coefficients","residuals","fitted.values","weights")]
   res$tau_sq <- tau_sq
+  res$X <- mod$X
+  res$w_ij <- w_ij
+  res$cluster <- mod$cluster
+  res$k_j <- mod$k_j
+  res$sigma_sq_j <- mod$sigma_sq_j
+  res$w_tilde_j <- mod$w_tilde_j
+  res$num_minus <- mod$num_minus
+  res$den <- mod$den
+  res$nobs <- mod$nobs
+  res$vcov_type <- mod$vcov_type
 
-  if (calc_CR0) {
-    res$vcov <- calc_CR0(X = mod$X, w_ij = w_ij,
-                         resid = res$residuals,
-                         cluster = mod$cluster)
+  class(res) <- c("handmade.robu.CE","handmade.robu")
+
+  if (!is.null(vcov)) {
+    res$vcov <- clubSandwich::vcovCR(res, cluster = mod$cluster, type = vcov)
   }
 
   return(res)
@@ -249,12 +326,54 @@ update_robu.handmade.robu.CE <- function(mod, y) {
 
 #' @export
 
-update_robu.handmade.robu.HE <- function(mod, y) {
+update_robu.handmade.robu.HE <- function(mod, y, vcov = mod$vcov_type) {
 
-}
+  w_ij <- 1 / mod$v
+  mod_prelim <- lm.wfit(x = mod$X, y = y, w = w_ij)
 
-#' @export
+  res <- residuals(mod_prelim)
 
-update_robu.handmade.robu.user <- function(mod, y) {
+  # calculate sums of squares
+  QE <- sum(w_ij * res^2)
+  Q1 <- sum(tapply(res, cluster, sum)^2)
+
+  # other constants used in variance component calculations
+  A1 <- mod$constants$A1
+  B1 <- mod$constants$B1
+  C1 <- mod$constants$C1
+  A2 <- mod$constants$A2
+  B2 <- mod$constants$B2
+  C2 <- mod$constants$C2
+
+  # variance component estimates
+  omega_sq <- (A2 * (Q1 - C1) - A1 * (QE - C2)) / (B1 * A2 - B2 * A1)
+  omega_sq <- max(0, omega_sq)
+  tau_sq <- (QE - C2) / A2 - omega_sq * B2 / A2
+  tau_sq <- max(0, tau_sq)
+
+  # HE weights
+  w_ij <- 1 / (mod$v + omega_sq + tau_sq)
+
+  # fit WLS regression
+  mod_HE <- lm.wfit(x = mod$X, y = y, w = w_ij)
+
+  res <- mod_HE[c("coefficients","residuals","fitted.values","weights")]
+  res$tau_sq <- tau_sq
+  res$omega_sq <- omega_sq
+
+  res$X <- mod$X
+  res$v <- mod$v
+  res$w_ij <- w_ij
+  res$cluster <- mod$cluster
+  res$constants <- mod$constants
+  res$nobs <- mod$nobs
+
+  class(res) <- c("handmade.robu.HE","handmade.robu")
+
+  if (!is.null(vcov)) {
+    res$vcov <- clubSandwich::vcovCR(res, cluster = mod$cluster, type = vcov)
+  }
+
+  return(res)
 
 }
