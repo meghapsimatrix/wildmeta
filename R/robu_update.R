@@ -201,9 +201,10 @@ user_handmade <- function(X, y, v, weights, cluster, vcov = NULL) {
 #-------------------------------------------------------------------------------
 # Methods for handmade.robu objects
 
+#' @importFrom stats model.matrix
 #' @export
 
-model.matrix.handmade_robu <- function(object, ...) {
+model.matrix.handmade.robu <- function(object, ...) {
   object$X
 }
 
