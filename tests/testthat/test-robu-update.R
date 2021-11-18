@@ -8,13 +8,20 @@ SATcoaching <- subset(SATcoaching, !is.na(hrs))
 # make random weights
 SATcoaching$wt <- 1 + rpois(nrow(SATcoaching), lambda = 5)
 
-mod <- robu(d ~ 1, studynum = study,
-                var.eff.size = V,
-                small = FALSE,
-                data = SATcoaching)
+mod <- robu(d ~ 0 + study_type + hrs + test,
+                 studynum = study,
+                 var.eff.size = V,
+                 small = TRUE,
+                 data = SATcoaching)
 y <- SATcoaching$d
+tol <- testthat_tolerance()
+check_dfs <- TRUE
 
-check_update <- function(mod, y) {
+check_update <- function(mod, check_dfs = TRUE, tol = testthat_tolerance()) {
+
+  # compare update results to original model results
+
+  y <- mod$data.full$effect.size[order(order(as.factor(mod$study_orig_id)))]
 
   if (mod$small) {
     vcov_type <- "CR2"
@@ -36,18 +43,49 @@ check_update <- function(mod, y) {
 
   expect_equal(
     mod$VR.r, as.matrix(update_mod$vcov),
+    ignore_attr = TRUE, tolerance = tol
+  )
+
+  if (mod$small) {
+    expect_equal(
+      mod$reg_table$SE, update_tests$SE, tolerance = tol
+    )
+  }
+
+  if (check_dfs) {
+    expect_equal(
+      mod$reg_table$dfs, update_tests$df
+    )
+  }
+
+  upup_mod <- update_robu(update_mod, y = y, vcov = vcov_type)
+  upup_tests <- clubSandwich::conf_int(upup_mod,
+                                         vcov = upup_mod$vcov_type,
+                                         test = test_type)
+
+  expect_equal(
+    as.vector(update_mod$coefficients),
+    as.vector(upup_mod$coefficients)
+  )
+
+  expect_equal(
+    as.matrix(update_mod$vcov), as.matrix(upup_mod$vcov),
     ignore_attr = TRUE
   )
 
   if (mod$small) {
     expect_equal(
-      mod$reg_table$SE, update_tests$SE
+      update_tests$SE, upup_tests$SE
     )
   }
 
-  expect_equal(
-    mod$reg_table$dfs, update_tests$df
-  )
+  if (check_dfs) {
+    expect_equal(
+      update_tests$df, upup_tests$df
+    )
+  }
+
+  # compare update to original with a random outcome
 
   y_rand <- rnorm(length(y))
   update_rand <- update_robu(mod, y_rand, vcov = vcov_type)
@@ -69,18 +107,48 @@ check_update <- function(mod, y) {
 
   expect_equal(
     mod_rand$VR.r, as.matrix(update_rand$vcov),
-    ignore_attr = TRUE
+    ignore_attr = TRUE, tolerance = tol
   )
 
   if (mod_rand$small) {
     expect_equal(
-      mod_rand$reg_table$SE, rand_tests$SE
+      mod_rand$reg_table$SE, rand_tests$SE, tolerance = tol
     )
   }
 
+  if (check_dfs) {
+    expect_equal(
+      mod_rand$reg_table$dfs, rand_tests$df
+    )
+  }
+
+  upup_rand <- update_robu(update_rand, y = y_rand, vcov = vcov_type)
+  upup_rand_tests <- clubSandwich::conf_int(upup_rand,
+                                       vcov = upup_rand$vcov_type,
+                                       test = test_type)
+
   expect_equal(
-    mod_rand$reg_table$dfs, rand_tests$df
+    as.vector(update_mod$coefficients),
+    as.vector(upup_rand$coefficients)
   )
+
+  expect_equal(
+    as.matrix(update_mod$vcov), as.matrix(upup_rand$vcov),
+    ignore_attr = TRUE
+  )
+
+  if (mod$small) {
+    expect_equal(
+      update_tests$SE, upup_rand_tests$SE
+    )
+  }
+
+  if (check_dfs) {
+    expect_equal(
+      update_tests$df, upup_rand_tests$df
+    )
+  }
+
 }
 
 test_that("update_robu.default works for CE models",{
