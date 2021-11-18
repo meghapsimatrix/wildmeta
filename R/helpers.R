@@ -205,8 +205,8 @@ get_boot_F.rma.mv <- function(full_model,
                               y_boot,
                               C_mat){
 
-  y_new <- rep(NA, length = nrow(full_model$X.f))
-  y_new[full_model$not.na] <- y_boot
+  y_new <<- rep(NA, length = nrow(full_model$X.f))
+  y_new[full_model$not.na] <<- y_boot
 
 
   boot_mod <- tryCatch(update(full_model, formula = y_new ~ .),
