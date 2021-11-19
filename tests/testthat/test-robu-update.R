@@ -8,14 +8,13 @@ SATcoaching <- subset(SATcoaching, !is.na(hrs))
 # make random weights
 SATcoaching$wt <- 1 + rpois(nrow(SATcoaching), lambda = 5)
 
-mod <- robu(d ~ 0 + study_type + hrs + test,
-                 studynum = study,
-                 var.eff.size = V,
-                 small = TRUE,
-                 data = SATcoaching)
-y <- SATcoaching$d
-tol <- testthat_tolerance()
+mod <- robu(d ~ 1, studynum = study,
+                  var.eff.size = V,
+                  userweights = wt,
+                  small = TRUE,
+                  data = SATcoaching)
 check_dfs <- TRUE
+tol <- testthat_tolerance()
 
 check_update <- function(mod, check_dfs = TRUE, tol = testthat_tolerance()) {
 
@@ -73,17 +72,13 @@ check_update <- function(mod, check_dfs = TRUE, tol = testthat_tolerance()) {
     ignore_attr = TRUE
   )
 
-  if (mod$small) {
-    expect_equal(
-      update_tests$SE, upup_tests$SE
-    )
-  }
+  expect_equal(
+    update_tests$SE, upup_tests$SE
+  )
 
-  if (check_dfs) {
-    expect_equal(
-      update_tests$df, upup_tests$df
-    )
-  }
+  expect_equal(
+    update_tests$df, upup_tests$df
+  )
 
   # compare update to original with a random outcome
 
@@ -128,26 +123,22 @@ check_update <- function(mod, check_dfs = TRUE, tol = testthat_tolerance()) {
                                        test = test_type)
 
   expect_equal(
-    as.vector(update_mod$coefficients),
+    as.vector(update_rand$coefficients),
     as.vector(upup_rand$coefficients)
   )
 
   expect_equal(
-    as.matrix(update_mod$vcov), as.matrix(upup_rand$vcov),
+    as.matrix(update_rand$vcov), as.matrix(upup_rand$vcov),
     ignore_attr = TRUE
   )
 
-  if (mod$small) {
-    expect_equal(
-      update_tests$SE, upup_rand_tests$SE
-    )
-  }
+  expect_equal(
+    rand_tests$SE, upup_rand_tests$SE
+  )
 
-  if (check_dfs) {
-    expect_equal(
-      update_tests$df, upup_rand_tests$df
-    )
-  }
+  expect_equal(
+    rand_tests$df, upup_rand_tests$df
+  )
 
 }
 
@@ -157,14 +148,14 @@ test_that("update_robu.default works for CE models",{
                   small = FALSE,
                   data = SATcoaching)
 
-  check_update(meta_CE, y = SATcoaching$d)
+  check_update(meta_CE)
 
   meta_CE <- robu(d ~ 1, studynum = study,
                   var.eff.size = V,
                   small = TRUE,
                   data = SATcoaching)
 
-  check_update(meta_CE, y = SATcoaching$d)
+  check_update(meta_CE)
 
 
   reg_CE <- robu(d ~ 0 + study_type + hrs + test,
@@ -173,7 +164,7 @@ test_that("update_robu.default works for CE models",{
                  small = FALSE, modelweights = "CORR",
                  data = SATcoaching)
 
-  check_update(reg_CE, y = SATcoaching$d)
+  check_update(reg_CE)
 
   reg_CE <- robu(d ~ 0 + study_type + hrs + test,
                  studynum = study,
@@ -181,25 +172,25 @@ test_that("update_robu.default works for CE models",{
                  small = TRUE, modelweights = "CORR",
                  data = SATcoaching)
 
-  check_update(reg_CE, y = SATcoaching$d)
+  check_update(reg_CE)
 
 })
 
-test_that("update_robu.default works for HE models",{
+test_that("update_robu.default works for HE models", {
 
   meta_HE <- robu(d ~ 1, studynum = study,
                   var.eff.size = V,
                   small = FALSE, modelweights = "HIER",
                   data = SATcoaching)
 
-  check_update(meta_HE, y = SATcoaching$d)
+  check_update(meta_HE)
 
   meta_HE <- robu(d ~ 1, studynum = study,
                   var.eff.size = V,
                   small = TRUE, modelweights = "HIER",
                   data = SATcoaching)
 
-  check_update(meta_HE, y = SATcoaching$d)
+  check_update(meta_HE)
 
   reg_HE <- robu(d ~ 0 + study_type + hrs + test,
                   studynum = study,
@@ -207,7 +198,7 @@ test_that("update_robu.default works for HE models",{
                   small = FALSE, modelweights = "HIER",
                   data = SATcoaching)
 
-  check_update(reg_HE, y = SATcoaching$d)
+  check_update(reg_HE)
 
   reg_HE <- robu(d ~ 0 + study_type + hrs + test,
                  studynum = study,
@@ -215,7 +206,7 @@ test_that("update_robu.default works for HE models",{
                  small = TRUE, modelweights = "HIER",
                  data = SATcoaching)
 
-  check_update(reg_HE, y = SATcoaching$d)
+  check_update(reg_HE)
 
 })
 
@@ -227,7 +218,7 @@ test_that("update_robu.default works for user-weighted models",{
                     small = FALSE,
                     data = SATcoaching)
 
-  check_update(meta_user, y = SATcoaching$d)
+  check_update(meta_user)
 
   meta_user <- robu(d ~ 1, studynum = study,
                     var.eff.size = V,
@@ -235,7 +226,7 @@ test_that("update_robu.default works for user-weighted models",{
                     small = TRUE,
                     data = SATcoaching)
 
-  check_update(meta_user, y = SATcoaching$d)
+  check_update(meta_user, check_dfs = FALSE)
 
   reg_user <- robu(d ~ 0 + study_type + hrs + test,
                     studynum = study,
@@ -244,7 +235,7 @@ test_that("update_robu.default works for user-weighted models",{
                     small = FALSE,
                     data = SATcoaching)
 
-  check_update(reg_user, y = SATcoaching$d)
+  check_update(reg_user)
 
   reg_user <- robu(d ~ 0 + study_type + hrs + test,
                    studynum = study,
@@ -253,6 +244,6 @@ test_that("update_robu.default works for user-weighted models",{
                    small = TRUE,
                    data = SATcoaching)
 
-  check_update(reg_user, y = SATcoaching$d)
+  check_update(reg_user, check_dfs = FALSE)
 
 })

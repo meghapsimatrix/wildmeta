@@ -32,10 +32,10 @@ CE_handmade <- function(X, y, v, cluster, rho, vcov = NULL) {
 
   mod_prelim <- lm.wfit(x = X, y = y, w = w_tilde_j)
 
-  res <- residuals(mod_prelim)
+  resid <- residuals(mod_prelim)
 
   # calculate weighted residual sum of squares
-  QE <- sum(w_tilde_j * res^2)
+  QE <- sum(w_tilde_j * resid^2)
 
   # Create M tilde ----------------------------------------------------------
   X_j <- mat_split(X, cluster)
@@ -101,11 +101,11 @@ HE_handmade <- function(X, y, v, cluster, vcov = NULL) {
 
   mod_prelim <- lm.wfit(x = X, y = y, w = w_ij)
 
-  res <- residuals(mod_prelim)
+  resid <- residuals(mod_prelim)
 
   # calculate sums of squares
-  QE <- sum(w_ij * res^2)
-  Q1 <- sum(tapply(res, cluster, sum)^2)
+  QE <- sum(w_ij * resid^2)
+  Q1 <- sum(tapply(resid, cluster, sum)^2)
 
   # other constants used in variance component calculations
   X_j <- mat_split(X, cluster)
@@ -231,7 +231,7 @@ vcovCR.handmade.robu <- function(obj, cluster = obj$cluster,
   }
 
   if (is.null(target) & inherits(obj, "handmade.robu.user")) {
-      V <- obj$v
+      V <- as.numeric(tapply(obj$v, obj$cluster, mean)[obj$cluster])
       target <- tapply(V, cluster, function(x) diag(x, nrow = length(x)))
   }
 
@@ -254,10 +254,12 @@ update_robu <- function(mod, y, vcov = NULL) {
 
 update_robu.default <- function(mod, y, vcov = NULL) {
 
-  modelweights <- switch(mod$mod_label[[1]],
+  modelweights <- switch(EXPR = mod$mod_label[[1]],
                          "RVE: Correlated Effects Model" = "CORR",
                          "RVE: Hierarchical Effects Model" = "HIER",
-                         "RVE: User Specified Weights" = "user",)
+                         "RVE: User Specified Weights" = "user",
+                         "missing")
+  if (modelweights == "missing") stop("mod must be a robu object.")
 
   cluster <- as.factor(mod$study_orig_id)
   resort <- order(order(cluster))
@@ -291,32 +293,22 @@ update_robu.default <- function(mod, y, vcov = NULL) {
 update_robu.handmade.robu.CE <- function(mod, y, vcov = mod$vcov_type) {
 
   mod_prelim <- lm.wfit(x = mod$X, y = y, w = mod$w_tilde_j)
-  res <- residuals(mod_prelim)
-  QE <- sum(mod$w_tilde_j * res^2)
+  resid <- residuals(mod_prelim)
+  QE <- sum(mod$w_tilde_j * resid^2)
   tau_sq <- (QE - mod$num_minus) / mod$den
   tau_sq <- ifelse(tau_sq < 0, 0, tau_sq)  # added this
 
   # CE weights
   w_j <- 1 / (mod$k_j * (mod$sigma_sq_j + tau_sq))
-  w_ij <- rep(w_j, mod$k_j)
+  w_ij <- as.numeric(w_j[mod$cluster])
 
   # fit WLS regression
   mod_CE <- lm.wfit(x = mod$X, y = y, w = w_ij)
 
-  res <- mod_CE[c("coefficients","residuals","fitted.values","weights")]
+  res <- mod
+  res[c("coefficients","residuals","fitted.values","weights")] <- mod_CE[c("coefficients","residuals","fitted.values","weights")]
   res$tau_sq <- tau_sq
-  res$X <- mod$X
   res$w_ij <- w_ij
-  res$cluster <- mod$cluster
-  res$k_j <- mod$k_j
-  res$sigma_sq_j <- mod$sigma_sq_j
-  res$w_tilde_j <- mod$w_tilde_j
-  res$num_minus <- mod$num_minus
-  res$den <- mod$den
-  res$nobs <- mod$nobs
-  res$vcov_type <- mod$vcov_type
-
-  class(res) <- c("handmade.robu.CE","handmade.robu")
 
   if (!is.null(vcov)) {
     res$vcov <- clubSandwich::vcovCR(res, cluster = mod$cluster, type = vcov)
@@ -332,11 +324,11 @@ update_robu.handmade.robu.HE <- function(mod, y, vcov = mod$vcov_type) {
   w_ij <- 1 / mod$v
   mod_prelim <- lm.wfit(x = mod$X, y = y, w = w_ij)
 
-  res <- residuals(mod_prelim)
+  resid <- residuals(mod_prelim)
 
   # calculate sums of squares
-  QE <- sum(w_ij * res^2)
-  Q1 <- sum(tapply(res, cluster, sum)^2)
+  QE <- sum(w_ij * resid^2)
+  Q1 <- sum(tapply(resid, mod$cluster, sum)^2)
 
   # other constants used in variance component calculations
   A1 <- mod$constants$A1
@@ -358,18 +350,11 @@ update_robu.handmade.robu.HE <- function(mod, y, vcov = mod$vcov_type) {
   # fit WLS regression
   mod_HE <- lm.wfit(x = mod$X, y = y, w = w_ij)
 
-  res <- mod_HE[c("coefficients","residuals","fitted.values","weights")]
+  res <- mod
+  res[c("coefficients","residuals","fitted.values","weights")] <- mod_HE[c("coefficients","residuals","fitted.values","weights")]
   res$tau_sq <- tau_sq
   res$omega_sq <- omega_sq
-
-  res$X <- mod$X
-  res$v <- mod$v
   res$w_ij <- w_ij
-  res$cluster <- mod$cluster
-  res$constants <- mod$constants
-  res$nobs <- mod$nobs
-
-  class(res) <- c("handmade.robu.HE","handmade.robu")
 
   if (!is.null(vcov)) {
     res$vcov <- clubSandwich::vcovCR(res, cluster = mod$cluster, type = vcov)
@@ -377,4 +362,12 @@ update_robu.handmade.robu.HE <- function(mod, y, vcov = mod$vcov_type) {
 
   return(res)
 
+}
+
+#' @export
+
+update_robu.handmade.robu.user <- function(mod, y, vcov = mod$vcov_type) {
+  user_handmade(X = mod$X, y = y, v = mod$v,
+                       weights = mod$weights,
+                       cluster = mod$cluster, vcov = vcov)
 }
