@@ -63,6 +63,7 @@ res$test
 str(res)
 
 attributes(res)$bootstraps
+attributes(res)$original
 
 plot_cwb(res, fill = "darkred", alpha = 0.5)
 
@@ -84,4 +85,4 @@ res <- Wald_test_cwb(full_model = full_model,
 res
 
 plot_cwb(res)
-
+str(res)

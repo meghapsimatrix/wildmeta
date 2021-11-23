@@ -74,6 +74,7 @@ Wald_test_cwb <- function(full_model,
 
   class(p_boot) <- c("Wald_test_wildmeta", class(p_boot))
   attr(p_boot, "bootstraps") <- boots
+  attr(p_boot, "original") <- org_F
 
 
 

@@ -90,34 +90,30 @@ library(wildmeta)
 library(clubSandwich)
 library(robumeta)
 
-set.seed(12102020)
+full_model <- robu(d ~ 0 + study_type + hrs + test,
+              studynum = study,
+              var.eff.size = V,
+              small = FALSE,
+              data = SATcoaching)
 
+C_mat <- constrain_equal(1:3, coefs = full_model$b.r)
 
-full <- robu(d ~ study_type,
-             studynum = study,
-             var.eff.size = V,
-             small = FALSE,
-             data = SATcoaching)
-
-
-boot_dat <- cwb(full_model = full,
-                indices = 2:3,
-                R = 99)
-
-boot_dat
+Wald_test_cwb(full_model = full_model,
+              constraint_matrix = C_mat,
+              R = 12)
 ```
 
 The output of the function includes the name of the test, the bootstrap test p-value, and the name of the working model. CE refers to correlated effects and HE refers to hierarchical effects. 
 
-The users can also specify whether to adjust the residuals with CR2 matrices when bootstrapping as below. The default value for the `adjust` argument is set to `FALSE`.
+The users can also specify whether to adjust the residuals with CR1 to CR4 matrices when bootstrapping as below. The default value for the `adjust` argument is set to `CR0`.
 
 ```{r}
 set.seed(20201228)
 
-cwb(full_model = full,
-    indices = 2:3,
-    R = 99,
-    adjust = TRUE)
+Wald_test_cwb(full_model = full_model,
+              constraint_matrix = C_mat,
+              R = 12,
+              adjust = "CR2")
 ```
 
 
@@ -130,15 +126,16 @@ library(metafor)
 
 set.seed(03142021)
 
-full_metafor <- rma.mv(yi = d ~ study_type,
-                     V = V, 
-                     random = ~ 1| study,
+full_model <- rma.mv(yi = d ~ 0 + study_type + hrs + test,
+                     V = V,
+                     random = ~ study_type| study,
                      data = SATcoaching)
 
+C_mat <- constrain_equal(1:3, coefs = coef(full_model))
 
-cwb(full_model = full_metafor, 
-    indices = 2:3, 
-    R = 99)
+Wald_test_cwb(full_model = full_model,
+              constraint_matrix = C_mat,
+              R = 12)
 ```
 
 
@@ -149,24 +146,26 @@ The `cwb()` function takes around 30 seconds to 1 minute to run even with high n
 ```{r}
 set.seed(20201229)
 
-full <- robu(d ~ study_type,
-             studynum = study,
-             var.eff.size = V,
-             small = FALSE,
-             data = SATcoaching)
+full_model <- robu(d ~ 0 + study_type + hrs + test,
+              studynum = study,
+              var.eff.size = V,
+              small = FALSE,
+              data = SATcoaching)
 
-system.time(cwb(full_model = full,
-    indices = 2:3,
-    R = 999))
+C_mat <- constrain_equal(1:3, coefs = full_model$b.r)
+
+system.time(res <- Wald_test_cwb(full_model = full_model,
+                          constraint_matrix = C_mat,
+                          R = 999))
 ```
 
 
 ## Bootstrap Distribution Plot
 
-The function `plot_boot_distribution()` in this package lets users plot the distribution of the bootstrap replicates.
+The function `plot_cwb()` lets users plot the distribution of the bootstrap replicates.
 
 ```{r, fig.width = 5, fig.height = 4}
-plot_boot_distribution(boot_dat, fill = "darkred", alpha = 0.5)
+plot_cwb(res, fill = "darkred", alpha = 0.5)
 ```
 
 
