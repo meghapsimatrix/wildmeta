@@ -205,11 +205,21 @@ get_boot_F.rma.mv <- function(full_model,
                               y_boot,
                               C_mat){
 
-  y_new <<- rep(NA, length = nrow(full_model$X.f))
-  y_new[full_model$not.na] <<- y_boot
+  new_dat <- eval(mod$call$data)
+
+  if (is.null(mod$formula.yi)) {
+    yi_name <- as.character(mod$call$yi)
+  } else {
+    yi_name <- as.character(mod$formula.yi[[2]])
+  }
+
+  y_new <- rep(NA, length = nrow(full_model$X.f))
+  y_new[full_model$not.na] <- y_boot
+
+  new_dat[[yi_name]] <- y_new
 
 
-  boot_mod <- tryCatch(update(full_model, formula = y_new ~ .),
+  boot_mod <- tryCatch(update(full_model, data = new_dat),
                        error = function(e) NA)
 
   if(inherits(boot_mod, "rma.mv")){
