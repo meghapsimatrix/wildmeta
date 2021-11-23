@@ -149,41 +149,10 @@ get_boot_F.robu <- function(full_model,
                             y_boot,
                             C_mat){
 
-  # info about model --------------------------------------------------------
+  # use update robu to fit bootstrapped model
 
-  dep <- full_model$modelweights
-  intercept <- sum(stringr::str_detect(full_model$reg_table[, 1], "X.Intercept."))
-
-  dat <- full_model$data.full
-  dat$new_y <- y_boot
-  X <- full_model$Xreg
-  dat <- cbind(dat, X)
-
-  # full formula ------------------------------------------------------------
-
-  full_formula <- paste(full_model$reg_table[, 1], collapse = " + ")
-  full_formula <- stringr::str_replace(full_formula, "X.Intercept.", "1")
-
-
-
-  # restimate the full model ------------------------------------------------
-
-  if(intercept == 0){
-
-    boot_formula <- stats::as.formula(paste("new_y ~ 0 + ", full_formula))
-
-  } else {
-
-    boot_formula <- stats::as.formula(paste("new_y ~", full_formula))
-
-  }
-
-  boot_mod <- robumeta::robu(boot_formula,
-                             studynum = study,
-                             var.eff.size = var.eff.size,
-                             small = FALSE,
-                             modelweights = dep,
-                             data = dat)
+  boot_mod <- update_robu(full_model,
+                          y = y_boot)
 
   cov_mat <- clubSandwich::vcovCR(boot_mod, type = "CR1")
 

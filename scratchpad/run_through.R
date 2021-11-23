@@ -6,6 +6,7 @@ library(tidyverse)
 devtools::load_all()
 
 source("R/helpers.R")
+source("R/robu_update.R")
 source("R/plot_wildmeta.R") #why won't this get loaded?
 
 # robumeta ----------------------------------------------------------------
@@ -33,6 +34,20 @@ sapply(boots,
        FUN = get_boot_F,
        full_model = full_model,
        C_mat = C_mat)
+
+
+boot_mod <- update_robu(full_model,
+            y = boots[[1]])
+
+cov_mat <- clubSandwich::vcovCR(boot_mod, type = "CR1")
+
+res <- clubSandwich::Wald_test(boot_mod,
+                               constraints = C_mat,
+                               vcov = cov_mat,
+                               test = "Naive-F")
+
+res <- res$Fstat
+
 
 res <- Wald_test_cwb(full_model = full_model,
               constraint_matrix = C_mat,
