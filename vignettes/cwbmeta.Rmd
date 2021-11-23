@@ -100,10 +100,10 @@ C_mat <- constrain_equal(1:3, coefs = full_model$b.r)
 
 Wald_test_cwb(full_model = full_model,
               constraint_matrix = C_mat,
-              R = 12)
+              R = 99)
 ```
 
-The output of the function includes the name of the test, the bootstrap test p-value, and the name of the working model. CE refers to correlated effects and HE refers to hierarchical effects. 
+The output of the function includes the name of the test (CWB or CWB Adjusted), the bootstrap test p-value. 
 
 The users can also specify whether to adjust the residuals with CR1 to CR4 matrices when bootstrapping as below. The default value for the `adjust` argument is set to `CR0`.
 
