@@ -30,7 +30,8 @@ Imports:
     metafor,
     stringr,
     stats,
-    vctrs
+    vctrs,
+    sandwich
 Suggests: 
     testthat (>= 3.0.0),
     knitr,

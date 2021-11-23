@@ -90,6 +90,10 @@ library(wildmeta)
 library(clubSandwich)
 library(robumeta)
 
+source("../R/helpers.R")
+source("../R/robu_update.R")
+source("../R/plot_wildmeta.R")
+
 full_model <- robu(d ~ 0 + study_type + hrs + test,
               studynum = study,
               var.eff.size = V,
@@ -165,7 +169,7 @@ system.time(res <- Wald_test_cwb(full_model = full_model,
 The function `plot_cwb()` lets users plot the distribution of the bootstrap replicates.
 
 ```{r, fig.width = 5, fig.height = 4}
-plot_cwb(res, fill = "darkred", alpha = 0.5)
+#plot_cwb(res, fill = "darkred", alpha = 0.5)
 ```
 
 
