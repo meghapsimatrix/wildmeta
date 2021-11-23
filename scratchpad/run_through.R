@@ -67,6 +67,11 @@ attributes(res)$original
 
 plot_cwb(res, fill = "darkred", alpha = 0.5)
 
+Wald_test_cwb(full_model = full_model,
+              constraint_matrix = C_mat,
+              R = 12,
+              adjust = "CR2")
+
 
 # metafor -----------------------------------------------------------------
 
