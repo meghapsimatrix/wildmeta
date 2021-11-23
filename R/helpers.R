@@ -205,12 +205,12 @@ get_boot_F.rma.mv <- function(full_model,
                               y_boot,
                               C_mat){
 
-  new_dat <- eval(mod$call$data)
+  new_dat <- eval(full_model$call$data)
 
-  if (is.null(mod$formula.yi)) {
-    yi_name <- as.character(mod$call$yi)
+  if (is.null(full_model$formula.yi)) {
+    yi_name <- as.character(full_model$call$yi)
   } else {
-    yi_name <- as.character(mod$formula.yi[[2]])
+    yi_name <- as.character(full_model$formula.yi[[2]])
   }
 
   y_new <- rep(NA, length = nrow(full_model$X.f))
