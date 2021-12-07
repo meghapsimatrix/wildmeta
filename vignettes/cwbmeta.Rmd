@@ -23,22 +23,20 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Dependence in Meta-Analysis
+# Dependence in Meta-Analysis
 
-Typical methods to conduct meta-analysis---pooling effect sizes or analyzing moderating effects with meta-regression---work under the assumption that the effect size estimates are independent. However, primary studies often report multiple estimates of effect sizes. Dependent effect sizes can occur through correlated effects structure or hierarchical effects structure or a combination of the two [@hedges_robust_2010; @pustejovsky2020meta]. Correlated effects data structure typically occurs due to multiple  correlated measures of an outcome, repeated measures of the outcome data, or comparison of multiple comparison groups to the same treatment group [@hedges_robust_2010]. Hierarchical effects structure typically occurs when primary meta-analysis includes multiple studies conducted by the same lab, researcher, or in the same region [@hedges_robust_2010].
+Typical methods to conduct meta-analysis or meta-regression work under the assumption that the effect size estimates are independent. However, primary studies often report multiple, statistically dependent estimates of effect sizes. Dependent effect sizes can occur through correlated effects structure, a hierarchical effects structure, or a combination of the two [@hedges_robust_2010; @pustejovsky2020meta]. A correlated effects data structure typically occurs due to multiple  correlated measures of an outcome, repeated measures of the outcome data, or comparison of multiple treatment groups to the same control group [@hedges_robust_2010]. A hierarchical effects structure typically occurs when the meta-analysis includes multiple primary studies conducted by the same researcher, by the same lab, or in the same region [@hedges_robust_2010].
 
-Researchers may be inclined to ignore dependence and use methods that assume that each effect size estimate is independent. However, doing so can result in inaccurate standard errors and therefore, hypothesis tests with incorrect Type I error rates, and confidence intervals with incorrect coverage levels [@becker2000multivariate]. Ad-hoc methods include averaging effect sizes by study or selecting an effect size randomly per study. These methods result in loss of information and are not suitable for studying within-study variation in effect sizes [@hedges_robust_2010]. A method called shifting the unit-of-analysis involves running meta-analytic models for different subsets of the data [@cooper1998synthesizing]. However, this strategy is not useful if a researcher wants to summarize effects across the subsets or study differential effects [@becker2000multivariate].
-
-Ignoring dependent effect sizes when conducting meta-analysis can lead to inaccurate estimates of standard errors and thus, inaccurate inferences from hypothesis tests [@becker2000multivariate]. The increasingly popular method to handle such dependence, robust variance estimation (RVE), results in inflated Type 1 error rate when the number of studies is small [@hedges_robust_2010; @tipton_small_2015]. @tipton_small_2015 and @tipton_small-sample_2015 have recommended a small sample correction for RVE, called the HTZ test (CR2 Type correction with Satterthwaite degrees of freedom), which has been shown to control Type 1 error rate.
+Researchers may be inclined to ignore dependence and use methods that assume that each effect size estimate is independent. However, doing so can result in inaccurate standard errors and, consequently, hypothesis tests with incorrect Type I error rates and confidence intervals with incorrect coverage levels [@becker2000multivariate]. Ad-hoc methods for handling dependence include averaging effect sizes by study or selecting a single effect size per study. These methods result in loss of information and are not suitable for studying within-study variation in effect sizes [@hedges_robust_2010]. A method called shifting the unit-of-analysis involves running meta-analytic models for different subsets of the data [@cooper1998synthesizing]. However, this strategy is not useful if a researcher wants to summarize effects across the subsets or study differential effects [@becker2000multivariate].
 
 The ideal solution for handling dependence would be to use a multivariate model [@becker2000multivariate; @hedges_robust_2010]. This approach explicitly models dependence among the effect sizes [@becker2000multivariate; @hedges_robust_2010]. However, multivariate meta-analysis requires knowledge of correlations or covariances between pairs of effect size estimates within each study, which are often difficult to obtain from primary studies. 
 
-To handle dependence without knowing the covariance structure between effect size estimates, @hedges_robust_2010 proposed the use of robust variance estimation (RVE). RVE involves estimating the variances for the meta-regression model’s coefficients using sandwich estimators that are valid even when the covariance structure is unknown or mis-specified [@hedges_robust_2010]. However, the performance characteristics of RVE are asymptotic in that a large number of clusters or studies is required to provide accurate standard error estimates [@hedges_robust_2010]. If the number of studies in a meta-analysis is small, RVE, as originally proposed by @hedges_robust_2010, can result in downwardly biased standard errors and inflation of Type I error rates [@hedges_robust_2010, @tipton_small_2015].
+To handle dependence without knowing the covariance structure between effect size estimates, @hedges_robust_2010 proposed the use of robust variance estimation (RVE). RVE involves estimating the variances for the meta-regression model’s coefficients using sandwich estimators that are valid even when the covariance structure is unknown or mis-specified [@hedges_robust_2010]. However, the performance characteristics of RVE are asymptotic in that a large number of clusters or studies is required to provide accurate standard error estimates [@hedges_robust_2010]. If the number of studies in a meta-analysis is small, RVE, as originally proposed by @hedges_robust_2010, can result in downwardly biased standard errors and inflation of Type I error rates [@hedges_robust_2010;  @tipton_small_2015].
 
-@tipton_small_2015 and @tipton_small-sample_2015 examined several small sample correction methods. @tipton_small_2015 recommended CR2 type correction for RVE as well as the use of Satterthwaite degrees of freedom for single coefficient tests. @tipton_small-sample_2015 examined corrections for [multiple-contrast hypothesis tests](https://cran.r-project.org/web/packages/clubSandwich/vignettes/Wald-tests-in-clubSandwich.html). @tipton_small-sample_2015 found that the HTZ test, which is an extension of the CR2 correction method with the Satterthwaite degrees of freedom, controlled Type 1 error rate adequately even when the number of studies was small. However, @joshi2021 showed, through simulations, that the HTZ test can be conservative. We examined another method, cluster wild bootstrapping (CWB), that has been studied in the econometrics literature but not in the meta-analytic context. The results of the simulations from @joshi2021 showed that CWB adequately controlled for Type 1 error rate and had more power than the HTZ test especially for multiple-contrast hypothesis tests.
+@tipton_small_2015 and @tipton_small-sample_2015 examined several small sample correction methods to improve the performance of RVE. @tipton_small_2015 recommended CR2 type correction for RVE as well as the use of Satterthwaite degrees of freedom for single coefficient tests. @tipton_small-sample_2015 examined corrections for [multiple-contrast hypothesis tests](https://cran.r-project.org/web/packages/clubSandwich/vignettes/Wald-tests-in-clubSandwich.html). @tipton_small-sample_2015 found that the HTZ test, which is an extension of the CR2 correction method with the Satterthwaite degrees of freedom, controlled Type 1 error rate adequately even when the number of studies was small. However, @joshi2021 showed, through simulations, that the HTZ test can be conservative. We examined another method, cluster wild bootstrapping (CWB), that has been studied in the econometrics literature but not in the meta-analytic context. The results of the simulations from @joshi2021 showed that CWB adequately controlled for Type 1 error rate and had more power than the HTZ test especially for multiple-contrast hypothesis tests.
 
 
-## Bootstrapping
+# Bootstrapping
 
 General bootstrapping can be used to estimate measures of uncertainty, like standard errors, p-values and confidence intervals, even when other methods fail [@boos2003introduction]. Bootstrapping involves re-sampling from the original data many times to create an empirical distribution which is used in place of the distribution of an estimate or test statistic [@boos2003introduction]. 
 
@@ -49,7 +47,7 @@ Another type of bootstrapping involves re-sampling residuals [@cameron_bootstrap
 An ideal way to bootstrap when the number of clusters is small is to use cluster wild bootstrapping, which involves sampling weights and multiplying residuals with the random weights [@cameron_bootstrap-based_nodate; @mackinnon2009bootstrap]. In contrast to the process of pair bootstrapping, the process of CWB does not involve re-sampling the distribution of predictor variables. Thus, the problem of lack of variance in covariates due to re-sampling does not occur with CWB [@cameron_bootstrap-based_nodate; @mackinnon2009bootstrap]. Further, in contrast to residual bootstrapping, CWB does not require clusters to have the same size and does not require the errors to be independently and identically distributed [@cameron_bootstrap-based_nodate; @mackinnon2009bootstrap].
 
 
-### Cluster Wild Bootstrapping 
+## Cluster Wild Bootstrapping 
 
 This section provides an overview of the cluster wild bootstrapping algorithm. 
 
@@ -74,11 +72,11 @@ $$p = \frac{1}{R} \sum_{r = 1}^R I\left(F^{(r)} > F\right)$$
 The results of the simulation studies conducted in @joshi2021 did not show any difference in Type 1 error rates or power when multiplying the results by CR2 adjustments matrices. However, the authors did not study major mis-specifications of the working model in the simulation studies.   
 
 
-## Example from `wildmeta`
+# Example from `wildmeta`
 
 This section presents examples of how to implement cluster wild bootstrapping using functions from our `wildmeta` package. 
 
-### `robumeta` models
+## `robumeta` models
 
 The following example uses the `SATCoaching` dataset from the `clubSandwich` package [@pusto_2020], originally from @dersimonian1983evaluating. The standardized mean differences represent the effects of SAT coaching on SAT verbal (SATV) and/or SAT math (SATM) scores. The data contains `study_type` variable indicating whether groups compared in primary studies were matched, randomized, or non-equivalent. 
 
@@ -122,7 +120,7 @@ Wald_test_cwb(full_model = full_model,
 ```
 
 
-### `metafor` models
+## `metafor` models
 
 In the examples above, we used the `robu()` function from `robumeta` to fit the full model. In this section, we fit the model using the `rma.mv()` function from the `metafor` package. 
 
@@ -144,7 +142,7 @@ Wald_test_cwb(full_model = full_model,
 ```
 
 
-### Timing 
+## Timing 
 
 The `cwb()` function takes around 30 seconds to 1 minute to run even with high number of bootstrap replications. Below is an example with 999 bootstrap replications. 
 
@@ -165,7 +163,7 @@ system.time(res <- Wald_test_cwb(full_model = full_model,
 ```
 
 
-## Bootstrap Distribution Plot
+# Bootstrap Distribution Plot
 
 The function `plot_cwb()` lets users plot the distribution of the bootstrap replicates.
 
