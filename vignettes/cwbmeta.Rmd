@@ -124,7 +124,7 @@ Wald_test_cwb(full_model = full_model,
 
 In the examples above, we used the `robu()` function from `robumeta` to fit the full model. In this section, we fit the model using the `rma.mv()` function from the `metafor` package. 
 
-```{r}
+```{r, warning = F}
 library(metafor)
 
 set.seed(03142021)
@@ -144,7 +144,7 @@ Wald_test_cwb(full_model = full_model,
 
 ## Timing 
 
-The `cwb()` function takes around 30 seconds to 1 minute to run even with high number of bootstrap replications. Below is an example with 999 bootstrap replications. 
+The `cwb()` function runs within a minute even with high number of bootstrap replications. Below is an example with 999 bootstrap replications. 
 
 ```{r}
 set.seed(20201229)
