@@ -160,7 +160,7 @@ system.time(res <- Wald_test_cwb(full_model = full_model,
 
 # Bootstrap Distribution Plot
 
-The function `plot_cwb()` lets users plot the distribution of the bootstrap replicates. The dashed line represents the F test statistic from the original full model. The bootstrapped p value is the proportion of bootstrapped F test statistics that are greater than the original F statistic.
+The function `plot_cwb()` lets users plot the distribution of the bootstrap replicates. The dashed line represents the $F$ test statistic from the original full model. The bootstrapped p-value is the proportion of bootstrapped F test statistics that are greater than the original $F$ statistic.
 
 ```{r, fig.width = 5, fig.height = 4}
 plot_cwb(res, fill = "darkred", alpha = 0.5)
