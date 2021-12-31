@@ -71,7 +71,7 @@ The results of the simulation studies conducted in @joshi_pustejovsky_beretvas_2
 
 # Example from `wildmeta`
 
-This section presents examples of how to implement cluster wild bootstrapping using functions from our `wildmeta` package.
+This section presents examples of how to implement cluster wild bootstrapping using functions from our `wildmeta` package. The functions in our package work with models fit using `robu()` from the `robumeta` package (@robu_2020) and `rma.mv()` from the `metafor` package (@viechtbauer2010conducting) .
 
 ## `robumeta` models
 
@@ -79,7 +79,7 @@ The following example uses the `SATCoaching` dataset from the `clubSandwich` pac
 
 The code below runs cluster wild bootstrapping to test the multiple-contrast hypothesis that the effect of coaching does not differ based on study type. The `study_type` variable indicates whether groups compared in primary studies were matched, randomized, or non-equivalent.The meta-regression model also controls for hours of coaching provided (`hrs`) and whether the students took math or verbal test (`test`). We also removed the intercept in the meta-regression model.
 
-The `Wald_test_cwb()` function takes in a full model fit using the `robu()` function from the `robumeta` package as an argument. Further, users need to specify the constraint to be tested. Below, we create a constraint matrix using [`constrain_equal()`](https://cran.r-project.org/web/packages/clubSandwich/vignettes/Wald-tests-in-clubSandwich.html) function from `clubSandwich`; indices 1 to 3 correspond to the three levels of the `study_type` variable. Users can specify the number of bootstrap replications R. The default value is set to 999. In the example below, I set the value to 99 to speed up computation time.
+The `Wald_test_cwb()` function takes in a full model fit using the `robu()` function from the `robumeta` package as an argument. Further, users need to specify the constraint to be tested. Below, we create a constraint matrix using [`constrain_equal()`](https://cran.r-project.org/web/packages/clubSandwich/vignettes/Wald-tests-in-clubSandwich.html) function from `clubSandwich`; indices 1 to 3 correspond to the three levels of the `study_type` variable. Users can specify the number of bootstrap replications R. The default value is set to 999. In the examples below, we set the value to 99 to speed up computation time.
 
 ```{r setup, warning=FALSE, message=FALSE}
 library(wildmeta)
@@ -119,7 +119,7 @@ Wald_test_cwb(full_model = full_model,
 
 ## `metafor` models
 
-In the examples above, we used the `robu()` function from `robumeta` to fit the full model. In this section, we fit the model using the `rma.mv()` function from the `metafor` package.
+In the examples above, we used the `robu()` function from `robumeta` to fit the full model. In this section, we fit the full model using the `rma.mv()` function from the `metafor` package.
 
 ```{r, warning = F}
 library(metafor)
