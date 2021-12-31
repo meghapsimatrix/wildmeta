@@ -71,7 +71,7 @@ The results of the simulation studies conducted in @joshi_pustejovsky_beretvas_2
 
 # Example from `wildmeta`
 
-This section presents examples of how to implement cluster wild bootstrapping using functions from our `wildmeta` package. The functions in our package work with models fit using `robu()` from the `robumeta` package (@robu_2020) and `rma.mv()` from the `metafor` package (@viechtbauer2010conducting) .
+This section presents examples of how to implement cluster wild bootstrapping using functions from our `wildmeta` package. The functions in our package work with models fit using `robu()` from the `robumeta` package [@robu_2020] and `rma.mv()` from the `metafor` package [@viechtbauer2010conducting] .
 
 ## `robumeta` models
 
