@@ -75,11 +75,11 @@ This section presents examples of how to implement cluster wild bootstrapping us
 
 ## `robumeta` models
 
-The following example uses the `SATCoaching` dataset from the `clubSandwich` package [@pusto_2020], originally from @dersimonian1983evaluating. The standardized mean differences represent the effects of SAT coaching on SAT verbal (SATV) and/or SAT math (SATM) scores. The data contains `study_type` variable indicating whether groups compared in primary studies were matched, randomized, or non-equivalent.
+The following example uses the `SATCoaching` dataset from the `clubSandwich` package [@pusto_2020], originally from @dersimonian1983evaluating. The standardized mean differences represent the effects of SAT coaching on SAT verbal (SATV) and/or SAT math (SATM) scores.
 
-The code below runs cluster wild bootstrapping to test the multiple-contrast hypothesis that the effect of coaching does not differ based on study type. The meta-regression model also controls for hours of coaching provided (`hrs`) and whether the students took math or verbal test (`test`). We also removed the intercept in the meta-regression model.
+The code below runs cluster wild bootstrapping to test the multiple-contrast hypothesis that the effect of coaching does not differ based on study type. The `study_type` variable indicates whether groups compared in primary studies were matched, randomized, or non-equivalent.The meta-regression model also controls for hours of coaching provided (`hrs`) and whether the students took math or verbal test (`test`). We also removed the intercept in the meta-regression model.
 
-The `Wald_test_cwb()` function takes in a full model fit using the `robu()` function from the `robumeta` package as an argument. Further, users need to specify the constraint to be tested. Below, we create a constraint matrix using [`constrain_equal()`](https://cran.r-project.org/web/packages/clubSandwich/vignettes/Wald-tests-in-clubSandwich.html) function from `clubSandwich`; indices 1 to 3 correspond to the the first, second, and third levels of the `study_type` variable. Users can specify the number of bootstrap replications R. The default value is set to 999. In the example below, I set the value to 99 to speed up computation time.
+The `Wald_test_cwb()` function takes in a full model fit using the `robu()` function from the `robumeta` package as an argument. Further, users need to specify the constraint to be tested. Below, we create a constraint matrix using [`constrain_equal()`](https://cran.r-project.org/web/packages/clubSandwich/vignettes/Wald-tests-in-clubSandwich.html) function from `clubSandwich`; indices 1 to 3 correspond to the three levels of the `study_type` variable. Users can specify the number of bootstrap replications R. The default value is set to 999. In the example below, I set the value to 99 to speed up computation time.
 
 ```{r setup, warning=FALSE, message=FALSE}
 library(wildmeta)
@@ -104,7 +104,7 @@ Wald_test_cwb(full_model = full_model,
               R = 99)
 ```
 
-The output of the function includes the name of the test (CWB or CWB Adjusted), the bootstrap test p-value.
+The output of the function includes the name of the test (CWB or CWB Adjusted) and the bootstrap test p-value.
 
 The users can also specify whether to adjust the residuals with `CR1` to `CR4`matrices when bootstrapping as below. The default value for the `adjust` argument is set to `CR0`. Below is an example where we set the adjust the residuals using `CR2` matrices.
 
@@ -160,7 +160,7 @@ system.time(res <- Wald_test_cwb(full_model = full_model,
 
 # Bootstrap Distribution Plot
 
-The function `plot_cwb()` lets users plot the distribution of the bootstrap replicates.
+The function `plot_cwb()` lets users plot the distribution of the bootstrap replicates. The dashed line represents the F test statistic from the original full model. The bootstrapped p value is the proportion of bootstrapped F test statistics that are greater than the original F statistic.
 
 ```{r, fig.width = 5, fig.height = 4}
 plot_cwb(res, fill = "darkred", alpha = 0.5)
