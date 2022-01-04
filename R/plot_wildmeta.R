@@ -3,10 +3,10 @@
 #' @description Creates a density plot showing the distribution of bootstrap test statistics.
 #'
 #' @param results Results from Wald_test_cwb function
-#' @param ... Any other arguments to be passed to ggplot2::geom_density()
+#' @param ... Any other arguments to be passed to \code{ggplot2::geom_density())}
 #'
 #'
-#' @return A ggplot2 graph.
+#' @return A ggplot2 density plot.
 #'
 #' @export
 #'
