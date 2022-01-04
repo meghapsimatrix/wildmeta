@@ -13,13 +13,13 @@ Wald_test_cwb(
 )
 }
 \arguments{
-\item{full_model}{Model fit using \code{robu()} or \code{rma.mv()} that includes all moderators of interest.}
+\item{full_model}{Model fit using \code{robumeta::robu()} and \code{metafor::rma.mv()} that includes the full set of moderators in the meta-regression model.}
 
-\item{constraint_matrix}{A q X p constraint matrix be tested. Can be specified using constrain_equal, constrain_zero, or constrain_pairwise from the clubSandwich package}
+\item{constraint_matrix}{A q X p constraint matrix be tested. Can be specified using \code{clubSandwich::constrain_equal()}, \code{clubSandwich::constrain_zero()}, or \code{clubSandwich::constrain_pairwise()}.}
 
-\item{R}{number of bootstrap replications.}
+\item{R}{Number of bootstrap replications.}
 
-\item{adjust}{Character string specifying which small-sample adjustment should be used to multiply the residuals by, with available options "CR0", "CR1", "CR2", "CR3", or "CR4". The default is set to CRO, which will multiply the residuals by identity matrices and therefore, wil not add any adjustments to the boostrapping algorithm.}
+\item{adjust}{Character string specifying which small-sample adjustment should be used to multiply the residuals by, with available options "CR0", "CR1", "CR2", "CR3", or "CR4". The default is set to CRO, which will multiply the residuals by identity matrices and therefore, will not add any adjustments to the bootstrapping algorithm.}
 
 \item{auxiliary_distribution}{Character string indicating the auxiliary distribution to be used for cluster wild bootstrapping, with available options: "Rademacher", "Mammen", "Webb six", "uniform", "standard normal". The default is set to "Rademacher." We recommend the Rademacher distribution for models that have at least 10 clusters. For models with less than 10 clusters, we recommend the use of "Webb six" distribution.}
 }
@@ -27,7 +27,7 @@ Wald_test_cwb(
 A tibble containing the name of the test and the p-value.
 }
 \description{
-Calculates p-values for single coefficient and multiple contrast hypothesis tests using cluster wild bootstrapping.
+Calculate p-values for single coefficient and multiple contrast hypothesis tests using cluster wild bootstrapping.
 }
 \examples{
 library(clubSandwich)

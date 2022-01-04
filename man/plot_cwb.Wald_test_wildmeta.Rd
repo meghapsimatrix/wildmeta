@@ -9,10 +9,10 @@
 \arguments{
 \item{results}{Results from Wald_test_cwb function}
 
-\item{...}{Any other arguments to be passed to ggplot2::geom_density()}
+\item{...}{Any other arguments to be passed to \code{ggplot2::geom_density())}}
 }
 \value{
-A ggplot2 graph.
+A ggplot2 density plot.
 }
 \description{
 Creates a density plot showing the distribution of bootstrap test statistics.

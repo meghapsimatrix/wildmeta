@@ -22,7 +22,7 @@ run_cwb(
 
 \item{...}{Optional arguments to be passed to the function specified in the f argument above.}
 
-\item{adjust}{Character string specifying which small-sample adjustment should be used to multiply the residuals by, with available options "CR0", "CR1", "CR2", "CR3", or "CR4". The default is set to CRO, which will multiply the residuals by identity matrices and therefore, wil not add any adjustments to the bootstrapping algorithm.}
+\item{adjust}{Character string specifying which small-sample adjustment should be used to multiply the residuals by, with available options "CR0", "CR1", "CR2", "CR3", or "CR4". The default is set to CRO, which will multiply the residuals by identity matrices and therefore, will not add any adjustments to the bootstrapping algorithm.}
 
 \item{simplify}{Logical, with TRUE indicating the bootstrapped outcomes or F statistics will be simplified to a vector or matrix and FALSE indicating the results will be returned as a list.}
 
