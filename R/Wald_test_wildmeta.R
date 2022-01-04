@@ -1,10 +1,10 @@
 #' @title Calculate p-values with cluster wild bootstrapping for meta-regression models.
 #'
-#' @description Calculates p-values for single coefficient and multiple contrast hypothesis tests using cluster wild bootstrapping.
+#' @description Calculate p-values for single coefficient and multiple contrast hypothesis tests using cluster wild bootstrapping.
 #'
-#' @param full_model Model fit using \code{robumeta::robu()} and \code{metafor::rma.mv()} that includes all moderators of interest.
-#' @param constraint_matrix A q X p constraint matrix be tested. Can be specified using constrain_equal, constrain_zero, or constrain_pairwise from the clubSandwich package.
-#' @param R number of bootstrap replications.
+#' @param full_model Model fit using \code{robumeta::robu()} and \code{metafor::rma.mv()} that includes the full set of moderators in the meta-regression model.
+#' @param constraint_matrix A q X p constraint matrix be tested. Can be specified using \code{clubSandwich::constrain_equal()}, \code{clubSandwich::constrain_zero()}, or \code{clubSandwich::constrain_pairwise()}.
+#' @param R Number of bootstrap replications.
 #' @param auxiliary_distribution Character string indicating the auxiliary distribution to be used for cluster wild bootstrapping, with available options: "Rademacher", "Mammen", "Webb six", "uniform", "standard normal". The default is set to "Rademacher." We recommend the Rademacher distribution for models that have at least 10 clusters. For models with less than 10 clusters, we recommend the use of "Webb six" distribution.
 #' @param adjust 	Character string specifying which small-sample adjustment should be used to multiply the residuals by, with available options "CR0", "CR1", "CR2", "CR3", or "CR4". The default is set to CRO, which will multiply the residuals by identity matrices and therefore, will not add any adjustments to the bootstrapping algorithm.
 #'
@@ -52,7 +52,7 @@ Wald_test_cwb <- function(full_model,
                    auxiliary_dist = auxiliary_dist,
                    f = get_boot_F,  # this goes to sapply
                    full_model = full_model,
-                   C_mat = constraint_matrix, # this is additional argument for sapply
+                   C_mat = constraint_matrix,
                    simplify = TRUE)
 
   org_F <- clubSandwich::Wald_test(full_model,

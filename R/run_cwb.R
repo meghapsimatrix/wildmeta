@@ -7,7 +7,7 @@
 #' @param f Optional name (unquoted) of a function to be used to calculate bootstrap test statistics based on the bootstrapped outcomes. Default value is NULL. If f is NULL, this function returns a list with length of the number of bootstraps containing bootstrapped outcomes.
 #' @param ... Optional arguments to be passed to the function specified in the f argument above.
 #' @param auxiliary_distribution Character string indicating the auxiliary distribution to be used for cluster wild bootstrapping, with available options: "Rademacher", "Mammen", "Webb six", "uniform", "standard normal". The default is set to "Rademacher." We recommend the Rademacher distribution for models that have at least 10 clusters. For models with less than 10 clusters, we recommend the use of "Webb six" distribution.
-#' @param adjust 	Character string specifying which small-sample adjustment should be used to multiply the residuals by, with available options "CR0", "CR1", "CR2", "CR3", or "CR4". The default is set to CRO, which will multiply the residuals by identity matrices and therefore, wil not add any adjustments to the bootstrapping algorithm.
+#' @param adjust 	Character string specifying which small-sample adjustment should be used to multiply the residuals by, with available options "CR0", "CR1", "CR2", "CR3", or "CR4". The default is set to CRO, which will multiply the residuals by identity matrices and therefore, will not add any adjustments to the bootstrapping algorithm.
 #' @param simplify Logical, with TRUE indicating the bootstrapped outcomes or F statistics will be simplified to a vector or matrix and FALSE indicating the results will be returned as a list.
 #'
 #'
@@ -53,10 +53,6 @@ run_cwb <- function(model,
 
   # # residuals and predicted values ------------------------------------------
 
-  # need to figure out the robu situation
-  # model$fitted.values <- fitted.robu(model)
-  # model$residuals <- residuals.robu(model)
-
   res <- get_res(model)
   pred <- get_fitted(model)
 
@@ -80,8 +76,6 @@ run_cwb <- function(model,
     eta <- wts[cluster]
     y_boot <- pred + res * eta
 
-    #y_new <- rep(NA, length = nrow(model$X.f))  # how is this working with robu?
-    #y_new[model$not.na] <- y_boot
 
   }, simplify = simplify & is.null(f))
 
@@ -89,7 +83,7 @@ run_cwb <- function(model,
     return(bootstraps)
   }
 
-  boot_stats <- sapply(bootstraps, f, ..., simplify = simplify) # lapply doesn;t have simplify as argument
+  boot_stats <- sapply(bootstraps, f, ..., simplify = simplify)
 
   return(boot_stats)
 }
