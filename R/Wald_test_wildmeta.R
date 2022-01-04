@@ -3,7 +3,7 @@
 #' @description Calculates p-values for single coefficient and multiple contrast hypothesis tests using cluster wild bootstrapping.
 #'
 #' @param full_model Model fit using `robu()` or `rma.mv()` that includes all moderators of interest.
-#' @param constraint_matrix A q X p constraint matrix be tested. Can be specified using constrain_equal, constrain_zero, or constrain_pairwise from the clubSandwich package
+#' @param constraint_matrix A q X p constraint matrix be tested. Can be specified using constrain_equal, constrain_zero, or constrain_pairwise from the clubSandwich package.
 #' @param R number of bootstrap replications.
 #' @param auxiliary_distribution Character string indicating the auxiliary distribution to be used for cluster wild bootstrapping, with available options: "Rademacher", "Mammen", "Webb six", "uniform", "standard normal". The default is set to "Rademacher." We recommend the Rademacher distribution for models that have at least 10 clusters. For models with less than 10 clusters, we recommend the use of "Webb six" distribution.
 #' @param adjust 	Character string specifying which small-sample adjustment should be used to multiply the residuals by, with available options "CR0", "CR1", "CR2", "CR3", or "CR4". The default is set to CRO, which will multiply the residuals by identity matrices and therefore, wil not add any adjustments to the boostrapping algorithm.
