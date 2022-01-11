@@ -2,32 +2,64 @@
 % Please edit documentation in R/Wald_test_wildmeta.R
 \name{Wald_test_cwb}
 \alias{Wald_test_cwb}
-\title{Calculate p-values with cluster wild bootstrapping for meta-regression models.}
+\title{Calculate p-values with cluster wild bootstrapping for meta-regression
+models.}
 \usage{
 Wald_test_cwb(
   full_model,
   constraint_matrix,
+  cluster = NULL,
   R,
   auxiliary_dist = "Rademacher",
-  adjust = "CR0"
+  adjust = "CR0",
+  type = "CR0",
+  test = "Naive-F"
 )
 }
 \arguments{
-\item{full_model}{Model fit using \code{robumeta::robu()} and \code{metafor::rma.mv()} that includes the full set of moderators in the meta-regression model.}
+\item{full_model}{Model fit using \code{robumeta::robu()} and
+\code{metafor::rma.mv()} that includes the full set of moderators in the
+meta-regression model.}
 
-\item{constraint_matrix}{A q X p constraint matrix be tested. Can be specified using \code{clubSandwich::constrain_equal()}, \code{clubSandwich::constrain_zero()}, or \code{clubSandwich::constrain_pairwise()}.}
+\item{constraint_matrix}{A q X p constraint matrix be tested. Can be
+specified using \code{clubSandwich::constrain_equal()},
+\code{clubSandwich::constrain_zero()}, or
+\code{clubSandwich::constrain_pairwise()}.}
 
 \item{R}{Number of bootstrap replications.}
 
-\item{adjust}{Character string specifying which small-sample adjustment should be used to multiply the residuals by, with available options "CR0", "CR1", "CR2", "CR3", or "CR4". The default is set to CRO, which will multiply the residuals by identity matrices and therefore, will not add any adjustments to the bootstrapping algorithm.}
+\item{adjust}{Character string specifying which small-sample adjustment is
+used to multiply the residuals in the bootstrap process, with available
+options \code{"CRO"}, \code{"CR1"}, \code{"CR2"}, \code{"CR3"}, or
+\code{"CR4"}. The default is set to CRO, which will multiply the residuals
+by identity matrices and therefore, will not make any adjustments to the
+bootstrapping algorithm.}
 
-\item{auxiliary_distribution}{Character string indicating the auxiliary distribution to be used for cluster wild bootstrapping, with available options: "Rademacher", "Mammen", "Webb six", "uniform", "standard normal". The default is set to "Rademacher." We recommend the Rademacher distribution for models that have at least 10 clusters. For models with less than 10 clusters, we recommend the use of "Webb six" distribution.}
+\item{type}{Character string specifying which small-sample adjustment is used
+to calculate the Wald test statistic. The available options are
+\code{"CRO"}, \code{"CR1"}, \code{"CR2"}, \code{"CR3"}, or \code{"CR4"},
+with a default of \code{"CRO"}.}
+
+\item{test}{Character string specifying which (if any) small-sample
+adjustment is used in calculating the test statistic. Default is
+\code{"Naive-F"}, which does not make any small-sample adjustment.}
+
+\item{auxiliary_distribution}{Character string indicating the auxiliary
+distribution to be used for cluster wild bootstrapping, with available
+options: "Rademacher", "Mammen", "Webb six", "uniform", "standard normal".
+The default is set to "Rademacher." We recommend the Rademacher
+distribution for models that have at least 10 clusters. For models with
+less than 10 clusters, we recommend the use of "Webb six" distribution.}
 }
 \value{
-A tibble containing the name of the test and the p-value.
+A \code{data.frame} containing the name of the test, the adjustment
+used for the bootstrap process, the type of variance-covariance matrix
+used, the type of test statistic, the number of bootstrap replicates, and
+the bootstrapped p-value.
 }
 \description{
-Calculate p-values for single coefficient and multiple contrast hypothesis tests using cluster wild bootstrapping.
+Calculate p-values for single coefficient and multiple contrast
+hypothesis tests using cluster wild bootstrapping.
 }
 \examples{
 library(clubSandwich)

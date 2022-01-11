@@ -37,13 +37,14 @@ plot.Wald_test_wildmeta <- function(results, ...) {
   org_F <- attributes(results)$original
 
   bootstraps <- data.frame(boot_F = boots)
+  stat <- paste(results$Statistic, "statistic")
 
   ggplot2::ggplot(bootstraps, ggplot2::aes(x = boot_F)) +
     ggplot2::geom_density(...) +
     ggplot2::geom_vline(xintercept = org_F, linetype = "dashed") +
-    ggplot2::labs(x = "F_statistic", y = "Density") +
+    ggplot2::labs(x = stat, y = "Density") +
     ggplot2::scale_x_continuous() +
     ggplot2::scale_y_continuous() +
-    ggplot2::theme_bw()
+    ggplot2::theme_minimal()
 
 }

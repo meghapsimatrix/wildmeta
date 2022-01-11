@@ -83,7 +83,7 @@ run_cwb <- function(model,
     return(bootstraps)
   }
 
-  boot_stats <- sapply(bootstraps, f, ..., simplify = simplify)
+  boot_stats <- sapply(bootstraps, f, cluster = cluster, ..., simplify = simplify)
 
   return(boot_stats)
 }

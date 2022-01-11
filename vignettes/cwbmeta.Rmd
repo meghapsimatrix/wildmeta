@@ -86,11 +86,6 @@ library(wildmeta)
 library(clubSandwich)
 library(robumeta)
 
-source("../R/helpers.R")
-source("../R/robu_update.R")
-source("../R/plot_wildmeta.R")
-source("../R/S3_methods.R")
-
 full_model <- robu(d ~ 0 + study_type + hrs + test,
               studynum = study,
               var.eff.size = V,
@@ -140,7 +135,7 @@ Wald_test_cwb(full_model = full_model,
 
 ## Timing
 
-The `Wald_test_cwb()` function runs within a minute even with high number of bootstrap replications. Below is an example with 999 bootstrap replications.
+The `Wald_test_cwb()` function runs within a minute even when using a large number of bootstrap replications. Below is an example with 999 bootstrap replications.
 
 ```{r}
 set.seed(20201229)
@@ -153,17 +148,20 @@ full_model <- robu(d ~ 0 + study_type + hrs + test,
 
 C_mat <- constrain_equal(1:3, coefs = full_model$b.r)
 
-system.time(res <- Wald_test_cwb(full_model = full_model,
-                          constraint_matrix = C_mat,
-                          R = 999))
+system.time(
+  res <- Wald_test_cwb(full_model = full_model,
+                       constraint_matrix = C_mat,
+                       R = 999)
+)
+
 ```
 
 # Bootstrap Distribution Plot
 
-The function `plot_cwb()` plots the distribution of the bootstrap replicates based on the results from the `Wald_test_cwb()` function. The dashed line represents the $F$ test statistic from the original full model. The bootstrapped p-value is the proportion of bootstrapped $F$ test statistics that are greater than the original $F$ statistic.
+The function `plot()` creates a `ggplot` figure representing the distribution of the bootstrap replicates based on the results from the `Wald_test_cwb()` function. The dashed line represents the $F$ test statistic from the original full model. The bootstrapped p-value is the proportion of bootstrapped $F$ test statistics that are greater than the original $F$ statistic.
 
-```{r, fig.width = 5, fig.height = 4}
-plot_cwb(res, fill = "darkred", alpha = 0.5)
+```{r, fig.width = 6, fig.height = 2.5, fig.retina = 2}
+plot(res, fill = "purple", alpha = 0.5)
 ```
 
 # References
