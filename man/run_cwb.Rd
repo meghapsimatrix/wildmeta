@@ -7,9 +7,9 @@
 run_cwb(
   model,
   cluster,
+  R,
   f = NULL,
   ...,
-  R,
   auxiliary_dist = "Rademacher",
   adjust = "CR0",
   simplify = FALSE
@@ -18,9 +18,9 @@ run_cwb(
 \arguments{
 \item{cluster}{Vector indicating the clustering variable.}
 
-\item{f}{Optional name (unquoted) of a function to be used to calculate bootstrap test statistics based on the bootstrapped outcomes. Default value is NULL. If f is NULL, this function returns a list with length of the number of bootstraps containing bootstrapped outcomes.}
+\item{f}{Optional function to be used to calculate bootstrap test statistics based on the bootstrapped outcomes. Default value is NULL. If f is NULL, this function returns a list containing bootstrapped outcomes.}
 
-\item{...}{Optional arguments to be passed to the function specified in the f argument above.}
+\item{...}{Optional arguments to be passed to the function specified in \code{f}.}
 
 \item{adjust}{Character string specifying which small-sample adjustment should be used to multiply the residuals by, with available options "CR0", "CR1", "CR2", "CR3", or "CR4". The default is set to CRO, which will multiply the residuals by identity matrices and therefore, will not add any adjustments to the bootstrapping algorithm.}
 

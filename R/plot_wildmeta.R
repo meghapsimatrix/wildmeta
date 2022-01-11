@@ -24,13 +24,14 @@
 #'                      constraint_matrix = C_mat,
 #'                      R = 12)
 #'
-#' plot_cwb(res, fill = "darkred", alpha = 0.5)
+#' plot(res, fill = "darkred", alpha = 0.5)
 #'
 
 
+#' @export
 
 
-plot_cwb.Wald_test_wildmeta <- function(results, ...){
+plot.Wald_test_wildmeta <- function(results, ...) {
 
   boots <- attributes(results)$bootstraps
   org_F <- attributes(results)$original
@@ -38,8 +39,8 @@ plot_cwb.Wald_test_wildmeta <- function(results, ...){
   bootstraps <- data.frame(boot_F = boots)
 
   ggplot2::ggplot(bootstraps, ggplot2::aes(x = boot_F)) +
-    ggplot2::geom_vline(xintercept = org_F, linetype = "dashed") +
     ggplot2::geom_density(...) +
+    ggplot2::geom_vline(xintercept = org_F, linetype = "dashed") +
     ggplot2::labs(x = "F_statistic", y = "Density") +
     ggplot2::scale_x_continuous() +
     ggplot2::scale_y_continuous() +
