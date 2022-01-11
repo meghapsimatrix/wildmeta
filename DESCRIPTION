@@ -35,6 +35,7 @@ Imports:
 Suggests: 
     testthat (>= 3.0.0),
     knitr,
-    rmarkdown
+    rmarkdown,
+    ggplot2
 VignetteBuilder: knitr
 Config/testthat/edition: 3
