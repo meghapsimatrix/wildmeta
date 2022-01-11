@@ -29,6 +29,7 @@
 #'               constraint_matrix = C_mat,
 #'               R = 12)
 #'
+#' @importFrom clubSandwich Wald_test
 
 Wald_test_cwb <- function(full_model,
                           constraint_matrix,
@@ -63,20 +64,13 @@ Wald_test_cwb <- function(full_model,
   org_F <- org_F$Fstat
 
   p_val <- mean(boots > org_F, na.rm = TRUE)
-  test <- "CWB"
-
-
-  if (adjust != "CR0") {
-    test <- "CWB Adjusted"
-  }
+  test <- if (adjust != "CR0") "CWB Adjusted" else "CWB"
 
   p_boot <- data.frame(test = test, p_val = p_val)
 
   class(p_boot) <- c("Wald_test_wildmeta", class(p_boot))
   attr(p_boot, "bootstraps") <- boots
   attr(p_boot, "original") <- org_F
-
-
 
   return(p_boot)
 

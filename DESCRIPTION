@@ -25,7 +25,7 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Imports: 
-    clubSandwich,
+    clubSandwich (>= 0.5.4),
     robumeta,
     metafor,
     stringr,
