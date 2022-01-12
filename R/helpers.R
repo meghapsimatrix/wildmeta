@@ -1,5 +1,3 @@
-#' @export
-
 # Constrain Predictors ----------------------------------------------------
 
 constrain_predictors <- function(Xmat, Cmat) {
@@ -19,6 +17,9 @@ constrain_predictors <- function(Xmat, Cmat) {
 
 
 # Auxiliary distribution --------------------------------------------------
+
+#' @importFrom stats runif
+#' @importFrom stats rnorm
 
 return_wts <- function(auxiliary_dist, cluster_var) {
 
@@ -51,13 +52,13 @@ return_wts <- function(auxiliary_dist, cluster_var) {
 
   } else if (auxiliary_dist == "uniform") {
 
-    wts <- runif(n = length(cluster_var),
-                 min = -sqrt(3),
-                 max = sqrt(3))
+    wts <- stats::runif(n = length(cluster_var),
+                        min = -sqrt(3),
+                        max = sqrt(3))
 
   } else if (auxiliary_dist == "standard normal") {
 
-    wts <- rnorm(n = length(cluster_var))
+    wts <- stats::rnorm(n = length(cluster_var))
 
   }
 

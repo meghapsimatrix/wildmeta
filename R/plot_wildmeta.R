@@ -2,7 +2,7 @@
 #'
 #' @description Creates a density plot showing the distribution of bootstrap test statistics.
 #'
-#' @param results Results from Wald_test_cwb function
+#' @param x Results from Wald_test_cwb function
 #' @param ... Any other arguments to be passed to \code{ggplot2::geom_density())}
 #'
 #'
@@ -31,13 +31,13 @@
 #' @export
 
 
-plot.Wald_test_wildmeta <- function(results, ...) {
+plot.Wald_test_wildmeta <- function(x, ...) {
 
-  boots <- attributes(results)$bootstraps
-  org_F <- attributes(results)$original
+  boots <- attributes(x)$bootstraps
+  org_F <- attributes(x)$original
 
   bootstraps <- data.frame(boot_F = boots)
-  stat <- paste(results$Statistic, "statistic")
+  stat <- paste(x$Statistic, "statistic")
 
   ggplot2::ggplot(bootstraps, ggplot2::aes(x = boot_F)) +
     ggplot2::geom_density(...) +

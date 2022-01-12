@@ -19,6 +19,8 @@ trace_product <- function(A, B) {
 #------------------------------------------------------
 # robu model-fitting functions
 #------------------------------------------------------
+#' @importFrom stats lm.wfit
+#' @importFrom stats residuals
 
 CE_handmade <- function(X, y, v, cluster, rho, vcov = NULL) {
 
@@ -30,9 +32,9 @@ CE_handmade <- function(X, y, v, cluster, rho, vcov = NULL) {
   w_tilde <- 1 / (k_j * sigma_sq_j)
   w_tilde_j <- as.numeric(w_tilde[cluster])
 
-  mod_prelim <- lm.wfit(x = X, y = y, w = w_tilde_j)
+  mod_prelim <- stats::lm.wfit(x = X, y = y, w = w_tilde_j)
 
-  resid <- residuals(mod_prelim)
+  resid <- stats::residuals(mod_prelim)
 
   # calculate weighted residual sum of squares
   QE <- sum(w_tilde_j * resid^2)
@@ -69,7 +71,7 @@ CE_handmade <- function(X, y, v, cluster, rho, vcov = NULL) {
   w_ij <- as.numeric(w_j[cluster])
 
   # fit WLS regression
-  mod_CE <- lm.wfit(x = X, y = y, w = w_ij)
+  mod_CE <- stats::lm.wfit(x = X, y = y, w = w_ij)
 
   res <- mod_CE[c("coefficients","residuals","fitted.values","weights")]
   res$tau_sq <- tau_sq
@@ -99,9 +101,9 @@ HE_handmade <- function(X, y, v, cluster, vcov = NULL) {
 
   w_ij <- 1 / v
 
-  mod_prelim <- lm.wfit(x = X, y = y, w = w_ij)
+  mod_prelim <- stats::lm.wfit(x = X, y = y, w = w_ij)
 
-  resid <- residuals(mod_prelim)
+  resid <- stats::residuals(mod_prelim)
 
   # calculate sums of squares
   QE <- sum(w_ij * resid^2)
@@ -149,7 +151,7 @@ HE_handmade <- function(X, y, v, cluster, vcov = NULL) {
   w_ij <- 1 / (v + omega_sq + tau_sq)
 
   # fit WLS regression
-  mod_HE <- lm.wfit(x = X, y = y, w = w_ij)
+  mod_HE <- stats::lm.wfit(x = X, y = y, w = w_ij)
 
   res <- mod_HE[c("coefficients","residuals","fitted.values","weights")]
   res$tau_sq <- tau_sq
@@ -176,7 +178,7 @@ HE_handmade <- function(X, y, v, cluster, vcov = NULL) {
 user_handmade <- function(X, y, v, weights, cluster, vcov = NULL) {
 
   # fit WLS regression
-  mod_user <- lm.wfit(x = X, y = y, w = weights)
+  mod_user <- stats::lm.wfit(x = X, y = y, w = weights)
 
   res <- mod_user[c("coefficients","residuals","fitted.values","weights")]
 
@@ -199,12 +201,18 @@ user_handmade <- function(X, y, v, weights, cluster, vcov = NULL) {
 
 
 #-------------------------------------------------------------------------------
-# Methods for handmade.robu objects
+# Methods for handmade.robu and handmade_robu objects
 
 #' @importFrom stats model.matrix
 #' @export
 
 model.matrix.handmade.robu <- function(object, ...) {
+  object$X
+}
+
+#' @export
+
+model.matrix.handmade_robu <- function(object, ...) {
   object$X
 }
 
@@ -216,6 +224,12 @@ bread.handmade.robu <- function(x, ...) {
   x$nobs * chol2inv(chol(crossprod(x$X, x$w_ij * x$X)))
 }
 
+#' @export
+#'
+
+bread.handmade_robu <- function(x, ...) {
+  x$nobs * chol2inv(chol(crossprod(x$X, x$w_ij * x$X)))
+}
 
 #' @importFrom clubSandwich vcovCR
 #' @export
@@ -235,7 +249,8 @@ vcovCR.handmade.robu <- function(obj, cluster = obj$cluster,
       target <- tapply(V, cluster, function(x) diag(x, nrow = length(x)))
   }
 
-  clubSandwich:::vcov_CR(
+  class(obj) <- "handmade_robu"
+  clubSandwich::vcovCR(
     obj, cluster = cluster, type = type,
     target = target, inverse_var = inverse_var,
     form = form
@@ -292,8 +307,8 @@ update_robu.default <- function(mod, y, vcov = NULL) {
 
 update_robu.handmade.robu.CE <- function(mod, y, vcov = mod$vcov_type) {
 
-  mod_prelim <- lm.wfit(x = mod$X, y = y, w = mod$w_tilde_j)
-  resid <- residuals(mod_prelim)
+  mod_prelim <- stats::lm.wfit(x = mod$X, y = y, w = mod$w_tilde_j)
+  resid <- stats::residuals(mod_prelim)
   QE <- sum(mod$w_tilde_j * resid^2)
   tau_sq <- (QE - mod$num_minus) / mod$den
   tau_sq <- ifelse(tau_sq < 0, 0, tau_sq)  # added this
@@ -303,7 +318,7 @@ update_robu.handmade.robu.CE <- function(mod, y, vcov = mod$vcov_type) {
   w_ij <- as.numeric(w_j[mod$cluster])
 
   # fit WLS regression
-  mod_CE <- lm.wfit(x = mod$X, y = y, w = w_ij)
+  mod_CE <- stats::lm.wfit(x = mod$X, y = y, w = w_ij)
 
   res <- mod
   res[c("coefficients","residuals","fitted.values","weights")] <- mod_CE[c("coefficients","residuals","fitted.values","weights")]
@@ -322,9 +337,9 @@ update_robu.handmade.robu.CE <- function(mod, y, vcov = mod$vcov_type) {
 update_robu.handmade.robu.HE <- function(mod, y, vcov = mod$vcov_type) {
 
   w_ij <- 1 / mod$v
-  mod_prelim <- lm.wfit(x = mod$X, y = y, w = w_ij)
+  mod_prelim <- stats::lm.wfit(x = mod$X, y = y, w = w_ij)
 
-  resid <- residuals(mod_prelim)
+  resid <- stats::residuals(mod_prelim)
 
   # calculate sums of squares
   QE <- sum(w_ij * resid^2)
@@ -348,7 +363,7 @@ update_robu.handmade.robu.HE <- function(mod, y, vcov = mod$vcov_type) {
   w_ij <- 1 / (mod$v + omega_sq + tau_sq)
 
   # fit WLS regression
-  mod_HE <- lm.wfit(x = mod$X, y = y, w = w_ij)
+  mod_HE <- stats::lm.wfit(x = mod$X, y = y, w = w_ij)
 
   res <- mod
   res[c("coefficients","residuals","fitted.values","weights")] <- mod_HE[c("coefficients","residuals","fitted.values","weights")]

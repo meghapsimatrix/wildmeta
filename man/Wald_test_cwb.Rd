@@ -7,9 +7,9 @@ models.}
 \usage{
 Wald_test_cwb(
   full_model,
-  constraint_matrix,
-  cluster = NULL,
+  constraints,
   R,
+  cluster = NULL,
   auxiliary_dist = "Rademacher",
   adjust = "CR0",
   type = "CR0",
@@ -21,19 +21,30 @@ Wald_test_cwb(
 \code{metafor::rma.mv()} that includes the full set of moderators in the
 meta-regression model.}
 
-\item{constraint_matrix}{A q X p constraint matrix be tested. Can be
-specified using \code{clubSandwich::constrain_equal()},
-\code{clubSandwich::constrain_zero()}, or
-\code{clubSandwich::constrain_pairwise()}.}
+\item{constraints}{A q X p constraint matrix be tested. Alternately, a
+function to create such a matrix, specified using
+\code{clubSandwich::constrain_equal()} or
+\code{clubSandwich::constrain_zero()}.}
 
 \item{R}{Number of bootstrap replications.}
 
-\item{adjust}{Character string specifying which small-sample adjustment is
-used to multiply the residuals in the bootstrap process, with available
-options \code{"CRO"}, \code{"CR1"}, \code{"CR2"}, \code{"CR3"}, or
-\code{"CR4"}. The default is set to CRO, which will multiply the residuals
-by identity matrices and therefore, will not make any adjustments to the
-bootstrapping algorithm.}
+\item{cluster}{Vector of identifiers indicating which observations
+belong to the same cluster. If \code{NULL} (the default), then the
+clustering variable will be inferred based on the structure of
+\code{full_mod}.}
+
+\item{auxiliary_dist}{Character string indicating the auxiliary
+distribution to be used for cluster wild bootstrapping, with available
+options: "Rademacher", "Mammen", "Webb six", "uniform", "standard normal".
+The default is set to "Rademacher." We recommend the Rademacher
+distribution for models that have at least 10 clusters. For models with
+less than 10 clusters, we recommend the use of "Webb six" distribution.}
+
+\item{adjust}{Character string specifying which small-sample adjustment
+should be used to multiply the residuals by, with available options "CR0",
+"CR1", "CR2", "CR3", or "CR4". The default is set to CRO, which will
+multiply the residuals by identity matrices and therefore, will not add any
+adjustments to the bootstrapping algorithm.}
 
 \item{type}{Character string specifying which small-sample adjustment is used
 to calculate the Wald test statistic. The available options are
@@ -43,13 +54,6 @@ with a default of \code{"CRO"}.}
 \item{test}{Character string specifying which (if any) small-sample
 adjustment is used in calculating the test statistic. Default is
 \code{"Naive-F"}, which does not make any small-sample adjustment.}
-
-\item{auxiliary_distribution}{Character string indicating the auxiliary
-distribution to be used for cluster wild bootstrapping, with available
-options: "Rademacher", "Mammen", "Webb six", "uniform", "standard normal".
-The default is set to "Rademacher." We recommend the Rademacher
-distribution for models that have at least 10 clusters. For models with
-less than 10 clusters, we recommend the use of "Webb six" distribution.}
 }
 \value{
 A \code{data.frame} containing the name of the test, the adjustment
@@ -73,8 +77,13 @@ model <- robu(d ~ 0 + study_type + hrs + test,
 
 C_mat <- constrain_equal(1:3, coefs = coef(model))
 
-Wald_test_cwb(full_model = full_model,
-              constraint_matrix = C_mat,
+Wald_test_cwb(full_model = model,
+              constraints = C_mat,
+              R = 12)
+
+# Equivalent, using constrain_equal()
+Wald_test_cwb(full_model = model,
+              constraints = constrain_equal(1:3),
               R = 12)
 
 }

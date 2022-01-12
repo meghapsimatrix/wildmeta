@@ -1,17 +1,40 @@
-#' @title Calculate bootstrap outcomes or test statistics using cluster wild bootstrapping
+#' @title Calculate bootstrap outcomes or test statistics using cluster wild
+#'   bootstrapping
 #'
-#' @description Calculate bootstrap outcomes or test statistics using cluster wild bootstrapping for meta-analytic models fit using \code{robumeta::robu()} and \code{metafor::rma.mv()}
+#' @description Calculate bootstrap outcomes or test statistics using cluster
+#'   wild bootstrapping for meta-analytic models fit using
+#'   \code{robumeta::robu()} and \code{metafor::rma.mv()}
 #'
-#' @param full_model Model fit using \code{robumeta::robu()} and \code{metafor::rma.mv()}. For cluster wild bootstrapping, a null model is recommended, with null model indicating a model containing all variables except the ones being tested.
-#' @param cluster Vector indicating the clustering variable.
-#' @param f Optional function to be used to calculate bootstrap test statistics based on the bootstrapped outcomes. Default value is NULL. If f is NULL, this function returns a list containing bootstrapped outcomes.
-#' @param ... Optional arguments to be passed to the function specified in \code{f}.
-#' @param auxiliary_distribution Character string indicating the auxiliary distribution to be used for cluster wild bootstrapping, with available options: "Rademacher", "Mammen", "Webb six", "uniform", "standard normal". The default is set to "Rademacher." We recommend the Rademacher distribution for models that have at least 10 clusters. For models with less than 10 clusters, we recommend the use of "Webb six" distribution.
-#' @param adjust 	Character string specifying which small-sample adjustment should be used to multiply the residuals by, with available options "CR0", "CR1", "CR2", "CR3", or "CR4". The default is set to CRO, which will multiply the residuals by identity matrices and therefore, will not add any adjustments to the bootstrapping algorithm.
-#' @param simplify Logical, with TRUE indicating the bootstrapped outcomes or F statistics will be simplified to a vector or matrix and FALSE indicating the results will be returned as a list.
+#' @param model Fitted \code{robumeta::robu()} or
+#'   \code{metafor::rma.mv()} model. For cluster wild bootstrapping, a null model is
+#'   recommended, with null model indicating a model containing all variables
+#'   except the ones being tested.
+#' @param cluster Vector indicating which observations
+#'   belong to the same cluster.
+#' @param R Number of bootstrap replications.
+#' @param f Optional function to be used to calculate bootstrap test statistics
+#'   based on the bootstrapped outcomes. Default value is NULL. If f is NULL,
+#'   this function returns a list containing bootstrapped outcomes.
+#' @param ... Optional arguments to be passed to the function specified in
+#'   \code{f}.
+#' @param auxiliary_dist Character string indicating the auxiliary
+#'   distribution to be used for cluster wild bootstrapping, with available
+#'   options: "Rademacher", "Mammen", "Webb six", "uniform", "standard normal".
+#'   The default is set to "Rademacher." We recommend the Rademacher
+#'   distribution for models that have at least 10 clusters. For models with
+#'   less than 10 clusters, we recommend the use of "Webb six" distribution.
+#' @param adjust 	Character string specifying which small-sample adjustment
+#'   should be used to multiply the residuals by, with available options "CR0",
+#'   "CR1", "CR2", "CR3", or "CR4". The default is set to CRO, which will
+#'   multiply the residuals by identity matrices and therefore, will not add any
+#'   adjustments to the bootstrapping algorithm.
+#' @param simplify Logical, with TRUE indicating the bootstrapped outcomes or F
+#'   statistics will be simplified to a vector or matrix and FALSE indicating
+#'   the results will be returned as a list.
 #'
 #'
-#' @return A list or matrix containing either the bootstrapped outcomes or bootstrapped test statistics.
+#' @return A list or matrix containing either the bootstrapped outcomes or
+#'   bootstrapped test statistics.
 #'
 #' @export
 #'

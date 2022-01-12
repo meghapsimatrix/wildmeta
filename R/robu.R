@@ -1,3 +1,4 @@
+
 # estimate null model -----------------------------------------------------
 #' @importFrom robumeta robu
 #' @export
@@ -84,10 +85,19 @@ get_fitted.robu <- function(model) {
 # get residuals -------------------------------------------------------
 #' @export
 
-get_res.robu <- function(model){
+get_res.robu <- function(model) {
 
   ord <- order(order(model$study_orig_id))
   res <- model$data.full$e.r[ord]
 
   return(res)
+}
+
+# get model coefficients ---------------------------------------------
+#' @export
+
+coef.robu <- function(object, ...) {
+  cf <- object$reg_table$b.r
+  names(cf) <- object$reg_table$labels
+  cf[!is.na(cf)]
 }

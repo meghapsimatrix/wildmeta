@@ -4,10 +4,10 @@
 \alias{plot.Wald_test_wildmeta}
 \title{Plot distribution of bootstrap test statistics}
 \usage{
-\method{plot}{Wald_test_wildmeta}(results, ...)
+\method{plot}{Wald_test_wildmeta}(x, ...)
 }
 \arguments{
-\item{results}{Results from Wald_test_cwb function}
+\item{x}{Results from Wald_test_cwb function}
 
 \item{...}{Any other arguments to be passed to \code{ggplot2::geom_density())}}
 }

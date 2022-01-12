@@ -142,7 +142,8 @@ check_update <- function(mod, check_dfs = TRUE, tol = testthat_tolerance()) {
 
 }
 
-test_that("update_robu.default works for CE models",{
+test_that("update_robu.default works for CE models", {
+
   meta_CE <- robu(d ~ 1, studynum = study,
                   var.eff.size = V,
                   small = FALSE,
