@@ -77,12 +77,6 @@ library(wildmeta)
 library(clubSandwich)
 library(robumeta)
 
-source("R/helpers.R")
-source("R/robu_update.R")
-source("R/plot_wildmeta.R")
-source("R/S3_methods.R")
-
-
 set.seed(12102020)
 
 full_model <- robu(d ~ 0 + study_type + hrs + test,
@@ -94,10 +88,10 @@ full_model <- robu(d ~ 0 + study_type + hrs + test,
 C_mat <- constrain_equal(1:3, coefs = full_model$b.r)
 
 Wald_test_cwb(full_model = full_model,
-              constraint_matrix = C_mat,
+              constraints = C_mat,
               R = 12)
-#>   test     p_val
-#> 1  CWB 0.1666667
+#>   Test Adjustment CR.type Statistic  R      p_val
+#> 1  CWB        CR0     CR0   Naive-F 12 0.08333333
 ```
 
 # Related Work
