@@ -21,7 +21,7 @@
 #'               data = SATcoaching)
 #'
 #' res <- Wald_test_cwb(full_model = full_model,
-#'                      constraint_matrix = C_mat,
+#'                      constraints = C_mat,
 #'                      R = 12)
 #'
 #' plot(res, fill = "darkred", alpha = 0.5)
