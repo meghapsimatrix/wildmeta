@@ -21,11 +21,13 @@ Creates a density plot showing the distribution of bootstrap test statistics.
 library(clubSandwich)
 library(robumeta)
 
-model <- robu(d ~ 0 + study_type + hrs + test,
-             studynum = study,
-              var.eff.size = V,
-              small = FALSE,
-              data = SATcoaching)
+full_model <- robu(d ~ 0 + study_type + hrs + test,
+                   studynum = study,
+                   var.eff.size = V,
+                   small = FALSE,
+                   data = SATcoaching)
+
+C_mat <- constrain_equal(1:3, coefs = coef(full_model))
 
 res <- Wald_test_cwb(full_model = full_model,
                      constraints = C_mat,

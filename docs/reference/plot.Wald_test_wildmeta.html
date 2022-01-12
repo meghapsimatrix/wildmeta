@@ -86,19 +86,20 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jepusto/clubSandwich" class="external-link">clubSandwich</a></span><span class="op">)</span></span>
 <span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/zackfisher/robumeta" class="external-link">robumeta</a></span><span class="op">)</span></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/robumeta/man/robu.html" class="external-link">robu</a></span><span class="op">(</span><span class="va">d</span> <span class="op">~</span> <span class="fl">0</span> <span class="op">+</span> <span class="va">study_type</span> <span class="op">+</span> <span class="va">hrs</span> <span class="op">+</span> <span class="va">test</span>,</span>
-<span class="r-in">             studynum <span class="op">=</span> <span class="va">study</span>,</span>
-<span class="r-in">              var.eff.size <span class="op">=</span> <span class="va">V</span>,</span>
-<span class="r-in">              small <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">              data <span class="op">=</span> <span class="va">SATcoaching</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">full_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/robumeta/man/robu.html" class="external-link">robu</a></span><span class="op">(</span><span class="va">d</span> <span class="op">~</span> <span class="fl">0</span> <span class="op">+</span> <span class="va">study_type</span> <span class="op">+</span> <span class="va">hrs</span> <span class="op">+</span> <span class="va">test</span>,</span>
+<span class="r-in">                   studynum <span class="op">=</span> <span class="va">study</span>,</span>
+<span class="r-in">                   var.eff.size <span class="op">=</span> <span class="va">V</span>,</span>
+<span class="r-in">                   small <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span class="r-in">                   data <span class="op">=</span> <span class="va">SATcoaching</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">C_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/clubSandwich/man/constraint_matrices.html" class="external-link">constrain_equal</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, coefs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">full_model</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">full_model</span>,</span>
 <span class="r-in">                     constraints <span class="op">=</span> <span class="va">C_mat</span>,</span>
 <span class="r-in">                     R <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in Wald_test_cwb(full_model = full_model, constraints = C_mat, R = 12):</span> object 'C_mat' not found</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">res</span>, fill <span class="op">=</span> <span class="st">"darkred"</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in plot(res, fill = "darkred", alpha = 0.5):</span> object 'res' not found</span>
+<span class="r-plt img"><img src="plot.Wald_test_wildmeta-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
