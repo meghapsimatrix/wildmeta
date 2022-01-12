@@ -1,8 +1,7 @@
 destination: docs
-
 template:
+  package: preferably
   params:
-    bootswatch: cosmo
     docsearch:
       api_key: dd1fc6c1a237adc926adbbb99a017145
       index_name: wildmeta
