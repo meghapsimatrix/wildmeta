@@ -2,7 +2,7 @@ destination: docs
 
 template:
   bootstrap: 5
-  bootswatch: materia
+  bootswatch: darkly
 
 
 navbar:
