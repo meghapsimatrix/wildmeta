@@ -72,8 +72,8 @@ model <- robu(d ~ 0 + study_type + hrs + test,
 
 
 bootstraps <- run_cwb(
-  model = full_model,
-  cluster =  full_model$data.full$study,
+  model = model,
+  cluster =  model$data.full$study,
   R = 12,
   adjust = "CR2",
   simplify = FALSE
