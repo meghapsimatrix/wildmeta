@@ -79,6 +79,6 @@ bootstraps <- run_cwb(
   simplify = FALSE
 )
 
-
+bootstraps
 
 }
