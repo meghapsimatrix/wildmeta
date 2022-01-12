@@ -20,18 +20,17 @@
 #'               small = FALSE,
 #'               data = SATcoaching)
 #'
-#' res <- Wald_test_cwb(full_model = full_model,
-#'                      constraints = C_mat,
+#' res <- Wald_test_cwb(full_model = model,
+#'                      constraints = constrain_equal(1:3),
 #'                      R = 12)
 #'
 #' plot(res, fill = "darkred", alpha = 0.5)
 #'
 
 
-#' @export
-
-
 plot.Wald_test_wildmeta <- function(x, ...) {
+
+  if (!requireNamespace("ggplot2", quietly = TRUE)) stop("The plot() function requires the ggplot2 package. Please install it.", call. = FALSE)
 
   boots <- attributes(x)$bootstraps
   org_F <- attributes(x)$original
@@ -39,7 +38,7 @@ plot.Wald_test_wildmeta <- function(x, ...) {
   bootstraps <- data.frame(boot_F = boots)
   stat <- paste(x$Statistic, "statistic")
 
-  ggplot2::ggplot(bootstraps, ggplot2::aes(x = boot_F)) +
+  ggplot2::ggplot(bootstraps, ggplot2::aes_string(x = "boot_F")) +
     ggplot2::geom_density(...) +
     ggplot2::geom_vline(xintercept = org_F, linetype = "dashed") +
     ggplot2::labs(x = stat, y = "Density") +

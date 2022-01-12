@@ -27,8 +27,8 @@ model <- robu(d ~ 0 + study_type + hrs + test,
               small = FALSE,
               data = SATcoaching)
 
-res <- Wald_test_cwb(full_model = full_model,
-                     constraints = C_mat,
+res <- Wald_test_cwb(full_model = model,
+                     constraints = constrain_equal(1:3),
                      R = 12)
 
 plot(res, fill = "darkred", alpha = 0.5)
