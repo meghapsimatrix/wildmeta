@@ -26,12 +26,12 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Imports: 
     clubSandwich (>= 0.5.4),
+    sandwich,
     robumeta,
     metafor,
-    stringr,
     stats,
-    vctrs,
-    sandwich
+    stringr,
+    vctrs
 Suggests: 
     testthat (>= 3.0.0),
     knitr,
