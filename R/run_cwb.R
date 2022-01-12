@@ -1,0 +1,112 @@
+#' @title Calculate bootstrap outcomes or test statistics using cluster wild
+#'   bootstrapping
+#'
+#' @description Calculate bootstrap outcomes or test statistics using cluster
+#'   wild bootstrapping for meta-analytic models fit using
+#'   \code{robumeta::robu()} and \code{metafor::rma.mv()}
+#'
+#' @param model Fitted \code{robumeta::robu()} or
+#'   \code{metafor::rma.mv()} model. For cluster wild bootstrapping, a null model is
+#'   recommended, with null model indicating a model containing all variables
+#'   except the ones being tested.
+#' @param cluster Vector indicating which observations
+#'   belong to the same cluster.
+#' @param R Number of bootstrap replications.
+#' @param f Optional function to be used to calculate bootstrap test statistics
+#'   based on the bootstrapped outcomes. Default value is NULL. If f is NULL,
+#'   this function returns a list containing bootstrapped outcomes.
+#' @param ... Optional arguments to be passed to the function specified in
+#'   \code{f}.
+#' @param auxiliary_dist Character string indicating the auxiliary
+#'   distribution to be used for cluster wild bootstrapping, with available
+#'   options: "Rademacher", "Mammen", "Webb six", "uniform", "standard normal".
+#'   The default is set to "Rademacher." We recommend the Rademacher
+#'   distribution for models that have at least 10 clusters. For models with
+#'   less than 10 clusters, we recommend the use of "Webb six" distribution.
+#' @param adjust 	Character string specifying which small-sample adjustment
+#'   should be used to multiply the residuals by, with available options "CR0",
+#'   "CR1", "CR2", "CR3", or "CR4". The default is set to CRO, which will
+#'   multiply the residuals by identity matrices and therefore, will not add any
+#'   adjustments to the bootstrapping algorithm.
+#' @param simplify Logical, with TRUE indicating the bootstrapped outcomes or F
+#'   statistics will be simplified to a vector or matrix and FALSE indicating
+#'   the results will be returned as a list.
+#'
+#'
+#' @return A list or matrix containing either the bootstrapped outcomes or
+#'   bootstrapped test statistics.
+#'
+#' @export
+#'
+#' @examples
+#' library(clubSandwich)
+#' library(robumeta)
+#'
+#' model <- robu(d ~ 0 + study_type + hrs + test,
+#'              studynum = study,
+#'               var.eff.size = V,
+#'               small = FALSE,
+#'               data = SATcoaching)
+#'
+#'
+#' bootstraps <- run_cwb(
+#'   model = full_model,
+#'   cluster =  full_model$data.full$study,
+#'   R = 12,
+#'   adjust = "CR2",
+#'   simplify = FALSE
+#' )
+#'
+#'
+#'
+
+
+run_cwb <- function(model,
+                    cluster,
+                    R,
+                    f = NULL,
+                    ...,
+                    auxiliary_dist = "Rademacher",
+                    adjust = "CR0",
+                    simplify = FALSE) {
+
+
+  # coerce cluster variable to factor
+  if (!is.factor(cluster)) cluster <- as.factor(cluster)
+
+  # # residuals and predicted values ------------------------------------------
+
+  res <- get_res(model)
+  pred <- get_fitted(model)
+
+  # Adjust ------------------------------------------------------------------
+
+  if (adjust %in% c("CR1", "CR2", "CR3", "CR4")) {
+    split_res <- split(res, cluster)
+    B_j <- attr(clubSandwich::vcovCR(model,
+                                     cluster = cluster,
+                                     type = adjust), "adjustments")
+    res_list <- Map(function(x, y) as.vector(x %*% y), x = B_j, y = split_res)
+    res <- unsplit(res_list, cluster)
+  }
+
+  # bootstrap ---------------------------------------------------------------
+  num_cluster <- unique(cluster)
+
+  bootstraps <- replicate(n = R, {
+
+    wts <- return_wts(auxiliary_dist = auxiliary_dist, cluster_var = num_cluster)
+    eta <- wts[cluster]
+    y_boot <- pred + res * eta
+
+
+  }, simplify = simplify & is.null(f))
+
+  if (is.null(f)) {
+    return(bootstraps)
+  }
+
+  boot_stats <- sapply(bootstraps, f, cluster = cluster, ..., simplify = simplify)
+
+  return(boot_stats)
+}
