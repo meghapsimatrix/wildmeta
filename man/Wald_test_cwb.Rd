@@ -40,8 +40,8 @@ The default is set to "Rademacher." We recommend the Rademacher
 distribution for models that have at least 10 clusters. For models with
 less than 10 clusters, we recommend the use of "Webb six" distribution.}
 
-\item{adjust}{Character string specifying which small-sample adjustment is used
-to calculate the Wald test statistic. The available options are
+\item{adjust}{Character string specifying which small-sample adjustment should
+be used to multiply the residuals by. The available options are
 \code{"CRO"}, \code{"CR1"}, \code{"CR2"}, \code{"CR3"}, or \code{"CR4"},
 with a default of \code{"CRO"}.}
 
