@@ -1,11 +1,8 @@
 destination: docs
 
 template:
-  params:
-    bootswatch: cosmo
-    docsearch:
-      api_key: dd1fc6c1a237adc926adbbb99a017145
-      index_name: wildmeta
+  bootstrap: 5
+  bootswatch: litera
 
 navbar:
   right:
