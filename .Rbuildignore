@@ -7,3 +7,4 @@
 ^.github
 ^scratchpad$
 ^\.github$
+^codecov\.yml$
