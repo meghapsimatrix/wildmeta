@@ -108,11 +108,10 @@ The default is set to "Rademacher." We recommend the Rademacher
 distribution for models that have at least 10 clusters. For models with
 less than 10 clusters, we recommend the use of "Webb six" distribution.</p></dd>
 <dt>adjust</dt>
-<dd><p>Character string specifying which small-sample adjustment
-should be used to multiply the residuals by, with available options "CR0",
-"CR1", "CR2", "CR3", or "CR4". The default is set to CRO, which will
-multiply the residuals by identity matrices and therefore, will not add any
-adjustments to the bootstrapping algorithm.</p></dd>
+<dd><p>Character string specifying which small-sample adjustment is used
+to calculate the Wald test statistic. The available options are
+<code>"CRO"</code>, <code>"CR1"</code>, <code>"CR2"</code>, <code>"CR3"</code>, or <code>"CR4"</code>,
+with a default of <code>"CRO"</code>.</p></dd>
 <dt>type</dt>
 <dd><p>Character string specifying which small-sample adjustment is used
 to calculate the Wald test statistic. The available options are
@@ -148,15 +147,15 @@ the bootstrapped p-value.</p>
 <span class="r-in"><span class="fu">Wald_test_cwb</span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">model</span>,</span>
 <span class="r-in">              constraints <span class="op">=</span> <span class="va">C_mat</span>,</span>
 <span class="r-in">              R <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Test Adjustment CR_type Statistic  R      p_val</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  CWB        CR0     CR0   Naive-F 12 0.08333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Test Adjustment CR_type Statistic  R     p_val</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  CWB        CR0     CR0   Naive-F 12 0.3333333</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Equivalent, using constrain_equal()</span></span>
 <span class="r-in"><span class="fu">Wald_test_cwb</span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">model</span>,</span>
 <span class="r-in">              constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/clubSandwich/man/constraint_matrices.html" class="external-link">constrain_equal</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,</span>
 <span class="r-in">              R <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Test Adjustment CR_type Statistic  R     p_val</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  CWB        CR0     CR0   Naive-F 12 0.1666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Test Adjustment CR_type Statistic  R p_val</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  CWB        CR0     CR0   Naive-F 12  0.25</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>

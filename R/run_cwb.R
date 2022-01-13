@@ -27,8 +27,8 @@
 #'   to calculate the Wald test statistic. The available options are
 #'   \code{"CRO"}, \code{"CR1"}, \code{"CR2"}, \code{"CR3"}, or \code{"CR4"},
 #'   with a default of \code{"CRO"}.
-#' @param simplify Logical, with TRUE indicating the bootstrapped outcomes or F
-#'   statistics will be simplified to a vector or matrix and FALSE indicating
+#' @param simplify Logical, with \code{TRUE} indicating the bootstrapped outcomes or F
+#'   statistics will be simplified to a vector or matrix and \code{FALSE} (the default) indicating
 #'   the results will be returned as a list.
 #'
 #'
