@@ -62,18 +62,18 @@ Wald_test_cwb <- function(full_model,
                           auxiliary_dist = "Rademacher",
                           adjust = "CR0",
                           type = "CR0",
-                          test = "Naive-F") {
+                          test = "Naive-F",
+                          seed = NULL) {
 
   if (inherits(constraints, "function")) {
     constraints <- constraints(stats::coef(full_model))
   }
 
-  # added the null model
+  # compute the null model
   null_model <- estimate_null(full_model,
                               C_mat = constraints)
 
-  # for run_cwb_new need to pull out the clusters
-  # will there be an issue with missing data in clusters for rma.mv?
+  # detect clusters if not specified
   if (is.null(cluster)) cluster <- get_cluster(null_model)
 
 
@@ -87,7 +87,8 @@ Wald_test_cwb <- function(full_model,
                    test = test,
                    auxiliary_dist = auxiliary_dist,
                    adjust = adjust,
-                   simplify = TRUE)
+                   simplify = TRUE,
+                   seed = seed)
 
   full_vcov <- clubSandwich::vcovCR(full_model, type = type, cluster = cluster)
   org_F <- clubSandwich::Wald_test(full_model,

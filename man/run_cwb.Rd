@@ -13,7 +13,8 @@ run_cwb(
   ...,
   auxiliary_dist = "Rademacher",
   adjust = "CR0",
-  simplify = FALSE
+  simplify = FALSE,
+  seed = NULL
 )
 }
 \arguments{
@@ -49,6 +50,8 @@ with a default of \code{"CRO"}.}
 \item{simplify}{Logical, with \code{TRUE} indicating the bootstrapped outcomes or F
 statistics will be simplified to a vector or matrix and \code{FALSE} (the default) indicating
 the results will be returned as a list.}
+
+\item{seed}{Optional seed value to ensure reproducibility.}
 }
 \value{
 A list or matrix containing either the bootstrapped outcomes or

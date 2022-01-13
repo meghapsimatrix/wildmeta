@@ -30,7 +30,7 @@
 #' @param simplify Logical, with \code{TRUE} indicating the bootstrapped outcomes or F
 #'   statistics will be simplified to a vector or matrix and \code{FALSE} (the default) indicating
 #'   the results will be returned as a list.
-#'
+#' @param seed Optional seed value to ensure reproducibility.
 #'
 #' @return A list or matrix containing either the bootstrapped outcomes or
 #'   bootstrapped test statistics.
@@ -67,8 +67,10 @@ run_cwb <- function(model,
                     ...,
                     auxiliary_dist = "Rademacher",
                     adjust = "CR0",
-                    simplify = FALSE) {
+                    simplify = FALSE,
+                    seed = NULL) {
 
+  if (!is.null(seed)) set.seed(seed)
 
   # coerce cluster variable to factor
   if (!is.factor(cluster)) cluster <- as.factor(cluster)

@@ -13,7 +13,8 @@ Wald_test_cwb(
   auxiliary_dist = "Rademacher",
   adjust = "CR0",
   type = "CR0",
-  test = "Naive-F"
+  test = "Naive-F",
+  seed = NULL
 )
 }
 \arguments{
@@ -53,6 +54,8 @@ with a default of \code{"CRO"}.}
 \item{test}{Character string specifying which (if any) small-sample
 adjustment is used in calculating the test statistic. Default is
 \code{"Naive-F"}, which does not make any small-sample adjustment.}
+
+\item{seed}{Optional seed value to ensure reproducibility.}
 }
 \value{
 A \code{data.frame} containing the name of the test, the adjustment
