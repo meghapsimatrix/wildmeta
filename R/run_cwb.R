@@ -91,11 +91,11 @@ run_cwb <- function(model,
   }
 
   # bootstrap ---------------------------------------------------------------
-  num_cluster <- unique(cluster)
+  n_clusters <- length(unique(cluster))
 
   bootstraps <- replicate(n = R, {
 
-    wts <- return_wts(auxiliary_dist = auxiliary_dist, cluster_var = num_cluster)
+    wts <- wild_wts(auxiliary_dist = auxiliary_dist, n_clusters = n_clusters)
     eta <- wts[cluster]
     y_boot <- pred + res * eta
 
