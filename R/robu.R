@@ -38,7 +38,8 @@ estimate_null.robu <- function(full_model,
 
 get_cluster.robu <- function(full_model) {
 
-  cluster <- full_model$data.full$study
+  ord <- order(order(full_model$study_orig_id))
+  cluster <- full_model$data.full$study[ord]
 
   return(cluster)
 }
