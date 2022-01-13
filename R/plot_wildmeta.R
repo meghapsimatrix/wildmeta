@@ -20,11 +20,10 @@
 #'                    small = FALSE,
 #'                    data = SATcoaching)
 #'
-#' C_mat <- constrain_equal(1:3, coefs = coef(full_model))
 #'
-#' res <- Wald_test_cwb(full_model = model,
+#' res <- Wald_test_cwb(full_model = full_model,
 #'                      constraints = constrain_equal(1:3),
-#'                      R = 12)
+#'                      R = 99)
 #'
 #' plot(res, fill = "darkred", alpha = 0.5)
 #'
