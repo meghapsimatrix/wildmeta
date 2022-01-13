@@ -103,8 +103,8 @@ Wald_test_cwb <- function(full_model,
   p_boot <- data.frame(
     Test = boot_test,
     Adjustment = adjust,
-    `CR type` = type,
-    `Statistic` = test,
+    CR_type = type,
+    Statistic = test,
     R = R,
     p_val = p_val
   )
