@@ -1,3 +1,11 @@
+#' @importFrom clubSandwich constrain_equal
+#' @export
+clubSandwich::constrain_equal
+
+#' @importFrom clubSandwich constrain_zero
+#' @export
+clubSandwich::constrain_zero
+
 # Constrain Predictors ----------------------------------------------------
 
 constrain_predictors <- function(Xmat, Cmat) {
