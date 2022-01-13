@@ -6,9 +6,9 @@ constrain_predictors <- function(Xmat, Cmat) {
   p <- ncol(Cmat)
   if (ncol(Xmat) != ncol(Cmat)) stop("Constraint matrix must have same number of columns as predictor matrix.")
 
-  XtX_inv <- chol2inv(chol(crossprod(Xmat)))
-  Cnull <- diag(nrow = p) - XtX_inv %*% t(Cmat) %*% chol2inv(chol(Cmat %*% XtX_inv %*% t(Cmat))) %*% Cmat
-  Xnull <- qr.X(qr(Xmat %*% Cnull), ncol = p - q)
+  Cnull <- diag(nrow = p) - t(Cmat) %*% chol2inv(chol(tcrossprod(Cmat))) %*% Cmat
+  Cnull_reduced <- svd(Cnull, nu = p - q, nv = p - q)$v
+  Xnull <- Xmat %*% Cnull_reduced
 
   return(Xnull)
 

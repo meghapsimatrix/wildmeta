@@ -1,7 +1,7 @@
 library(clubSandwich)
+data("AchievementAwardsRCT", package = "clubSandwich")
 
 test_that("constrain_predictors works as expected.", {
-data("AchievementAwardsRCT", package = "clubSandwich")
 
   lm_full <- lm(awarded ~ 0 + school_type + treated + year + sex + siblings + immigrant,
                 data = AchievementAwardsRCT)
@@ -23,6 +23,21 @@ data("AchievementAwardsRCT", package = "clubSandwich")
   X_reduced <- constrain_predictors(Xmat, Cmat)
   a <- residuals(lm.fit(X_reduced, AchievementAwardsRCT$awarded))
   b <- residuals(update(lm_full, . ~ school_type + year))
+  expect_equal(a, b, ignore_attr = TRUE)
+
+  lm_skinny <- lm(awarded ~ 0 + school_type, data = AchievementAwardsRCT)
+  Xmat <- model.matrix(lm_skinny)
+
+  Cmat <- constrain_equal("school_type", reg_ex = TRUE, coef(lm_skinny))
+  X_reduced <- constrain_predictors(Xmat, Cmat)
+  a <- residuals(lm.fit(X_reduced, AchievementAwardsRCT$awarded))
+  b <- residuals(update(lm_skinny, . ~ 1))
+  expect_equal(a, b, ignore_attr = TRUE)
+
+  Cmat <- constrain_equal(1:2, coef(lm_skinny))
+  X_reduced <- constrain_predictors(Xmat, Cmat)
+  a <- residuals(lm.fit(X_reduced, AchievementAwardsRCT$awarded))
+  b <- residuals(update(lm_skinny, . ~ I(school_type=="Secular")))
   expect_equal(a, b, ignore_attr = TRUE)
 
 })
