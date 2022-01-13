@@ -18,7 +18,7 @@ A ggplot2 density plot.
 Creates a density plot showing the distribution of bootstrap test statistics.
 }
 \examples{
-library(clubSandwich)
+data("SATcoaching", package = "clubSandwich")
 library(robumeta)
 
 full_model <- robu(d ~ 0 + study_type + hrs + test,

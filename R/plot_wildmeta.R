@@ -11,6 +11,7 @@
 #' @export
 #'
 #' @examples
+#' data("SATcoaching", package = "clubSandwich")
 #' library(clubSandwich)
 #' library(robumeta)
 #'
