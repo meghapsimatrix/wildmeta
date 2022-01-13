@@ -28,7 +28,7 @@ belong to the same cluster.}
 \item{R}{Number of bootstrap replications.}
 
 \item{f}{Optional function to be used to calculate bootstrap test statistics
-based on the bootstrapped outcomes. Default value is NULL. If f is NULL,
+based on the bootstrapped outcomes. If f is \code{NULL} (the default),
 this function returns a list containing bootstrapped outcomes.}
 
 \item{...}{Optional arguments to be passed to the function specified in
@@ -41,14 +41,13 @@ The default is set to "Rademacher." We recommend the Rademacher
 distribution for models that have at least 10 clusters. For models with
 less than 10 clusters, we recommend the use of "Webb six" distribution.}
 
-\item{adjust}{Character string specifying which small-sample adjustment
-should be used to multiply the residuals by, with available options "CR0",
-"CR1", "CR2", "CR3", or "CR4". The default is set to CRO, which will
-multiply the residuals by identity matrices and therefore, will not add any
-adjustments to the bootstrapping algorithm.}
+\item{adjust}{Character string specifying which small-sample adjustment should
+be used to multiply the residuals by. The available options are
+\code{"CRO"}, \code{"CR1"}, \code{"CR2"}, \code{"CR3"}, or \code{"CR4"},
+with a default of \code{"CRO"}.}
 
-\item{simplify}{Logical, with TRUE indicating the bootstrapped outcomes or F
-statistics will be simplified to a vector or matrix and FALSE indicating
+\item{simplify}{Logical, with \code{TRUE} indicating the bootstrapped outcomes or F
+statistics will be simplified to a vector or matrix and \code{FALSE} (the default) indicating
 the results will be returned as a list.}
 }
 \value{
