@@ -10,7 +10,7 @@ hypothesis tests using cluster wild bootstrapping."><!-- mathjax --><script src=
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">wildmeta</a>
 
@@ -138,14 +138,14 @@ the bootstrapped p-value.</p>
 <span class="r-in">              constraints <span class="op">=</span> <span class="va">C_mat</span>,</span>
 <span class="r-in">              R <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Test Adjustment CR_type Statistic  R     p_val</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  CWB        CR0     CR0   Naive-F 12 0.3333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  CWB        CR0     CR0   Naive-F 12 0.5833333</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Equivalent, using constrain_equal()</span></span>
 <span class="r-in"><span class="fu">Wald_test_cwb</span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">model</span>,</span>
 <span class="r-in">              constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/clubSandwich/man/constraint_matrices.html" class="external-link">constrain_equal</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,</span>
 <span class="r-in">              R <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Test Adjustment CR_type Statistic  R p_val</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  CWB        CR0     CR0   Naive-F 12  0.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Test Adjustment CR_type Statistic  R     p_val</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  CWB        CR0     CR0   Naive-F 12 0.4166667</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>

@@ -22,7 +22,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">wildmeta</a>
 
@@ -136,7 +136,7 @@
               constraints <span class="op">=</span> <span class="va">C_mat</span>,
               R <span class="op">=</span> <span class="fl">99</span><span class="op">)</span>
 <span class="co">#&gt;   Test Adjustment CR_type Statistic  R     p_val</span>
-<span class="co">#&gt; 1  CWB        CR0     CR0   Naive-F 99 0.2727273</span></code></pre></div>
+<span class="co">#&gt; 1  CWB        CR0     CR0   Naive-F 99 0.3333333</span></code></pre></div>
 <p>The output of the function includes the name of the test (CWB or CWB Adjusted) and the bootstrap test p-value.</p>
 <p>The users can also specify whether to adjust the residuals with <code>CR1</code> to <code>CR4</code>matrices when bootstrapping as below. The default value for the <code>adjust</code> argument is set to <code>CR0</code>. Below is an example where we set the adjust the residuals using <code>CR2</code> matrices.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -197,7 +197,7 @@
                        R <span class="op">=</span> <span class="fl">999</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   9.165   0.110   9.595</span></code></pre></div>
+<span class="co">#&gt;   9.313   0.117   9.630</span></code></pre></div>
 </div>
 </div>
 <div class="section level1">
