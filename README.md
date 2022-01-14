@@ -176,7 +176,7 @@ Heyman, M. (2019). lmboot: Bootstrap in Linear Models. R package version
 0.0.1. <https://CRAN.R-project.org/package=lmboot>
 
 Joshi, M., Pustejovsky, J. E., & Beretvas, S. N. (2021). Cluster wild
-bootstrapping to handle dependent effect sizes in meta-Analysis with
+bootstrapping to handle dependent effect sizes in meta-analysis with
 small number of studies. <https://doi.org/10.31222/osf.io/x6uhk>
 
 Pustejovsky, J. E. (2020). clubSandwich: Cluster-robust (sandwich)
