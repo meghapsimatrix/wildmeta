@@ -6,3 +6,5 @@
 ^pkgdown$
 ^.github
 ^scratchpad$
+^\.github$
+^codecov\.yml$

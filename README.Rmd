@@ -17,6 +17,8 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/meghapsimatrix/wildmeta/workflows/R-CMD-check/badge.svg)](https://github.com/meghapsimatrix/wildmeta/actions)
+[![Codecov test coverage](https://codecov.io/gh/meghapsimatrix/wildmeta/branch/main/graph/badge.svg)](https://app.codecov.io/gh/meghapsimatrix/wildmeta?branch=main)
 <!-- badges: end -->
 
 Typical methods to conduct meta-analysis---pooling effect sizes or analyzing moderating effects with meta-regression---work under the assumption that the effect size estimates are independent. However, primary studies often report multiple estimates of effect sizes. Presence of multiple effect sizes leads to dependence as the estimates within each study are likely correlated (e.g., because the same participants provide multiple outcome scores). The increasingly popular method to handle such dependence, robust variance estimation (RVE), results in inflated Type 1 error rate when the number of studies is small (Hedges, Tipton & Johnson, 2010; Tipton, 2015).
@@ -71,6 +73,10 @@ The [`multiwayvcov`](https://CRAN.R-project.org/package=multiwayvcov) package im
 The [`boot`](https://CRAN.R-project.org/package=boot) package can be used to generate bootstrap replicates (Canty & Ripley, 2020). The main function in the package, `boot()` requires a dataset and a function that calculates the estimate of interest. The function returns the bootstrap estimate. The package also contains another function, `boot.ci()` that can be used to calculate bootstrap confidence intervals. The package allows parallel programming. However, the `boot` package does not provide functionality for cluster wild bootstrapping.
 
 The [`lmboot`](https://CRAN.R-project.org/package=lmboot) package implements pair, residual and wild bootstrapping for linear models (Heyman, 2019). The package does not provide Rademacher or Mammen weights for wild bootstrapping. The output of the function is a bootstrap sampling distribution. Further, the package does not work with clustered data.
+
+# Acknowledgments
+
+We are extremely thankful to [Wolfgang Viechtbauer](https://wvbauer.com/doku.php/home) for helping us solve [this issue](https://stat.ethz.ch/pipermail/r-help/2021-November/472977.html) we had with the `update()` function. We also thank Mikkel Vembye for testing our package and giving us very helpful feedback. 
 
 # References
 

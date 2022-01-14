@@ -4,6 +4,10 @@
 # wildmeta
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/meghapsimatrix/wildmeta/workflows/R-CMD-check/badge.svg)](https://github.com/meghapsimatrix/wildmeta/actions)
+[![Codecov test
+coverage](https://codecov.io/gh/meghapsimatrix/wildmeta/branch/main/graph/badge.svg)](https://app.codecov.io/gh/meghapsimatrix/wildmeta?branch=main)
 <!-- badges: end -->
 
 Typical methods to conduct meta-analysis—pooling effect sizes or
@@ -90,8 +94,8 @@ C_mat <- constrain_equal(1:3, coefs = full_model$b.r)
 Wald_test_cwb(full_model = full_model,
               constraints = C_mat,
               R = 12)
-#>   Test Adjustment CR_type Statistic  R      p_val
-#> 1  CWB        CR0     CR0   Naive-F 12 0.08333333
+#>   Test Adjustment CR_type Statistic  R p_val
+#> 1  CWB        CR0     CR0   Naive-F 12   0.5
 ```
 
 # Related Work
@@ -133,6 +137,15 @@ implements pair, residual and wild bootstrapping for linear models
 weights for wild bootstrapping. The output of the function is a
 bootstrap sampling distribution. Further, the package does not work with
 clustered data.
+
+# Acknowledgments
+
+We are extremely thankful to [Wolfgang
+Viechtbauer](https://wvbauer.com/doku.php/home) for helping us solve
+[this
+issue](https://stat.ethz.ch/pipermail/r-help/2021-November/472977.html)
+we had with the `update()` function. We also thank Mikkel Vembye for
+testing our package and giving us very helpful feedback.
 
 # References
 
