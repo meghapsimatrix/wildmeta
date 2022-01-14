@@ -63,11 +63,11 @@ scores.
 
 The code below runs cluster wild bootstrapping to test the
 multiple-contrast hypothesis that the effect of coaching does not differ
-based on study type. The study\_type variable indicates whether groups
+based on study type. The `study_type` variable indicates whether groups
 compared in primary studies were matched, randomized, or non-equivalent.
 The meta-regression model also controls for hours of coaching provided
-(hrs) and whether the students took math or verbal test (test). Below,
-we run a zero-intercept meta-regression model.
+(`hrs`) and whether the students took math or verbal test (`test`).
+Below, we run a zero-intercept meta-regression model.
 
 Below, we use the `robu()` function from the `robumeta` package to fit
 the full model. The functions in our package work with models fit using
@@ -177,7 +177,7 @@ Heyman, M. (2019). lmboot: Bootstrap in Linear Models. R package version
 
 Joshi, M., Pustejovsky, J. E., & Beretvas, S. N. (2021). Cluster wild
 bootstrapping to handle dependent effect sizes in meta-Analysis with
-small number of studies. Working paper.
+small number of studies. <https://doi.org/10.31222/osf.io/x6uhk>
 
 Pustejovsky, J. E. (2020). clubSandwich: Cluster-robust (sandwich)
 variance estimators with small-sample corrections \[R package version

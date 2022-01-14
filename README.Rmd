@@ -40,7 +40,7 @@ devtools::install_github("meghapsimatrix/wildmeta")
 
 The following example uses the `SATCoaching` dataset from the `clubSandwich` package (Pustejovksy, 2020), originally from DerSimonian and Laird (1983). The standardized mean differences represent the effects of SAT coaching on SAT verbal (SATV) and/or SAT math (SATM) scores.
 
-The code below runs cluster wild bootstrapping to test the multiple-contrast hypothesis that the effect of coaching does not differ based on study type. The study_type variable indicates whether groups compared in primary studies were matched, randomized, or non-equivalent. The meta-regression model also controls for hours of coaching provided (hrs) and whether the students took math or verbal test (test). Below, we run a zero-intercept meta-regression model.
+The code below runs cluster wild bootstrapping to test the multiple-contrast hypothesis that the effect of coaching does not differ based on study type. The `study_type` variable indicates whether groups compared in primary studies were matched, randomized, or non-equivalent. The meta-regression model also controls for hours of coaching provided (`hrs`) and whether the students took math or verbal test (`test`). Below, we run a zero-intercept meta-regression model.
 
 Below, we use the `robu()` function from the `robumeta` package to fit the full model. The functions in our package work with models fit using [`robu()`](https://cran.r-project.org/web/packages/robumeta/robumeta.pdf) from the robumeta package (Fisher, Tipton, & Zhipeng, 2017) and [`rma.mv()`](https://wviechtb.github.io/metafor/reference/rma.mv.html) from the metafor package (Viechtbauer, 2010).
 
@@ -94,7 +94,7 @@ Hedges, L. V., Tipton, E., & Johnson, M. C. (2010). Robust variance estimation i
 
 Heyman, M. (2019). lmboot: Bootstrap in Linear Models. R package version 0.0.1. <https://CRAN.R-project.org/package=lmboot>
 
-Joshi, M., Pustejovsky, J. E., & Beretvas, S. N. (2021). Cluster wild bootstrapping to handle dependent effect sizes in meta-Analysis with small number of studies. Working paper.
+Joshi, M., Pustejovsky, J. E., & Beretvas, S. N. (2021). Cluster wild bootstrapping to handle dependent effect sizes in meta-Analysis with small number of studies. <https://doi.org/10.31222/osf.io/x6uhk>
 
 Pustejovsky, J. E. (2020). clubSandwich: Cluster-robust (sandwich) variance estimators with small-sample corrections [R package version 0.4.2]. R package version 0.4.2. <https://CRAN.R-project.org/package=clubSandwich>
 

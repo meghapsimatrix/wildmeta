@@ -139,7 +139,7 @@
               constraints <span class="op">=</span> <span class="va">C_mat</span>,
               R <span class="op">=</span> <span class="fl">99</span><span class="op">)</span>
 <span class="co">#&gt;   Test Adjustment CR_type Statistic  R     p_val</span>
-<span class="co">#&gt; 1  CWB        CR0     CR0   Naive-F 99 0.2929293</span></code></pre></div>
+<span class="co">#&gt; 1  CWB        CR0     CR0   Naive-F 99 0.2222222</span></code></pre></div>
 <p>The output of the function includes the name of the test (CWB or CWB Adjusted) and the bootstrap test p-value.</p>
 <p>The users can also specify whether to adjust the residuals with <code>CR1</code> to <code>CR4</code>matrices when bootstrapping as below. The default value for the <code>adjust</code> argument is set to <code>CR0</code>. Below is an example where we set the adjust the residuals using <code>CR2</code> matrices.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -204,7 +204,7 @@
                        R <span class="op">=</span> <span class="fl">999</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;  10.582   0.211  11.824</span></code></pre></div>
+<span class="co">#&gt;   9.728   0.167  10.550</span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="metafor-models-1">
@@ -225,14 +225,14 @@
                           constraints <span class="op">=</span> <span class="va">C_mat</span>,
                           R <span class="op">=</span> <span class="fl">999</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt; 255.193  37.180 315.772</span></code></pre></div>
+<span class="co">#&gt; 250.147  35.710 319.633</span></code></pre></div>
 </div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="bootstrap-distribution-plot">Bootstrap Distribution Plot<a class="anchor" aria-label="anchor" href="#bootstrap-distribution-plot"></a>
 </h2>
-<p>The function <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> creates a <code>ggplot</code> figure representing the distribution of the bootstrap replicates based on the results from the <code><a href="../reference/Wald_test_cwb.html">Wald_test_cwb()</a></code> function. The dashed line represents the <span class="math inline">\(F\)</span> test statistic from the original full model. The bootstrapped p-value is the proportion of bootstrapped <span class="math inline">\(F\)</span> test statistics that are greater than the original <span class="math inline">\(F\)</span> statistic.</p>
+<p>The function <a href="https://meghapsimatrix.github.io/wildmeta/reference/plot.Wald_test_wildmeta.html"><code>plot()</code></a> creates a <code>ggplot</code> figure representing the distribution of the bootstrap replicates based on the results from the <code><a href="../reference/Wald_test_cwb.html">Wald_test_cwb()</a></code> function. The dashed line represents the <span class="math inline">\(F\)</span> test statistic from the original full model. The bootstrapped p-value is the proportion of bootstrapped <span class="math inline">\(F\)</span> test statistics that are greater than the original <span class="math inline">\(F\)</span> statistic.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">res</span>, fill <span class="op">=</span> <span class="st">"purple"</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <p><img src="cwbmeta_files/figure-html/unnamed-chunk-6-1.png" width="576"></p>
@@ -314,7 +314,7 @@ Webb, M. D. (2013). <em>Reworking wild bootstrap based inference for clustered e
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Megha Joshi, James Pustejovsky, Pierce Cappelli.</p>
+<p>Developed by <a href="https://meghapsimatrix.com/" class="external-link">Megha Joshi</a>, <a href="https://www.jepusto.com/" class="external-link">James Pustejovsky</a>, Pierce Cappelli.</p>
 </div>
 
 <div class="pkgdown-footer-right">
