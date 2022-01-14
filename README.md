@@ -159,7 +159,7 @@ Fischer, A. & Roodman, D. (2021). fwildclusterboot: Fast Wild Cluster
 Bootstrap Inference for Linear Regression Models. Available from
 <https://cran.r-project.org/package=fwildclusterboot>.
 
-Fisher, Z., Tipton, E., & Zhipeng, H. (2017). Robumeta: Robust variance
+Fisher, Z., Tipton, E., & Zhipeng, H. (2017). robumeta: Robust variance
 meta-regression. Retrieved from
 <https://CRAN.R-project.org/package=robumeta>
 

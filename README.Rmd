@@ -86,7 +86,7 @@ DerSimonian, R., & Laird, N. (1983). Evaluating the effect of coaching on SAT sc
 
 Fischer, A. & Roodman, D. (2021). fwildclusterboot: Fast Wild Cluster Bootstrap Inference for Linear Regression Models. Available from <https://cran.r-project.org/package=fwildclusterboot>.
 
-Fisher, Z., Tipton, E., & Zhipeng, H. (2017). Robumeta: Robust variance meta-regression. Retrieved from https://CRAN.R-project.org/package=robumeta
+Fisher, Z., Tipton, E., & Zhipeng, H. (2017). robumeta: Robust variance meta-regression. Retrieved from https://CRAN.R-project.org/package=robumeta
 
 Graham N., Arai M., & Hagströmer, B (2016). multiwayvcov: Multi-Way Standard Error Clustering. R package version 1.2.3. <https://CRAN.R-project.org/package=multiwayvcov>
 
