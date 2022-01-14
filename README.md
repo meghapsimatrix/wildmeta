@@ -138,6 +138,15 @@ weights for wild bootstrapping. The output of the function is a
 bootstrap sampling distribution. Further, the package does not work with
 clustered data.
 
+# Acknowledgments
+
+We are extremely thankful to [Wolfgang
+Viechtbauer](https://wvbauer.com/doku.php/home) for helping us solve
+[this
+issue](https://stat.ethz.ch/pipermail/r-help/2021-November/472977.html)
+we had with the `update()` function. We also thank Mikkel Vembye for
+testing our package and giving us very helpful feedback.
+
 # References
 
 Canty A. & Ripley B. (2020). boot: Bootstrap R (S-Plus) Functions. R
