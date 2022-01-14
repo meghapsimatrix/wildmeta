@@ -1,26 +1,5 @@
-destination: docs
-
+url: ~
 template:
-  params:
-    bootswatch: cosmo
-    docsearch:
-      api_key: dd1fc6c1a237adc926adbbb99a017145
-      index_name: wildmeta
-
-
-navbar:
-  right:
-   - icon: "fab fa-github"
-     href: https://github.com/meghapsimatrix/wildmeta
-
-authors:
-  Megha Joshi:
-    href: https://meghapsimatrix.com
-  James Pustejovsky:
-    href: https://www.jepusto.com/
-
-repo:
-  url:
-    home: https://github.com/meghapsimatrix/wildmeta
-    source:
+  bootstrap: 5
+  bootswatch: litera
 
