@@ -143,7 +143,7 @@ test_that("run_cwb options work for rma.mv objects.", {
   B_check <- sapply(boot_yi_B, function(x) all.equal(abs(x - fit_B), abs_res_B))
   expect_true(all(B_check))
 
-  boot_yi_C <- run_cwb(mod_C1, cluster = get_cluster(mod_C), R = 9,
+  boot_yi_C <- run_cwb(mod_C1, cluster = get_cluster(mod_C1), R = 9,
                        auxiliary_dist = "Rademacher")
   fit_C <- get_fitted(mod_C1)
   abs_res_C <- abs(get_res(mod_C1))
@@ -155,8 +155,125 @@ test_that("run_cwb options work for rma.mv objects.", {
 
 test_that("Wald_test_cwb() results do not depend on sort order.", {
 
+  skip_on_cran()
+
   ord <- sample(1:nrow(oswald2013))
   oswald_scram <- oswald2013[ord,]
+
+  V_scram <- impute_covariance_matrix(vi = oswald_scram$vi, cluster = oswald_scram$Study, r = 0.4)
+
+  scram_A <- rma.mv(yi = yi, V = V_scram,
+                    random = ~ 1 | Study / esID,
+                    data = oswald_scram,
+                    sparse = TRUE)
+  expect_equal(coef(mod_A), coef(scram_A))
+  expect_equal(as.numeric(get_res(mod_A)[ord]), as.numeric(get_res(scram_A)))
+  expect_equal(as.numeric(get_fitted(mod_A)[ord]), as.numeric(get_fitted(scram_A)))
+  expect_equal(get_cluster(mod_A)[ord], get_cluster(scram_A))
+
+  scram_B <- rma.mv(yi ~ 0 + Crit.Cat, V = V_scram,
+                    random = ~ 1 | Study / esID,
+                    data = oswald_scram,
+                    sparse = TRUE)
+  expect_equal(coef(mod_B), coef(scram_B))
+  expect_equal(as.numeric(get_res(mod_B)[ord]), as.numeric(get_res(scram_B)))
+  expect_equal(as.numeric(get_fitted(mod_B)[ord]), as.numeric(get_fitted(scram_B)))
+  expect_equal(get_cluster(mod_B)[ord], get_cluster(scram_B))
+
+  scram_C1 <- rma.mv(yi ~ Crit.Cat + Crit.Domain + IAT.Focus + Scoring, V = V_scram,
+                     random = ~ 1 | Study / esID,
+                     data = oswald_scram,
+                     sparse = TRUE)
+  expect_equal(coef(mod_C1), coef(scram_C1))
+  expect_equal(as.numeric(get_res(mod_C1)[ord]), as.numeric(get_res(scram_C1)))
+  expect_equal(as.numeric(get_fitted(mod_C1)[ord]), as.numeric(get_fitted(scram_C1)))
+  expect_equal(get_cluster(mod_C1)[ord], get_cluster(scram_C1))
+
+  scram_C2 <- rma.mv(yi ~ Crit.Cat + Crit.Domain + IAT.Focus + Scoring, V = V_scram,
+                     random = ~ 1 | Study,
+                     data = oswald_scram,
+                     sparse = TRUE)
+  expect_equal(coef(mod_C2), coef(scram_C2))
+  expect_equal(as.numeric(get_res(mod_C2)[ord]), as.numeric(get_res(scram_C2)))
+  expect_equal(as.numeric(get_fitted(mod_C2)[ord]), as.numeric(get_fitted(scram_C2)))
+  expect_equal(get_cluster(mod_C2)[ord], get_cluster(scram_C2))
+
+  orig_A <- Wald_test_cwb(mod_B, constraints = Cmat_A,
+                          R = 4,
+                          auxiliary_dist = "Rademacher",
+                          adjust = "CR0",
+                          type = "CR0",
+                          test = "Naive-F",
+                          seed = 1)
+
+  scram_A <- Wald_test_cwb(scram_B, constraints = Cmat_A,
+                           R = 4,
+                           auxiliary_dist = "Rademacher",
+                           adjust = "CR0",
+                           type = "CR0",
+                           test = "Naive-F",
+                           seed = 1)
+
+  expect_equal(attr(orig_A, "original"), attr(scram_A, "original"))
+  expect_equal(attr(orig_A, "bootstraps"), attr(scram_A, "bootstraps"))
+
+
+  orig_D <- Wald_test_cwb(mod_C1, constraints = Cmat_D,
+                          R = 3,
+                          auxiliary_dist = "Mammen",
+                          adjust = "CR1",
+                          type = "CR1",
+                          test = "Naive-Fp",
+                          seed = 2)
+
+  scram_D <- Wald_test_cwb(scram_C1, constraints = Cmat_D,
+                           R = 3,
+                           auxiliary_dist = "Mammen",
+                           adjust = "CR1",
+                           type = "CR1",
+                           test = "Naive-Fp",
+                           seed = 2)
+
+  expect_equal(attr(orig_D, "original"), attr(scram_D, "original"))
+  expect_equal(attr(orig_D, "bootstraps"), attr(scram_D, "bootstraps"))
+
+  orig_E <- Wald_test_cwb(mod_C2, constraints = Cmat_E,
+                          R = 5,
+                          auxiliary_dist = "Webb six",
+                          adjust = "CR2",
+                          type = "CR2",
+                          test = "HTZ",
+                          seed = 3)
+
+  scram_E <- Wald_test_cwb(scram_C2, constraints = Cmat_E,
+                           R = 5,
+                           auxiliary_dist = "Webb six",
+                           adjust = "CR2",
+                           type = "CR2",
+                           test = "HTZ",
+                           seed = 3)
+
+  expect_equal(attr(orig_E, "original"), attr(scram_E, "original"))
+  expect_equal(attr(orig_E, "bootstraps"), attr(scram_E, "bootstraps"))
+
+  orig_F <- Wald_test_cwb(mod_C2, constraints = Cmat_F,
+                          R = 8,
+                          auxiliary_dist = "uniform",
+                          adjust = "CR3",
+                          type = "CR3",
+                          test = "EDT",
+                          seed = 4)
+
+  scram_F <- Wald_test_cwb(scram_C2, constraints = Cmat_F,
+                           R = 8,
+                           auxiliary_dist = "uniform",
+                           adjust = "CR3",
+                           type = "CR3",
+                           test = "EDT",
+                           seed = 4)
+
+  expect_equal(attr(orig_F, "original"), attr(scram_F, "original"))
+  expect_equal(attr(orig_F, "bootstraps"), attr(scram_F, "bootstraps"))
 
 })
 
@@ -172,13 +289,13 @@ test_that("Wald_test_cwb() works with missing values.", {
 })
 
 
-test_that("Wald_test_cwb() works with user-weighted robu models.", {
+test_that("Wald_test_cwb() works when rma.mv uses subset.", {
 
-  # create missingness in predictors
+})
 
-  # create missingness in outcomes
 
-  # create missingness in clusters
+
+test_that("Wald_test_cwb() works with user-weighted rma.mv models.", {
 
 })
 
