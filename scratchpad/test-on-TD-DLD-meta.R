@@ -118,6 +118,9 @@ Cmat_5B <- constrain_zero("support_", reg_ex = TRUE)
 Wald_test(RQ5_A,
           constraints = list(task = Cmat_5A, support = Cmat_5B),
           vcov = "CR2")
+Wald_test(RQ5_A,
+          constraints = list(task = Cmat_5A, support = Cmat_5B),
+          vcov = "CR0", test = "Naive-F")
 Wald_test_cwb(RQ5_A, constraints = Cmat_5A, R = 199)
 Wald_test_cwb(RQ5_A, constraints = Cmat_5B, R = 199)
 
