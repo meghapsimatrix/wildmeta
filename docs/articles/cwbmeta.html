@@ -123,7 +123,7 @@
 <p>The code below runs cluster wild bootstrapping to test the multiple-contrast hypothesis that the effect of coaching does not differ based on study type. The <code>study_type</code> variable indicates whether groups compared in primary studies were matched, randomized, or non-equivalent. The meta-regression model also controls for hours of coaching provided (<code>hrs</code>) and whether the students took math or verbal test (<code>test</code>). Below, we run a zero-intercept meta-regression model.</p>
 <p>The <code><a href="../reference/Wald_test_cwb.html">Wald_test_cwb()</a></code> function takes in a full model fit using the <code><a href="https://rdrr.io/pkg/robumeta/man/robu.html" class="external-link">robu()</a></code> function from the <code>robumeta</code> package as an argument. Further, users need to specify the constraint to be tested. Below, we create a constraint matrix using <a href="https://cran.r-project.org/web/packages/clubSandwich/vignettes/Wald-tests-in-clubSandwich.html#constrain_equal" class="external-link">constrain_equal()</a> function from <code>clubSandwich</code>; indices 1 to 3 correspond to the three levels of the <code>study_type</code> variable. Users can specify the number of bootstrap replications R. The default value is set to 999. In the examples below, we set the value to 99 to speed up computation time.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://meghapsimatrix.github.io/wildmeta/index.html" class="external-link">wildmeta</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://meghapsimatrix.github.io/wildmeta/index.html">wildmeta</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jepusto/clubSandwich" class="external-link">clubSandwich</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/zackfisher/robumeta" class="external-link">robumeta</a></span><span class="op">)</span>
 
@@ -139,7 +139,7 @@
               constraints <span class="op">=</span> <span class="va">C_mat</span>,
               R <span class="op">=</span> <span class="fl">99</span><span class="op">)</span>
 <span class="co">#&gt;   Test Adjustment CR_type Statistic  R     p_val</span>
-<span class="co">#&gt; 1  CWB        CR0     CR0   Naive-F 99 0.4141414</span></code></pre></div>
+<span class="co">#&gt; 1  CWB        CR0     CR0   Naive-F 99 0.2929293</span></code></pre></div>
 <p>The output of the function includes the name of the test (CWB or CWB Adjusted) and the bootstrap test p-value.</p>
 <p>The users can also specify whether to adjust the residuals with <code>CR1</code> to <code>CR4</code>matrices when bootstrapping as below. The default value for the <code>adjust</code> argument is set to <code>CR0</code>. Below is an example where we set the adjust the residuals using <code>CR2</code> matrices.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -204,7 +204,7 @@
                        R <span class="op">=</span> <span class="fl">999</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;  10.622   0.239  12.209</span></code></pre></div>
+<span class="co">#&gt;  10.582   0.211  11.824</span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="metafor-models-1">
@@ -225,7 +225,7 @@
                           constraints <span class="op">=</span> <span class="va">C_mat</span>,
                           R <span class="op">=</span> <span class="fl">999</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt; 268.769  38.955 360.773</span></code></pre></div>
+<span class="co">#&gt; 255.193  37.180 315.772</span></code></pre></div>
 </div>
 </div>
 </div>
