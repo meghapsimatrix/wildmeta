@@ -278,24 +278,72 @@ test_that("Wald_test_cwb() results do not depend on sort order.", {
 })
 
 
-test_that("Wald_test_cwb() works with missing values.", {
-
-  # create missingness in predictors
-
-  # create missingness in outcomes
-
-  # create missingness in clusters
-
-})
-
-
 test_that("Wald_test_cwb() works when rma.mv uses subset.", {
+
+  oswald_sub <- subset(oswald2013, Crit.Cat == "Microbehavior")
+
+  V_sub <- impute_covariance_matrix(vi = oswald_sub$vi, cluster = oswald_sub$Study, r = 0.4)
+
+  mod_full <- rma.mv(yi = yi, V = V_sub,
+                     mods = ~ 0 + IAT.Focus + Crit.Domain,
+                     random = ~ 1 | Study / esID,
+                     data = oswald_sub,
+                     sparse = TRUE)
+
+  mod_sub <- rma.mv(yi = yi, V = V,
+                    mods = ~ 0 + IAT.Focus + Crit.Domain,
+                    random = ~ 1 | Study / esID,
+                    data = oswald2013,
+                    subset = Crit.Cat == "Microbehavior",
+                    sparse = TRUE)
+
+  expect_equal(coef(mod_full), coef(mod_sub))
+  expect_equal(as.numeric(get_res(mod_full)), as.numeric(get_res(mod_sub)))
+  expect_equal(as.numeric(get_fitted(mod_full)), as.numeric(get_fitted(mod_sub)))
+  expect_equal(get_cluster(mod_full), get_cluster(mod_sub))
+
+  test_full <- Wald_test_cwb(mod_full,
+                             constraints = constrain_equal("IAT.Focus", reg_ex = TRUE),
+                             R = 4,
+                             auxiliary_dist = "Rademacher",
+                             adjust = "CR0",
+                             type = "CR0",
+                             test = "Naive-F",
+                             seed = 19)
+
+  test_sub <- Wald_test_cwb(mod_sub,
+                            constraints = constrain_equal("IAT.Focus", reg_ex = TRUE),
+                            R = 4,
+                            auxiliary_dist = "Rademacher",
+                            adjust = "CR0",
+                            type = "CR0",
+                            test = "Naive-F",
+                            seed = 19)
+
+  expect_equal(attr(test_full, "original"), attr(test_sub, "original"))
+  expect_equal(attr(test_full, "bootstraps"), attr(test_sub, "bootstraps"))
 
 })
 
 
 
 test_that("Wald_test_cwb() works with user-weighted rma.mv models.", {
+
+  oswald2013$wt <- 1 + rpois(nrow(oswald2013), lambda = 1)
+  table(oswald2013$wt)
+
+  mod_wt <- rma.mv(yi ~ 0 + Crit.Cat + Crit.Domain + IAT.Focus + Scoring,
+                   V = V, W = wt,
+                   random = ~ 1 | Study,
+                   data = oswald2013,
+                   sparse = TRUE)
+
+  test_wt <- Wald_test_cwb(mod_wt,
+                           constraints = constrain_equal("Crit.Cat", reg_ex = TRUE),
+                           R = 3,
+                           seed = 19)
+
+  expect_s3_class(test_wt, "Wald_test_wildmeta")
 
 })
 
