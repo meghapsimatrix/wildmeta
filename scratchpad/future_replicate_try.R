@@ -28,7 +28,7 @@ full_model <- robu(d ~ 0 + study_type + hrs + test,
 
 C_mat <- constrain_equal(1:3, coefs = full_model$b.r)
 
-cluster <- get_cluster(model)
+cluster <- get_cluster(full_model)
 model <- full_model
 adjust <- "CR0"
 auxiliary_dist <- "Rademacher"
