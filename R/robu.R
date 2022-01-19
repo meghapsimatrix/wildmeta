@@ -8,6 +8,8 @@ estimate_null.robu <- function(full_model,
 
   dep <- full_model$modelweights
 
+  cat("Tra la la Singing in the Shower.")
+
   # assembling data ---------------------------------------------------------
 
   es_dat <- full_model$data.full[, c("effect.size", "var.eff.size", "study")]
