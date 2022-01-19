@@ -8,6 +8,7 @@ estimate_null.rma.mv <- function(full_model,
                                  C_mat) {
 
   # info -------------------------------------------------------------------
+  dat <- eval(full_model$call$data)
   X_mat <- full_model$X
   cluster <- clubSandwich::findCluster.rma.mv(full_model)
   yi <- full_model$call$yi
@@ -19,9 +20,14 @@ estimate_null.rma.mv <- function(full_model,
 
   Xnull_f <- matrix(NA, nrow = nrow(full_model$X.f), ncol = ncol(Xnull))
   Xnull_f[full_model$not.na,] <- Xnull
+  dat$Xnull_f <- Xnull_f
 
-  null_model <- metafor::update.rma(full_model,
-                                    mods = ~ 0 + Xnull_f)
+  cat("\nV: ", find(as.character(full_model$call$V)), "\n")
+  cat("data: ", find(as.character(full_model$call$data)), "\n")
+  cat("dat: ", find("dat"), "\n")
+  cat("globalenv:" , ls(envir = globalenv()), "\n")
+
+  null_model <- metafor::update.rma(full_model, mods = ~ 0 + Xnull_f, data = dat)
 
   return(null_model)
 
