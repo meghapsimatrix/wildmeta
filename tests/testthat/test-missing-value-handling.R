@@ -181,15 +181,25 @@ test_that("Wald_test_cwb() works with rma.mv objects that have missing values.",
                test = "Naive-F", seed = 17)
 })
 
-mod_A <- rma.mv(effectsize, mods = ~ binge + followup + males + college,
-                   V = V_miss,
-                   random = ~ 1 | studyid,
-                   data = corrdat_miss_y)
+# missing x
 
-mod_B <- rma.mv(effectsize ~ binge + followup + males + college,
-                   V = V_miss,
-                   random = ~ 1 | studyid,
-                   data = corrdat_miss_y)
+# V_miss <- impute_covariance_matrix(vi = corrdat_miss_x$var,
+#                                    cluster = corrdat_miss_x$studyid,
+#                                    r = 0.7)
+#
+# mod_A <- rma.mv(effectsize, mods = ~ binge + followup + males + college,
+#                    V = V_miss,
+#                    random = ~ 1 | studyid,
+#                    data = corrdat_miss_y)
+#
+# V_full <- impute_covariance_matrix(vi = corrdat_full_x$var,
+#                                    cluster = corrdat_full_x$studyid,
+#                                    r = 0.7)
+#
+# mod_B <- rma.mv(effectsize ~ binge + followup + males + college,
+#                    V = V_full,
+#                    ran = ~ 1 | studyid,
+#                    data = corrdat_full_x)
 
 
 test_that("Wald_test_cwb() works with rma.mv objects that have missing values.", {
