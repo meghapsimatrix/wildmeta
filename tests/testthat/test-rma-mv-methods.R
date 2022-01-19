@@ -1,5 +1,5 @@
-library(metafor)
-library(clubSandwich)
+suppressPackageStartupMessages(library(metafor))
+suppressPackageStartupMessages(library(clubSandwich))
 
 
 data("oswald2013", package = "robumeta")

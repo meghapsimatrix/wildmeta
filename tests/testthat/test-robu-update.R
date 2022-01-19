@@ -1,4 +1,4 @@
-library(robumeta)
+suppressPackageStartupMessages(library(robumeta))
 
 data("SATcoaching", package = "clubSandwich")
 

@@ -1,5 +1,5 @@
-library(clubSandwich)
-library(robumeta)
+suppressPackageStartupMessages(library(clubSandwich))
+suppressPackageStartupMessages(library(robumeta))
 
 data("oswald2013")
 oswald2013$yi <- atanh(oswald2013$R)
@@ -216,6 +216,7 @@ test_that("Wald_test_cwb() results do not depend on sort order.", {
                            type = "CR0",
                            test = "Naive-F",
                            seed = 1)
+
 
   expect_equal(attr(orig_A, "original"), attr(scram_A, "original"))
   expect_equal(attr(orig_A, "bootstraps"), attr(scram_A, "bootstraps"))
