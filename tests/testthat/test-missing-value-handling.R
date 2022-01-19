@@ -1,6 +1,6 @@
-library(robumeta)
-library(metafor)
-library(clubSandwich)
+suppressPackageStartupMessages(library(robumeta))
+suppressPackageStartupMessages(library(metafor))
+suppressPackageStartupMessages(library(clubSandwich))
 
 data("corrdat")
 

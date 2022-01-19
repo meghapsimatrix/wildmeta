@@ -1,5 +1,5 @@
-library(clubSandwich)
-library(robumeta)
+suppressPackageStartupMessages(library(clubSandwich))
+suppressPackageStartupMessages(library(robumeta))
 
 data("oswald2013")
 oswald2013$yi <- atanh(oswald2013$R)
