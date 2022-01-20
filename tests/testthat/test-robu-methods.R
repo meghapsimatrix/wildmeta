@@ -1,5 +1,5 @@
-library(clubSandwich)
-library(robumeta)
+suppressPackageStartupMessages(library(clubSandwich))
+suppressPackageStartupMessages(library(robumeta))
 
 data("oswald2013")
 oswald2013$yi <- atanh(oswald2013$R)
@@ -217,6 +217,7 @@ test_that("Wald_test_cwb() results do not depend on sort order.", {
                            test = "Naive-F",
                            seed = 1)
 
+
   expect_equal(attr(orig_A, "original"), attr(scram_A, "original"))
   expect_equal(attr(orig_A, "bootstraps"), attr(scram_A, "bootstraps"))
 
@@ -281,23 +282,21 @@ test_that("Wald_test_cwb() results do not depend on sort order.", {
 })
 
 
-test_that("Wald_test_cwb() works with missing values.", {
-
- # create missingness in predictors
-
- # create missingness in outcomes
-
- # create missingness in clusters
-
-})
-
-
 test_that("Wald_test_cwb() works with user-weighted robu models.", {
 
-  # create missingness in predictors
+  oswald2013$wt <- 1 + rpois(nrow(oswald2013), lambda = 1)
+  table(oswald2013$wt)
 
-  # create missingness in outcomes
+  mod_wt <- robu(yi ~ 0 + Crit.Cat + Crit.Domain + IAT.Focus + Scoring,
+                 studynum = Study, var.eff.size = vi,
+                 userweights = wt, modelweights = "CORR",
+                 data = oswald2013)
 
-  # create missingness in clusters
+  test_wt <- Wald_test_cwb(mod_wt,
+                           constraints = constrain_equal("Crit.Cat", reg_ex = TRUE),
+                           R = 19,
+                           seed = 19)
+
+  expect_s3_class(test_wt, "Wald_test_wildmeta")
 
 })

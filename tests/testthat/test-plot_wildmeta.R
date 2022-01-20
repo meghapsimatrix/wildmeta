@@ -1,5 +1,6 @@
 data("SATcoaching", package = "clubSandwich")
-library(robumeta)
+suppressPackageStartupMessages(library(robumeta))
+
 
 full_model <- robu(d ~ 0 + study_type + hrs + test,
                    studynum = study,

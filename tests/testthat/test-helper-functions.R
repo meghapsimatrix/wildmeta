@@ -1,4 +1,5 @@
-library(clubSandwich)
+suppressPackageStartupMessages(library(clubSandwich))
+
 data("AchievementAwardsRCT", package = "clubSandwich")
 
 test_that("constrain_predictors works as expected.", {

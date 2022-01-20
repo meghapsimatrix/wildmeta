@@ -94,8 +94,8 @@ C_mat <- constrain_equal(1:3, coefs = full_model$b.r)
 Wald_test_cwb(full_model = full_model,
               constraints = C_mat,
               R = 12)
-#>   Test Adjustment CR_type Statistic  R p_val
-#> 1  CWB        CR0     CR0   Naive-F 12   0.5
+#>   Test Adjustment CR_type Statistic  R     p_val
+#> 1  CWB        CR0     CR0   Naive-F 12 0.4166667
 ```
 
 # Related Work
