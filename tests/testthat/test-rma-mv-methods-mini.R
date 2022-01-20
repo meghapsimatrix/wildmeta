@@ -8,7 +8,7 @@ oswald2013$vi <- 1 / (oswald2013$N - 3)
 oswald2013$esID <- 1:nrow(oswald2013)
 oswald2013$wt <- 1 + rpois(nrow(oswald2013), lambda = 1)
 table(oswald2013$wt)
-
+oswald2013 <<- oswald2013
 
 V <<- impute_covariance_matrix(vi = oswald2013$vi, cluster = oswald2013$Study, r = 0.4)
 

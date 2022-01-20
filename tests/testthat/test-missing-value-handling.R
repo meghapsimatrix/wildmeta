@@ -5,48 +5,48 @@ suppressPackageStartupMessages(library(clubSandwich))
 data("corrdat")
 
 # create missingness in outcomes
-corrdat_miss_y <- corrdat
+corrdat_miss_y <<- corrdat
 missing_y <- as.logical(rbinom(nrow(corrdat), size = 1L, prob = 0.1))
 corrdat_miss_y$effectsize[missing_y] <- NA
-corrdat_full_y <- subset(corrdat_miss_y, !missing_y)
+corrdat_full_y <<- subset(corrdat_miss_y, !missing_y)
 
 # create missingness in predictors
-corrdat_miss_x <- corrdat
+corrdat_miss_x <<- corrdat
 missing_x <- as.logical(rbinom(nrow(corrdat), size = 1L, prob = 0.1))
 corrdat_miss_x$followup[missing_x] <- NA
-corrdat_full_x <- subset(corrdat_miss_x, !missing_x)
+corrdat_full_x <<- subset(corrdat_miss_x, !missing_x)
 
 # create missingness in clusters
-corrdat_miss_cl <- corrdat
+corrdat_miss_cl <<- corrdat
 missing_cl <- as.logical(rbinom(nrow(corrdat), size = 1L, prob = 0.1))
 corrdat_miss_cl$studyid[missing_cl] <- NA
-corrdat_full_cl <- subset(corrdat_miss_cl, !missing_cl)
+corrdat_full_cl <<- subset(corrdat_miss_cl, !missing_cl)
 
 
 # missingness in outcomes and predictors
-corrdat_miss_yx <- corrdat_miss_y
+corrdat_miss_yx <<- corrdat_miss_y
 corrdat_miss_yx$followup[missing_x] <- NA
-corrdat_full_yx <- subset(corrdat_miss_x, !missing_y & !missing_x)
+corrdat_full_yx <<- subset(corrdat_miss_x, !missing_y & !missing_x)
 
 
 # missingness in outcomes and clusters
-corrdat_miss_yc <- corrdat_miss_y
+corrdat_miss_yc <<- corrdat_miss_y
 corrdat_miss_yc$studyid[missing_cl] <- NA
-corrdat_full_yc <- subset(corrdat_miss_yc, !missing_y & !missing_cl)
+corrdat_full_yc <<- subset(corrdat_miss_yc, !missing_y & !missing_cl)
 
 
 # missingness in predictors and clusters
-corrdat_miss_xc <- corrdat_miss_x
+corrdat_miss_xc <<- corrdat_miss_x
 corrdat_miss_xc$studyid[missing_cl] <- NA
-corrdat_full_xc <- subset(corrdat_miss_xc, !missing_x & !missing_cl)
+corrdat_full_xc <<- subset(corrdat_miss_xc, !missing_x & !missing_cl)
 
 
 # missingness everywhere
 corrdat$effectsize[missing_y] <- NA
 corrdat$followup[missing_x] <- NA
 corrdat$studyid[missing_cl] <- NA
-corrdat_full <- subset(corrdat, !missing_y & !missing_x & !missing_cl)
-
+corrdat_full <<- subset(corrdat, !missing_y & !missing_x & !missing_cl)
+corrdat <<- corrdat
 
 
 
@@ -114,20 +114,24 @@ test_that("Wald_test_cwb() works with robu objects that have missing values.", {
 
 compare_rmas <- function(dat_miss, dat_full, ...) {
 
-  V_miss <- impute_covariance_matrix(vi = dat_miss$var,
+  dat_miss <<- dat_miss
+  dat_full <<- dat_full
+  V_miss <<- impute_covariance_matrix(vi = dat_miss$var,
                                      cluster = dat_miss$studyid,
                                      r = 0.7)
 
-  mod_miss <- rma.mv(effectsize ~ binge + followup + males + college,
-                     V = V_miss,
-                     random = ~ 1 | studyid,
-                     data = dat_miss)
+  suppressWarnings(
+    mod_miss <<- rma.mv(effectsize ~ binge + followup + males + college,
+                        V = V_miss,
+                        random = ~ 1 | studyid,
+                        data = dat_miss)
+  )
 
-  V_full <- impute_covariance_matrix(vi = dat_full$var,
+  V_full <<- impute_covariance_matrix(vi = dat_full$var,
                                      cluster = dat_full$studyid,
                                      r = 0.7)
 
-  mod_full <- rma.mv(effectsize ~ binge + followup + males + college,
+  mod_full <<- rma.mv(effectsize ~ binge + followup + males + college,
                      V = V_full,
                      random = ~ 1 | studyid,
                      data = dat_full)
@@ -144,7 +148,7 @@ compare_rmas <- function(dat_miss, dat_full, ...) {
 
 test_that("Wald_test_cwb() works with rma.mv objects that have missing values.", {
 
-  skip("rma.mv scoping rules are still giving me trouble.")
+  # skip("rma.mv scoping rules are still giving me trouble.")
   compare_rmas(corrdat_miss_y, corrdat_full_y,
                R = 3, auxiliary_dist = "Rademacher",
                adjust = "CR0", type = "CR0",
@@ -179,136 +183,4 @@ test_that("Wald_test_cwb() works with rma.mv objects that have missing values.",
                R = 3, auxiliary_dist = "Rademacher",
                adjust = "CR0", type = "CR0",
                test = "Naive-F", seed = 17)
-})
-
-# missing x
-
-# V_miss <- impute_covariance_matrix(vi = corrdat_miss_x$var,
-#                                    cluster = corrdat_miss_x$studyid,
-#                                    r = 0.7)
-#
-# mod_A <- rma.mv(effectsize, mods = ~ binge + followup + males + college,
-#                    V = V_miss,
-#                    random = ~ 1 | studyid,
-#                    data = corrdat_miss_y)
-#
-# V_full <- impute_covariance_matrix(vi = corrdat_full_x$var,
-#                                    cluster = corrdat_full_x$studyid,
-#                                    r = 0.7)
-#
-# mod_B <- rma.mv(effectsize ~ binge + followup + males + college,
-#                    V = V_full,
-#                    ran = ~ 1 | studyid,
-#                    data = corrdat_full_x)
-
-
-test_that("Wald_test_cwb() works with rma.mv objects that have missing values.", {
-
-  # missing x
-
-  V_miss <- impute_covariance_matrix(vi = corrdat_miss_x$var,
-                                     cluster = corrdat_miss_x$studyid,
-                                     r = 0.7)
-
-  mod_miss <- rma.mv(effectsize ~ binge + followup + males + college,
-                     V = V_miss,
-                     random = ~ 1 | studyid,
-                     data = corrdat_miss_x)
-
-  V_full <- impute_covariance_matrix(vi = corrdat_full_x$var,
-                                     cluster = corrdat_full_x$studyid,
-                                     r = 0.7)
-
-  mod_full <- rma.mv(effectsize ~ binge + followup + males + college,
-                     V = V_full,
-                     random = ~ 1 | studyid,
-                     data = corrdat_full_x)
-
-
-  test_full <- Wald_test_cwb(mod_full, constraints = constrain_zero(2:4),
-                             R = 3, auxiliary_dist = "Mammen",
-                             adjust = "CR2", type = "CR0",
-                             test = "EDT", seed = 12)
-  test_miss <- Wald_test_cwb(mod_miss, constraints = constrain_zero(2:4),
-                             R = 3, auxiliary_dist = "Mammen",
-                             adjust = "CR2", type = "CR0",
-                             test = "EDT", seed = 12)
-
-
-  expect_equal(coef(mod_miss), coef(mod_full))
-  expect_equal(attr(test_miss, "original"), attr(test_full, "original"))
-  expect_equal(attr(test_miss, "bootstraps"), attr(test_full, "bootstraps"))
-
-  # missing y
-
-  V_miss <- impute_covariance_matrix(vi = corrdat_miss_y$var,
-                                     cluster = corrdat_miss_y$studyid,
-                                     r = 0.7)
-
-  mod_miss <- rma.mv(effectsize ~ binge + followup + males + college,
-                     V = V_miss,
-                     random = ~ 1 | studyid,
-                     data = corrdat_miss_y)
-
-  V_full <- impute_covariance_matrix(vi = corrdat_full_y$var,
-                                     cluster = corrdat_full_y$studyid,
-                                     r = 0.7)
-
-  mod_full <- rma.mv(effectsize ~ binge + followup + males + college,
-                     V = V_full,
-                     random = ~ 1 | studyid,
-                     data = corrdat_full_y)
-
-
-  test_miss <- Wald_test_cwb(mod_miss, constraints = constrain_zero(2:4),
-                             R = 3, auxiliary_dist = "Rademacher",
-                             adjust = "CR0", type = "CR0",
-                             test = "Naive-F", seed = 11)
-  test_full <- Wald_test_cwb(mod_full, constraints = constrain_zero(2:4),
-                             R = 3, auxiliary_dist = "Rademacher",
-                             adjust = "CR0", type = "CR0",
-                             test = "Naive-F", seed = 11)
-
-  expect_equal(coef(mod_miss), coef(mod_full))
-  expect_equal(attr(test_miss, "original"), attr(test_full, "original"))
-  expect_equal(attr(test_miss, "bootstraps"), attr(test_full, "bootstraps"))
-
-
-
-
-  # missing y and x
-
-  V_miss <- impute_covariance_matrix(vi = corrdat_miss_yx$var,
-                                     cluster = corrdat_miss_yx$studyid,
-                                     r = 0.7)
-
-  mod_miss <- rma.mv(effectsize ~ binge + followup + males + college,
-                     V = V_miss,
-                     random = ~ 1 | studyid,
-                     data = corrdat_miss_yx)
-
-  V_full <- impute_covariance_matrix(vi = corrdat_full_yx$var,
-                                     cluster = corrdat_full_yx$studyid,
-                                     r = 0.7)
-
-  mod_full <- rma.mv(effectsize ~ binge + followup + males + college,
-                     V = V_full,
-                     random = ~ 1 | studyid,
-                     data = corrdat_full_yx)
-
-
-  test_miss <- Wald_test_cwb(mod_miss, constraints = constrain_zero(2:4),
-                             R = 3, auxiliary_dist = "Rademacher",
-                             adjust = "CR0", type = "CR0",
-                             test = "Naive-F", seed = 14)
-  test_full <- Wald_test_cwb(mod_full, constraints = constrain_zero(2:4),
-                             R = 3, auxiliary_dist = "Rademacher",
-                             adjust = "CR0", type = "CR0",
-                             test = "Naive-F", seed = 14)
-
-  expect_equal(coef(mod_miss), coef(mod_full))
-  expect_equal(attr(test_miss, "original"), attr(test_full, "original"))
-  expect_equal(attr(test_miss, "bootstraps"), attr(test_full, "bootstraps"))
-
-
 })

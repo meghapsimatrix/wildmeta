@@ -8,7 +8,7 @@ oswald2013$vi <- 1 / (oswald2013$N - 3)
 oswald2013$esID <- 1:nrow(oswald2013)
 oswald2013$wt <- 1 + rpois(nrow(oswald2013), lambda = 1)
 table(oswald2013$wt)
-
+oswald2013 <<- oswald2013
 
 V <<- impute_covariance_matrix(vi = oswald2013$vi, cluster = oswald2013$Study, r = 0.4)
 
@@ -155,7 +155,7 @@ test_that("run_cwb options work for rma.mv objects.", {
 
 })
 
-compare_mod_results <- function(mod, scram, ord, tol = 1e-6) {
+compare_mod_results <- function(mod, scram, ord = 1:length(get_res(mod)), tol = 1e-6) {
   expect_equal(coef(mod), coef(scram), tolerance = tol)
   expect_equal(as.numeric(get_res(mod)[ord]), as.numeric(get_res(scram)), tolerance = tol)
   expect_equal(as.numeric(get_fitted(mod)[ord]), as.numeric(get_fitted(scram)), tolerance = tol)
@@ -177,21 +177,11 @@ test_that("Wald_test_cwb() results do not depend on sort order.", {
                     sparse = TRUE)
   compare_mod_results(mod_A, scram_A, ord)
 
-  # expect_equal(coef(mod_A), coef(scram_A))
-  # expect_equal(as.numeric(get_res(mod_A)[ord]), as.numeric(get_res(scram_A)))
-  # expect_equal(as.numeric(get_fitted(mod_A)[ord]), as.numeric(get_fitted(scram_A)))
-  # expect_equal(get_cluster(mod_A)[ord], get_cluster(scram_A))
-
   scram_B <<- rma.mv(yi ~ 0 + Crit.Cat, V = V_scram,
                     random = ~ 1 | Study / esID,
                     data = oswald_scram,
                     sparse = TRUE)
   compare_mod_results(mod_B, scram_B, ord)
-
-  # expect_equal(coef(mod_B), coef(scram_B))
-  # expect_equal(as.numeric(get_res(mod_B)[ord]), as.numeric(get_res(scram_B)))
-  # expect_equal(as.numeric(get_fitted(mod_B)[ord]), as.numeric(get_fitted(scram_B)))
-  # expect_equal(get_cluster(mod_B)[ord], get_cluster(scram_B))
 
   scram_C1 <<- rma.mv(yi ~ Crit.Cat + Crit.Domain + IAT.Focus + Scoring, V = V_scram,
                      random = ~ 1 | Study / esID,
@@ -199,21 +189,11 @@ test_that("Wald_test_cwb() results do not depend on sort order.", {
                      sparse = TRUE)
   compare_mod_results(mod_C1, scram_C1, ord)
 
-  # expect_equal(coef(mod_C1), coef(scram_C1))
-  # expect_equal(as.numeric(get_res(mod_C1)[ord]), as.numeric(get_res(scram_C1)))
-  # expect_equal(as.numeric(get_fitted(mod_C1)[ord]), as.numeric(get_fitted(scram_C1)))
-  # expect_equal(get_cluster(mod_C1)[ord], get_cluster(scram_C1))
-
   scram_C2 <<- rma.mv(yi ~ Crit.Cat + Crit.Domain + IAT.Focus + Scoring, V = V_scram,
                      random = ~ 1 | Study,
                      data = oswald_scram,
                      sparse = TRUE)
   compare_mod_results(mod_C2, scram_C2, ord)
-
-  # expect_equal(coef(mod_C2), coef(scram_C2))
-  # expect_equal(as.numeric(get_res(mod_C2)[ord]), as.numeric(get_res(scram_C2)))
-  # expect_equal(as.numeric(get_fitted(mod_C2)[ord]), as.numeric(get_fitted(scram_C2)))
-  # expect_equal(get_cluster(mod_C2)[ord], get_cluster(scram_C2))
 
   orig_A <- Wald_test_cwb(mod_B, constraints = Cmat_A,
                           R = 4,
@@ -314,10 +294,7 @@ test_that("Wald_test_cwb() works when rma.mv uses subset.", {
                     subset = Crit.Cat == "Microbehavior",
                     sparse = TRUE)
 
-  expect_equal(coef(mod_full), coef(mod_sub))
-  expect_equal(as.numeric(get_res(mod_full)), as.numeric(get_res(mod_sub)))
-  expect_equal(as.numeric(get_fitted(mod_full)), as.numeric(get_fitted(mod_sub)))
-  expect_equal(get_cluster(mod_full), get_cluster(mod_sub))
+  compare_mod_results(mod_full, mod_sub)
 
   test_full <- Wald_test_cwb(mod_full,
                              constraints = constrain_equal("IAT.Focus", reg_ex = TRUE),
