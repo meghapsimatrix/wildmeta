@@ -22,11 +22,6 @@ estimate_null.rma.mv <- function(full_model,
   Xnull_f[full_model$not.na,] <- Xnull
   dat$Xnull_f <- Xnull_f
 
-  cat("\nV: ", find(as.character(full_model$call$V)), "\n")
-  cat("data: ", find(as.character(full_model$call$data)), "\n")
-  cat("dat: ", find("dat"), "\n")
-  cat("globalenv:" , ls(envir = globalenv()), "\n")
-
   null_model <- metafor::update.rma(full_model, mods = ~ 0 + Xnull_f, data = dat)
 
   return(null_model)
