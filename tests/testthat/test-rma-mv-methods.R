@@ -323,18 +323,37 @@ test_that("Wald_test_cwb() works when rma.mv uses subset.", {
 
 test_that("Wald_test_cwb() works with user-weighted rma.mv models.", {
 
-  mod_wt <<- rma.mv(yi ~ 0 + Crit.Cat + Crit.Domain + IAT.Focus + Scoring,
-                   V = V, W = wt,
-                   random = ~ 1 | Study,
-                   data = oswald2013,
-                   sparse = TRUE)
+  skip_if(packageVersion("clubSandwich") < '0.5.5.9999')
 
-  test_wt <- Wald_test_cwb(mod_wt,
-                           constraints = constrain_equal("Crit.Cat", reg_ex = TRUE),
-                           R = 3,
-                           seed = 19)
+  W_mat <<- impute_covariance_matrix(vi = oswald2013$wt, cluster = oswald2013$Study, r = 0, return_list = FALSE)
+  mod_wt1 <<- rma.mv(yi ~ 0 + Crit.Cat + Crit.Domain + IAT.Focus + Scoring,
+                     V = V, W = W_mat,
+                     random = ~ 1 | Study,
+                     data = oswald2013,
+                     sparse = TRUE)
 
-  expect_s3_class(test_wt, "Wald_test_wildmeta")
+
+  test_wt1 <- Wald_test_cwb(mod_wt1,
+                            constraints = constrain_equal("Crit.Cat", reg_ex = TRUE),
+                            R = 3,
+                            seed = 19)
+
+  expect_s3_class(test_wt1, "Wald_test_wildmeta")
+
+  mod_wt2 <<- rma.mv(yi ~ 0 + Crit.Cat + Crit.Domain + IAT.Focus + Scoring,
+                     V = V, W = wt,
+                     random = ~ 1 | Study,
+                     data = oswald2013,
+                     sparse = TRUE)
+
+  test_wt2 <- Wald_test_cwb(mod_wt2,
+                            constraints = constrain_equal("Crit.Cat", reg_ex = TRUE),
+                            R = 3,
+                            seed = 19)
+
+  expect_s3_class(test_wt2, "Wald_test_wildmeta")
+
+  expect_equal(test_wt1, test_wt2)
 
 })
 

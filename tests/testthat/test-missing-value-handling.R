@@ -148,7 +148,6 @@ compare_rmas <- function(dat_miss, dat_full, ...) {
 
 test_that("Wald_test_cwb() works with rma.mv objects that have missing values.", {
 
-  # skip("rma.mv scoping rules are still giving me trouble.")
   compare_rmas(corrdat_miss_y, corrdat_full_y,
                R = 3, auxiliary_dist = "Rademacher",
                adjust = "CR0", type = "CR0",
