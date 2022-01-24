@@ -9,6 +9,7 @@ estimate_null.rma.mv <- function(full_model,
 
   # info -------------------------------------------------------------------
   dat <- eval(full_model$call$data)
+
   X_mat <- full_model$X
   cluster <- clubSandwich::findCluster.rma.mv(full_model)
   yi <- full_model$call$yi
@@ -18,8 +19,14 @@ estimate_null.rma.mv <- function(full_model,
 
   Xnull <- constrain_predictors(X_mat, C_mat)
 
-  Xnull_f <- matrix(NA, nrow = nrow(full_model$X.f), ncol = ncol(Xnull))
-  Xnull_f[full_model$not.na,] <- Xnull
+  Xnull_f <- matrix(NA, nrow = nrow(dat), ncol = ncol(Xnull))
+  if (is.null(full_model$subset)) {
+    obs_rows <- full_model$not.na
+  } else {
+    obs_rows <- full_model$subset
+    obs_rows[full_model$subset] <- full_model$not.na
+  }
+  Xnull_f[obs_rows,] <- Xnull
   dat$Xnull_f <- Xnull_f
 
   null_model <- metafor::update.rma(full_model, mods = ~ 0 + Xnull_f, data = dat)
@@ -59,8 +66,16 @@ get_boot_F.rma.mv <- function(full_model,
     yi_name <- as.character(full_model$formula.yi[[2]])
   }
 
-  y_new <- rep(NA, length = nrow(full_model$X.f))
-  y_new[full_model$not.na] <- y_boot
+  y_new <- rep(NA, length = nrow(new_dat))
+
+  if (is.null(full_model$subset)) {
+    obs_rows <- full_model$not.na
+  } else {
+    obs_rows <- full_model$subset
+    obs_rows[full_model$subset] <- full_model$not.na
+  }
+
+  y_new[obs_rows] <- y_boot
 
   new_dat[[yi_name]] <- y_new
 
