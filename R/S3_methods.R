@@ -38,10 +38,3 @@ get_res <- function(model) {
   UseMethod("get_res")
 
 }
-
-plot_cwb <- function(results, ...) {
-
-  UseMethod("plot_cwb")
-
-}
-
