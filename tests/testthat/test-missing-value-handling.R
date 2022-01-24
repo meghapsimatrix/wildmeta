@@ -116,6 +116,7 @@ compare_rmas <- function(dat_miss, dat_full, ...) {
 
   dat_miss <<- dat_miss
   dat_full <<- dat_full
+
   V_miss <<- impute_covariance_matrix(vi = dat_miss$var,
                                      cluster = dat_miss$studyid,
                                      r = 0.7)
@@ -136,8 +137,9 @@ compare_rmas <- function(dat_miss, dat_full, ...) {
                      random = ~ 1 | studyid,
                      data = dat_full)
 
-
-  test_miss <- Wald_test_cwb(mod_miss, constraints = constrain_zero(2:4), ...)
+  suppressWarnings(
+    test_miss <- Wald_test_cwb(mod_miss, constraints = constrain_zero(2:4), ...)
+  )
   test_full <- Wald_test_cwb(mod_full, constraints = constrain_zero(2:4), ...)
 
   expect_equal(coef(mod_miss), coef(mod_full))
@@ -158,28 +160,9 @@ test_that("Wald_test_cwb() works with rma.mv objects that have missing values.",
                adjust = "CR2", type = "CR0",
                test = "EDT", seed = 12)
 
-  compare_rmas(corrdat_miss_cl, corrdat_full_cl,
-               R = 3, auxiliary_dist = "Rademacher",
-               adjust = "CR0", type = "CR1",
-               test = "HTZ", seed = 13)
-
   compare_rmas(corrdat_miss_yx, corrdat_full_yx,
                R = 3, auxiliary_dist = "Rademacher",
                adjust = "CR0", type = "CR0",
                test = "Naive-F", seed = 14)
 
-  compare_rmas(corrdat_miss_yc, corrdat_full_yc,
-               R = 3, auxiliary_dist = "Rademacher",
-               adjust = "CR0", type = "CR0",
-               test = "EDF", seed = 15)
-
-  compare_rmas(corrdat_miss_xc, corrdat_full_xc,
-               R = 3, auxiliary_dist = "Rademacher",
-               adjust = "CR0", type = "CR0",
-               test = "HTA", seed = 16)
-
-  compare_rmas(corrdat, corrdat_full,
-               R = 3, auxiliary_dist = "Rademacher",
-               adjust = "CR0", type = "CR0",
-               test = "Naive-F", seed = 17)
 })
