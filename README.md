@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-<img src="man/figures/wildmeta_hex.png" align="right" alt="" width="175" />
+<img src="man/figures/wildmeta_hex.png" align="right" alt="" width="180" />
 
 # wildmeta
 
@@ -141,7 +141,9 @@ clustered data.
 
 # Acknowledgments
 
-We are extremely thankful to [Wolfgang
+Huge shout out to my extremely talented friend
+[RAZ](https://ms-raz.com/) for creating our hex sticker within minutes.
+We are also extremely thankful to [Wolfgang
 Viechtbauer](https://wvbauer.com/doku.php/home) for helping us solve
 [this
 issue](https://stat.ethz.ch/pipermail/r-help/2021-November/472977.html)
