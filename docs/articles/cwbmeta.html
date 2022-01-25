@@ -202,7 +202,7 @@
                        seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   9.026   0.102   9.247</span></code></pre></div>
+<span class="co">#&gt;   8.616   0.093   8.776</span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="metafor-models-1">
@@ -222,7 +222,7 @@
                           R <span class="op">=</span> <span class="fl">999</span>,
                           seed <span class="op">=</span> <span class="fl">20210113</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt; 229.663  32.539 272.656</span></code></pre></div>
+<span class="co">#&gt; 221.364  31.716 262.097</span></code></pre></div>
 </div>
 </div>
 </div>
@@ -231,7 +231,7 @@
 </h2>
 <p>The function <a href="https://meghapsimatrix.github.io/wildmeta/reference/plot.Wald_test_wildmeta.html"><code>plot()</code></a> creates a <code>ggplot</code> figure representing the distribution of the bootstrap replicates based on the results from the <code><a href="../reference/Wald_test_cwb.html">Wald_test_cwb()</a></code> function. The dashed line represents the <span class="math inline">\(F\)</span> test statistic from the original full model. The bootstrapped p-value is the proportion of bootstrapped <span class="math inline">\(F\)</span> test statistics that are greater than the original <span class="math inline">\(F\)</span> statistic.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">res</span>, fill <span class="op">=</span> <span class="st">"purple"</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">res</span>, fill <span class="op">=</span> <span class="st">"darkred"</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <p><img src="cwbmeta_files/figure-html/unnamed-chunk-6-1.png" width="576"></p>
 </div>
 <div class="section level2">
