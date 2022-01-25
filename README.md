@@ -1,6 +1,8 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+<img src="man/figures/wildmeta_hex.png" align="right" alt="" width="175" />
+
 # wildmeta
 
 <!-- badges: start -->

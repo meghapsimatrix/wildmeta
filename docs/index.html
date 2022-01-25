@@ -63,7 +63,8 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9"><div class="section level1">
+  <main id="main" class="col-md-9"><p><img src="reference/figures/wildmeta_hex.png" align="right" alt="" width="175"></p>
+<div class="section level1">
 <div class="page-header"><h1 id="wildmeta">wildmeta<a class="anchor" aria-label="anchor" href="#wildmeta"></a>
 </h1></div>
 <!-- badges: start -->
@@ -90,8 +91,6 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jepusto/clubSandwich" class="external-link">clubSandwich</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/zackfisher/robumeta" class="external-link">robumeta</a></span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12102020</span><span class="op">)</span>
-
 <span class="va">full_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/robumeta/man/robu.html" class="external-link">robu</a></span><span class="op">(</span><span class="va">d</span> <span class="op">~</span> <span class="fl">0</span> <span class="op">+</span> <span class="va">study_type</span> <span class="op">+</span> <span class="va">hrs</span> <span class="op">+</span> <span class="va">test</span>,
               studynum <span class="op">=</span> <span class="va">study</span>,
               var.eff.size <span class="op">=</span> <span class="va">V</span>,
@@ -102,9 +101,10 @@
 
 <span class="fu"><a href="reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">full_model</span>,
               constraints <span class="op">=</span> <span class="va">C_mat</span>,
-              R <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>
+              R <span class="op">=</span> <span class="fl">12</span>,
+              seed <span class="op">=</span> <span class="fl">20201210</span><span class="op">)</span>
 <span class="co">#&gt;   Test Adjustment CR_type Statistic  R     p_val</span>
-<span class="co">#&gt; 1  CWB        CR0     CR0   Naive-F 12 0.4166667</span></code></pre></div>
+<span class="co">#&gt; 1  CWB        CR0     CR0   Naive-F 12 0.5833333</span></code></pre></div>
 </div>
 </div>
 <div class="section level1">
