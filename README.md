@@ -27,19 +27,18 @@ Tipton (2015) and Tipton & Pustejovsky (2015) examined several small
 sample correction methods. Tipton (2015) recommended CR2 type correction
 for RVE as well as the use of Satterthwaite degrees of freedom for
 single coefficient tests. Tipton & Pustejovsky (2015) examined
-corrections for [multiple-contrast hypothesis
-tests](https://cran.r-project.org/web/packages/clubSandwich/vignettes/Wald-tests-in-clubSandwich.html).
-The authors found that the HTZ test, which is an extension of the CR2
-correction method with the Satterthwaite degrees of freedom, controlled
-Type 1 error rate adequately even when the number of studies was small.
-However, Joshi, Pustejovsky & Beretvas (2021) showed, through
-simulations, that the HTZ test can be conservative. The authors examined
-another method, cluster wild bootstrapping (CWB), that has been studied
-in the econometrics literature but not in the meta-analytic context. The
-results of the simulations from Joshi, Pustejovsky & Beretvas (2021)
-showed that CWB adequately controlled for Type 1 error rate and provided
-higher power than the HTZ test, especially for multiple-contrast
-hypothesis tests. hypothesis tests.
+corrections for multiple-contrast hypothesis tests. The authors found
+that the HTZ test, which is an extension of the CR2 correction method
+with the Satterthwaite degrees of freedom, controlled Type 1 error rate
+adequately even when the number of studies was small. However, Joshi,
+Pustejovsky & Beretvas (2021) showed, through simulations, that the HTZ
+test can be conservative. The authors examined another method, cluster
+wild bootstrapping (CWB), that has been studied in the econometrics
+literature but not in the meta-analytic context. The results of the
+simulations from Joshi, Pustejovsky & Beretvas (2021) showed that CWB
+adequately controlled for Type 1 error rate and provided higher power
+than the HTZ test, especially for multiple-contrast hypothesis tests.
+hypothesis tests.
 
 The goal of this package is to provide applied meta-analytic researchers
 a set of functions with which they can conduct single coefficient tests
@@ -71,12 +70,10 @@ The meta-regression model also controls for hours of coaching provided
 (`hrs`) and whether the students took math or verbal test (`test`).
 Below, we run a zero-intercept meta-regression model.
 
-Below, we use the `robu()` function from the `robumeta` package to fit
-the full model. The functions in our package work with models fit using
-[`robu()`](https://CRAN.R-project.org/package=robumeta) from the
-robumeta package (Fisher, Tipton, & Zhipeng, 2017) and
-[`rma.mv()`](https://wviechtb.github.io/metafor/reference/rma.mv.html)
-from the metafor package (Viechtbauer, 2010).
+Below, we use the `robumeta::robu()` function to fit the full model. The
+functions in our package work with models fit using `robumeta::robu()`
+(Fisher, Tipton, & Zhipeng, 2017) and `metafor::rma.mv()` (Viechtbauer,
+2010).
 
 ``` r
 library(wildmeta)
