@@ -17,10 +17,7 @@ Authors@R: c(
            email = "pierce.cappelli@utexas.edu", 
            role = "aut"))
 Maintainer: Megha Joshi <megha.j456@gmail.com>
-Description: This package provides applied meta-analytic researchers a set of 
-functions with which they can conduct single coefficient tests or multiple-contrast 
-hypothesis tests using cluster wild bootstrapping based on methods examined in
-in Joshi, Pustejovsky, and Beretvas (2021) <DOI: 10.31222/osf.io/x6uhk>. 
+Description: This package provides applied meta-analytic researchers a set of functions with which they can conduct single coefficient tests or multiple-contrast hypothesis tests using cluster wild bootstrapping based on methods examined in Joshi, Pustejovsky, and Beretvas (2021) <DOI: 10.31222/osf.io/x6uhk>. 
 URL: https://meghapsimatrix.github.io/wildmeta/index.html
 BugReports: https://github.com/meghapsimatrix/wildmeta/issues
 License: GPL-3
