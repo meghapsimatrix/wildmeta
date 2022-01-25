@@ -60,7 +60,7 @@ bootstrapped test statistics.
 \description{
 Calculate bootstrap outcomes or test statistics using cluster
 wild bootstrapping for meta-analytic models fit using
-\code{robumeta::robu()} and \code{metafor::rma.mv()}
+\code{robumeta::robu()} and \code{metafor::rma.mv()}.
 }
 \examples{
 library(clubSandwich)
