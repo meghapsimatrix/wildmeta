@@ -1,6 +1,6 @@
 ## Test environments
 
-* local Windows 11 Pro, R 4.1.2
+* local OS Big Sur, R 4.1.2
 * ubuntu 20.04.3 LTS (on Github), R devel, release, oldrelease
 * macOS-latest (on Github), R release
 * windows-latest (on Github), R release
