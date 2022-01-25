@@ -8,3 +8,4 @@
 ^scratchpad$
 ^\.github$
 ^codecov\.yml$
+cran-comments.md
