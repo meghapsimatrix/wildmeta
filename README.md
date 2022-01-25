@@ -73,8 +73,8 @@ Below, we run a zero-intercept meta-regression model.
 
 Below, we use the `robu()` function from the `robumeta` package to fit
 the full model. The functions in our package work with models fit using
-[`robu()`](https://cran.r-project.org/web/packages/robumeta/robumeta.pdf)
-from the robumeta package (Fisher, Tipton, & Zhipeng, 2017) and
+[`robu()`](https://CRAN.R-project.org/package=robumeta) from the
+robumeta package (Fisher, Tipton, & Zhipeng, 2017) and
 [`rma.mv()`](https://wviechtb.github.io/metafor/reference/rma.mv.html)
 from the metafor package (Viechtbauer, 2010).
 
@@ -189,7 +189,6 @@ variance estimators with small-sample corrections \[R package version
 
 Tipton, E. (2015). Small sample adjustments for robust variance
 estimation with meta-regression. Psychological Methods, 20(3), 375–393.
-<https://doi.org/10.1037/met0000011>
 
 Tipton, E., & Pustejovsky, J. E. (2015). Small-Sample Adjustments for
 Tests of Moderators and Model Fit Using Robust Variance Estimation in

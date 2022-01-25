@@ -114,14 +114,14 @@
 <div class="section level2">
 <h2 id="example-from-wildmeta">Example from <code>wildmeta</code><a class="anchor" aria-label="anchor" href="#example-from-wildmeta"></a>
 </h2>
-<p>This section presents examples of how to implement cluster wild bootstrapping using functions from our <code>wildmeta</code> package. The functions in our package work with models fit using <a href="https://cran.r-project.org/web/packages/robumeta/robumeta.pdf" class="external-link"><code>robu()</code></a> from the <code>robumeta</code> package <span class="citation">(Fisher, Tipton, &amp; Zhipeng, 2017)</span> and <a href="https://wviechtb.github.io/metafor/reference/rma.mv.html" class="external-link">rma.mv()</a> from the <code>metafor</code> package <span class="citation">(Viechtbauer, 2010)</span>.</p>
+<p>This section presents examples of how to implement cluster wild bootstrapping using functions from our <code>wildmeta</code> package. The functions in our package work with models fit using <code><a href="https://rdrr.io/pkg/robumeta/man/robu.html" class="external-link">robumeta::robu()</a></code> <span class="citation">(Fisher, Tipton, &amp; Zhipeng, 2017)</span> and <code><a href="https://wviechtb.github.io/metafor/reference/rma.mv.html" class="external-link">metafor::rma.mv()</a></code> <span class="citation">(Viechtbauer, 2010)</span>.</p>
 <div class="section level3">
 <h3 id="robumeta-models">
 <code>robumeta</code> models<a class="anchor" aria-label="anchor" href="#robumeta-models"></a>
 </h3>
 <p>The examples in this vignette utilize the <code>SATCoaching</code> dataset from the <code>clubSandwich</code> package <span class="citation">(Pustejovsky, 2020)</span>, originally from <span class="citation">DerSimonian &amp; Laird (1983)</span>. The standardized mean differences represent the effects of SAT coaching on SAT verbal (SATV) and/or SAT math (SATM) scores.</p>
 <p>The code below runs cluster wild bootstrapping to test the multiple-contrast hypothesis that the effect of coaching does not differ based on study type. The <code>study_type</code> variable indicates whether groups compared in primary studies were matched, randomized, or non-equivalent. The meta-regression model also controls for hours of coaching provided (<code>hrs</code>) and whether the students took math or verbal test (<code>test</code>). Below, we run a zero-intercept meta-regression model.</p>
-<p>The <code><a href="../reference/Wald_test_cwb.html">Wald_test_cwb()</a></code> function takes in a full model fit using the <code><a href="https://rdrr.io/pkg/robumeta/man/robu.html" class="external-link">robu()</a></code> function from the <code>robumeta</code> package as an argument. Further, users need to specify the constraint to be tested. Below, we create a constraint matrix using <a href="https://cran.r-project.org/web/packages/clubSandwich/vignettes/Wald-tests-in-clubSandwich.html#constrain_equal" class="external-link">constrain_equal()</a> function from <code>clubSandwich</code>; indices 1 to 3 correspond to the three levels of the <code>study_type</code> variable. Users can specify the number of bootstrap replications R. In the examples below, we set the value to 99 to speed up computation time. In practice, we recommend using a higher number of bootstrap replications, such as 1999. Using more replications will improve power. Please see <span class="citation">Davidson &amp; MacKinnon (2000)</span> for guidance on the number of bootstrap replications to use. Users can also set the seed in the <code><a href="../reference/Wald_test_cwb.html">Wald_test_cwb()</a></code> function</p>
+<p>The <code><a href="../reference/Wald_test_cwb.html">Wald_test_cwb()</a></code> function takes in a full model fit using the <code><a href="https://rdrr.io/pkg/robumeta/man/robu.html" class="external-link">robumeta::robu()</a></code> function. Further, users need to specify the constraint to be tested. Below, we create a constraint matrix using <code><a href="https://rdrr.io/pkg/clubSandwich/man/constraint_matrices.html" class="external-link">clubSandwich::constrain_equal()</a></code>; indices 1 to 3 correspond to the three levels of the <code>study_type</code> variable. Users can specify the number of bootstrap replications R. In the examples below, we set the value to 99 to speed up computation time. In practice, we recommend using a higher number of bootstrap replications, such as 1999. Using more replications will improve power. Please see <span class="citation">Davidson &amp; MacKinnon (2000)</span> for guidance on the number of bootstrap replications to use. Users can also set the seed in the <code><a href="../reference/Wald_test_cwb.html">Wald_test_cwb()</a></code> function.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://meghapsimatrix.github.io/wildmeta/index.html">wildmeta</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jepusto/clubSandwich" class="external-link">clubSandwich</a></span><span class="op">)</span>
@@ -156,7 +156,7 @@
 <h3 id="metafor-models">
 <code>metafor</code> models<a class="anchor" aria-label="anchor" href="#metafor-models"></a>
 </h3>
-<p>In the examples above, we used the <code><a href="https://rdrr.io/pkg/robumeta/man/robu.html" class="external-link">robu()</a></code> function from <code>robumeta</code> to fit the full model. In this section, we fit the full model using the <code><a href="https://wviechtb.github.io/metafor/reference/rma.mv.html" class="external-link">rma.mv()</a></code> function from the <code>metafor</code> package.</p>
+<p>In the examples above, we used the <code><a href="https://rdrr.io/pkg/robumeta/man/robu.html" class="external-link">robumeta::robu()</a></code> function to fit the full model. In this section, we fit the full model using the <code><a href="https://wviechtb.github.io/metafor/reference/rma.mv.html" class="external-link">metafor::rma.mv()</a></code> function.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.metafor-project.org" class="external-link">metafor</a></span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: Matrix</span>
@@ -202,13 +202,13 @@
                        seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   9.017   0.147   9.399</span></code></pre></div>
+<span class="co">#&gt;  11.659   0.281  16.205</span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="metafor-models-1">
 <code>metafor</code> models<a class="anchor" aria-label="anchor" href="#metafor-models-1"></a>
 </h4>
-<p>Below is an example with a model fit using <code><a href="https://wviechtb.github.io/metafor/reference/rma.mv.html" class="external-link">rma.mv()</a></code>. CWB takes a bit longer with <code>metafor</code> models.</p>
+<p>Below is an example with a model fit using <code><a href="https://wviechtb.github.io/metafor/reference/rma.mv.html" class="external-link">metafor::rma.mv()</a></code>. CWB takes a bit longer with <code>metafor</code> models.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">full_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.mv.html" class="external-link">rma.mv</a></span><span class="op">(</span>yi <span class="op">=</span> <span class="va">d</span> <span class="op">~</span> <span class="fl">0</span> <span class="op">+</span> <span class="va">study_type</span> <span class="op">+</span> <span class="va">hrs</span> <span class="op">+</span> <span class="va">test</span>,
                      V <span class="op">=</span> <span class="va">V</span>,
@@ -222,7 +222,7 @@
                           R <span class="op">=</span> <span class="fl">999</span>,
                           seed <span class="op">=</span> <span class="fl">20210113</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt; 232.550  33.586 291.684</span></code></pre></div>
+<span class="co">#&gt; 227.294  32.471 269.246</span></code></pre></div>
 </div>
 </div>
 </div>
@@ -293,7 +293,7 @@ Pustejovsky, J. E., &amp; Tipton, E. (2018). Small-sample methods for cluster-ro
 Pustejovsky, J. E., &amp; Tipton, E. (2021). Meta-analysis with robust variance estimation: Expanding the range of working models. <em>Prevention Science</em>. <a href="https://doi.org/10.1007/s11121-021-01246-3" class="external-link">https://doi.org/10.1007/s11121-021-01246-3</a>
 </div>
 <div id="ref-tipton_small_2015" class="csl-entry">
-Tipton, E. (2015). Small sample adjustments for robust variance estimation with meta-regression. <em>Psychological Methods</em>, <em>20</em>(3), 375–393. <a href="https://doi.org/10.1037/met0000011" class="external-link">https://doi.org/10.1037/met0000011</a>
+Tipton, E. (2015). Small sample adjustments for robust variance estimation with meta-regression. <em>Psychological Methods</em>, <em>20</em>(3), 375.
 </div>
 <div id="ref-tipton_small-sample_2015" class="csl-entry">
 Tipton, E., &amp; Pustejovsky, J. E. (2015). Small-sample adjustments for tests of moderators and model fit using robust variance estimation in meta-regression. <em>Journal of Educational and Behavioral Statistics</em>, <em>40</em>(6), 604–634. <a href="https://doi.org/10.3102/1076998615606099" class="external-link">https://doi.org/10.3102/1076998615606099</a>

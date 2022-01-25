@@ -45,7 +45,7 @@ The following example uses the `SATCoaching` dataset from the `clubSandwich` pac
 
 The code below runs cluster wild bootstrapping to test the multiple-contrast hypothesis that the effect of coaching does not differ based on study type. The `study_type` variable indicates whether groups compared in primary studies were matched, randomized, or non-equivalent. The meta-regression model also controls for hours of coaching provided (`hrs`) and whether the students took math or verbal test (`test`). Below, we run a zero-intercept meta-regression model.
 
-Below, we use the `robu()` function from the `robumeta` package to fit the full model. The functions in our package work with models fit using [`robu()`](https://cran.r-project.org/web/packages/robumeta/robumeta.pdf) from the robumeta package (Fisher, Tipton, & Zhipeng, 2017) and [`rma.mv()`](https://wviechtb.github.io/metafor/reference/rma.mv.html) from the metafor package (Viechtbauer, 2010).
+Below, we use the `robu()` function from the `robumeta` package to fit the full model. The functions in our package work with models fit using [`robu()`](https://CRAN.R-project.org/package=robumeta) from the robumeta package (Fisher, Tipton, & Zhipeng, 2017) and [`rma.mv()`](https://wviechtb.github.io/metafor/reference/rma.mv.html) from the metafor package (Viechtbauer, 2010).
 
 ```{r example, warning = F, message = F}
 library(wildmeta)
@@ -100,7 +100,7 @@ Joshi, M., Pustejovsky, J. E., & Beretvas, S. N. (2021). Cluster wild bootstrapp
 
 Pustejovsky, J. E. (2020). clubSandwich: Cluster-robust (sandwich) variance estimators with small-sample corrections [R package version 0.4.2]. R package version 0.4.2. <https://CRAN.R-project.org/package=clubSandwich>
 
-Tipton, E. (2015). Small sample adjustments for robust variance estimation with meta-regression. Psychological Methods, 20(3), 375–393. <https://doi.org/10.1037/met0000011>
+Tipton, E. (2015). Small sample adjustments for robust variance estimation with meta-regression. Psychological Methods, 20(3), 375–393. 
 
 Tipton, E., & Pustejovsky, J. E. (2015). Small-Sample Adjustments for Tests of Moderators and Model Fit Using Robust Variance Estimation in Meta-Regression. Journal of Educational and Behavioral Statistics (Vol. 40). <https://doi.org/10.3102/1076998615606099>
 
