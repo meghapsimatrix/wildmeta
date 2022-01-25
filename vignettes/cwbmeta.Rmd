@@ -100,7 +100,7 @@ Wald_test_cwb(full_model = full_model,
               seed = 20201228)
 ```
 
-The output of the function includes the name of the test (CWB or CWB Adjusted) and the bootstrap test p-value.
+The output of the function contains the name of the test, the adjustment used for the bootstrap process, the type of variance-covariance matrix used, the type of test statistic, the number of bootstrap replicates, and the bootstrapped p-value.
 
 The users can also specify whether to adjust the residuals with `CR1` to `CR4`matrices when bootstrapping as below. The default value for the `adjust` argument is set to `CR0`. Below is an example where we set the adjust the residuals using `CR2` matrices.
 

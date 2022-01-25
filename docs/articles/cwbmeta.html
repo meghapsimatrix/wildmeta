@@ -141,7 +141,7 @@
               seed <span class="op">=</span> <span class="fl">20201228</span><span class="op">)</span>
 <span class="co">#&gt;   Test Adjustment CR_type Statistic  R     p_val</span>
 <span class="co">#&gt; 1  CWB        CR0     CR0   Naive-F 99 0.2929293</span></code></pre></div>
-<p>The output of the function includes the name of the test (CWB or CWB Adjusted) and the bootstrap test p-value.</p>
+<p>The output of the function contains the name of the test, the adjustment used for the bootstrap process, the type of variance-covariance matrix used, the type of test statistic, the number of bootstrap replicates, and the bootstrapped p-value.</p>
 <p>The users can also specify whether to adjust the residuals with <code>CR1</code> to <code>CR4</code>matrices when bootstrapping as below. The default value for the <code>adjust</code> argument is set to <code>CR0</code>. Below is an example where we set the adjust the residuals using <code>CR2</code> matrices.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">full_model</span>,
@@ -202,7 +202,7 @@
                        seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   8.628   0.096   8.838</span></code></pre></div>
+<span class="co">#&gt;   9.169   0.165   9.779</span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="metafor-models-1">
@@ -222,7 +222,7 @@
                           R <span class="op">=</span> <span class="fl">999</span>,
                           seed <span class="op">=</span> <span class="fl">20210113</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt; 204.077  28.586 235.292</span></code></pre></div>
+<span class="co">#&gt; 247.326  36.247 319.050</span></code></pre></div>
 </div>
 </div>
 </div>
