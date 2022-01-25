@@ -79,7 +79,7 @@ The examples in this vignette utilize the `SATCoaching` dataset from the `clubSa
 
 The code below runs cluster wild bootstrapping to test the multiple-contrast hypothesis that the effect of coaching does not differ based on study type. The `study_type` variable indicates whether groups compared in primary studies were matched, randomized, or non-equivalent. The meta-regression model also controls for hours of coaching provided (`hrs`) and whether the students took math or verbal test (`test`). Below, we run a zero-intercept meta-regression model.
 
-The `Wald_test_cwb()` function takes in a full model fit using the `robu()` function from the `robumeta` package as an argument. Further, users need to specify the constraint to be tested. Below, we create a constraint matrix using [constrain_equal()](https://cran.r-project.org/web/packages/clubSandwich/vignettes/Wald-tests-in-clubSandwich.html#constrain_equal) function from `clubSandwich`; indices 1 to 3 correspond to the three levels of the `study_type` variable. Users can specify the number of bootstrap replications R. In the examples below, we set the value to 99 to speed up computation time. In practice, we recommend using a higher number of bootstrap replications, such as 1999. Using more replications will improve power. Please see @davidson2000bootstrap for guidance on the number of bootstrap replications to use.
+The `Wald_test_cwb()` function takes in a full model fit using the `robu()` function from the `robumeta` package as an argument. Further, users need to specify the constraint to be tested. Below, we create a constraint matrix using [constrain_equal()](https://cran.r-project.org/web/packages/clubSandwich/vignettes/Wald-tests-in-clubSandwich.html#constrain_equal) function from `clubSandwich`; indices 1 to 3 correspond to the three levels of the `study_type` variable. Users can specify the number of bootstrap replications R. In the examples below, we set the value to 99 to speed up computation time. In practice, we recommend using a higher number of bootstrap replications, such as 1999. Using more replications will improve power. Please see @davidson2000bootstrap for guidance on the number of bootstrap replications to use. Users can also set the seed in the `Wald_test_cwb()` function
 
 ```{r setup, warning=FALSE, message=FALSE}
 library(wildmeta)
@@ -96,7 +96,8 @@ C_mat <- constrain_equal(1:3, coefs = full_model$b.r)
 
 Wald_test_cwb(full_model = full_model,
               constraints = C_mat,
-              R = 99)
+              R = 99,
+              seed = 20201228)
 ```
 
 The output of the function includes the name of the test (CWB or CWB Adjusted) and the bootstrap test p-value.
@@ -104,12 +105,11 @@ The output of the function includes the name of the test (CWB or CWB Adjusted) a
 The users can also specify whether to adjust the residuals with `CR1` to `CR4`matrices when bootstrapping as below. The default value for the `adjust` argument is set to `CR0`. Below is an example where we set the adjust the residuals using `CR2` matrices.
 
 ```{r}
-set.seed(20201228)
-
 Wald_test_cwb(full_model = full_model,
               constraints = C_mat,
               R = 99,
-              adjust = "CR2")
+              adjust = "CR2",
+              seed = 20201229)
 ```
 
 ## `metafor` models
@@ -118,8 +118,6 @@ In the examples above, we used the `robu()` function from `robumeta` to fit the 
 
 ```{r, warning = F}
 library(metafor)
-
-set.seed(03142021)
 
 full_model <- rma.mv(yi = d ~ 0 + study_type + hrs + test,
                      V = V,
@@ -130,7 +128,8 @@ C_mat <- constrain_equal(1:3, coefs = coef(full_model))
 
 Wald_test_cwb(full_model = full_model,
               constraints = C_mat,
-              R = 99)
+              R = 99,
+              seed = 03142021)
 ```
 
 ## Timing
@@ -140,8 +139,6 @@ Wald_test_cwb(full_model = full_model,
 The `Wald_test_cwb()` function runs within a minute for correlated effects models even when using a large number of bootstrap replications. Below is an example with 999 bootstrap replications.
 
 ```{r}
-set.seed(20201229)
-
 full_model <- robu(d ~ 0 + study_type + hrs + test,
               studynum = study,
               var.eff.size = V,
@@ -153,7 +150,8 @@ C_mat <- constrain_equal(1:3, coefs = full_model$b.r)
 system.time(
   res <- Wald_test_cwb(full_model = full_model,
                        constraints = C_mat,
-                       R = 999)
+                       R = 999, 
+                       seed = 20201229)
 )
 
 ```
@@ -162,8 +160,6 @@ system.time(
 Below is an example with a model fit using `rma.mv()`. CWB takes a bit longer with `metafor` models. 
 
 ```{r, warning = F}
-set.seed(20210113)
-
 full_model <- rma.mv(yi = d ~ 0 + study_type + hrs + test,
                      V = V,
                      random = ~ study_type| study,
@@ -173,7 +169,8 @@ C_mat <- constrain_equal(1:3, coefs = coef(full_model))
 
 system.time(Wald_test_cwb(full_model = full_model,
                           constraints = C_mat,
-                          R = 999))
+                          R = 999,
+                          seed = 20210113))
 ```
 
 # Bootstrap Distribution Plot
