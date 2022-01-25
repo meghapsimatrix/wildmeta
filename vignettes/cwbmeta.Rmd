@@ -177,8 +177,8 @@ system.time(Wald_test_cwb(full_model = full_model,
 
 The function [`plot()`](https://meghapsimatrix.github.io/wildmeta/reference/plot.Wald_test_wildmeta.html) creates a `ggplot` figure representing the distribution of the bootstrap replicates based on the results from the `Wald_test_cwb()` function. The dashed line represents the $F$ test statistic from the original full model. The bootstrapped p-value is the proportion of bootstrapped $F$ test statistics that are greater than the original $F$ statistic.
 
-```{r, fig.width = 6, fig.height = 2.5, fig.retina = 2}
-plot(res, fill = "purple", alpha = 0.5)
+```{r, fig.width = 6, fig.height = 2.5}
+plot(res, fill = "dark red", alpha = 0.5)
 ```
 
 # References
