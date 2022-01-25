@@ -5,7 +5,6 @@
 * macOS-latest (on Github), R release
 * windows-latest (on Github), R release
 * win-builder (devel, release, oldrelease)
-* macOS builder:  macOS 11.5.2, Apple M1 (release)
 * r-hub:
   * Windows Server 2008 R2 SP1, R-devel, 32/64 bit
   * Ubuntu Linux 16.04 LTS, R-release, GCC
