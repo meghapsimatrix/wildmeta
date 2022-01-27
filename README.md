@@ -169,8 +169,7 @@ Standard Error Clustering. R package version 1.2.3.
 
 Hedges, L. V., Tipton, E., & Johnson, M. C. (2010). Robust variance
 estimation in meta-regression with dependent effect size estimates.
-Research Synthesis Methods, 1(1), 39–65.
-<https://doi.org/10.1002/jrsm.5>
+Research Synthesis Methods, 1(1), 39–65. &lt;
 
 Heyman, M. (2019). lmboot: Bootstrap in Linear Models. R package version
 0.0.1. <https://CRAN.R-project.org/package=lmboot>
@@ -190,7 +189,7 @@ estimation with meta-regression. Psychological Methods, 20(3), 375–393.
 Tipton, E., & Pustejovsky, J. E. (2015). Small-Sample Adjustments for
 Tests of Moderators and Model Fit Using Robust Variance Estimation in
 Meta-Regression. Journal of Educational and Behavioral Statistics (Vol.
-40). <https://doi.org/10.3102/1076998615606099>
+40).
 
 Viechtbauer, W. (2010). Conducting meta-analyses in R with the metafor
 package. Journal of Statistical Software, 36(3), 1–48.
