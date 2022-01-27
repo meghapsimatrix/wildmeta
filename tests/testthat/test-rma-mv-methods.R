@@ -162,12 +162,12 @@ compare_mod_results <- function(mod, scram, ord = 1:length(get_res(mod)), tol = 
   expect_equal(get_cluster(mod)[ord], get_cluster(scram))
 }
 
+ord <- sample(1:nrow(oswald2013))
+oswald_scram <- oswald2013[ord, ]
+
 test_that("Wald_test_cwb() results do not depend on sort order.", {
 
   skip_on_cran()
-
-  ord <- sample(1:nrow(oswald2013))
-  oswald_scram <- oswald2013[ord,]
 
   V_scram <- impute_covariance_matrix(vi = oswald_scram$vi, cluster = oswald_scram$Study, r = 0.4)
 
@@ -274,10 +274,8 @@ test_that("Wald_test_cwb() results do not depend on sort order.", {
 
 })
 
-
+oswald_sub <- subset(oswald2013, Crit.Cat == "Microbehavior")
 test_that("Wald_test_cwb() works when rma.mv uses subset.", {
-
-  oswald_sub <- subset(oswald2013, Crit.Cat == "Microbehavior")
 
   V_sub <- impute_covariance_matrix(vi = oswald_sub$vi, cluster = oswald_sub$Study, r = 0.4)
 
