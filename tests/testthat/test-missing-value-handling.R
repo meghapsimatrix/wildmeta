@@ -5,48 +5,48 @@ suppressPackageStartupMessages(library(clubSandwich))
 data("corrdat")
 
 # create missingness in outcomes
-corrdat_miss_y <<- corrdat
+corrdat_miss_y <- corrdat
 missing_y <- as.logical(rbinom(nrow(corrdat), size = 1L, prob = 0.1))
 corrdat_miss_y$effectsize[missing_y] <- NA
-corrdat_full_y <<- subset(corrdat_miss_y, !missing_y)
+corrdat_full_y <- subset(corrdat_miss_y, !missing_y)
 
 # create missingness in predictors
-corrdat_miss_x <<- corrdat
+corrdat_miss_x <- corrdat
 missing_x <- as.logical(rbinom(nrow(corrdat), size = 1L, prob = 0.1))
 corrdat_miss_x$followup[missing_x] <- NA
-corrdat_full_x <<- subset(corrdat_miss_x, !missing_x)
+corrdat_full_x <- subset(corrdat_miss_x, !missing_x)
 
 # create missingness in clusters
-corrdat_miss_cl <<- corrdat
+corrdat_miss_cl <- corrdat
 missing_cl <- as.logical(rbinom(nrow(corrdat), size = 1L, prob = 0.1))
 corrdat_miss_cl$studyid[missing_cl] <- NA
-corrdat_full_cl <<- subset(corrdat_miss_cl, !missing_cl)
+corrdat_full_cl <- subset(corrdat_miss_cl, !missing_cl)
 
 
 # missingness in outcomes and predictors
-corrdat_miss_yx <<- corrdat_miss_y
+corrdat_miss_yx <- corrdat_miss_y
 corrdat_miss_yx$followup[missing_x] <- NA
-corrdat_full_yx <<- subset(corrdat_miss_x, !missing_y & !missing_x)
+corrdat_full_yx <- subset(corrdat_miss_x, !missing_y & !missing_x)
 
 
 # missingness in outcomes and clusters
-corrdat_miss_yc <<- corrdat_miss_y
+corrdat_miss_yc <- corrdat_miss_y
 corrdat_miss_yc$studyid[missing_cl] <- NA
-corrdat_full_yc <<- subset(corrdat_miss_yc, !missing_y & !missing_cl)
+corrdat_full_yc <- subset(corrdat_miss_yc, !missing_y & !missing_cl)
 
 
 # missingness in predictors and clusters
-corrdat_miss_xc <<- corrdat_miss_x
+corrdat_miss_xc <- corrdat_miss_x
 corrdat_miss_xc$studyid[missing_cl] <- NA
-corrdat_full_xc <<- subset(corrdat_miss_xc, !missing_x & !missing_cl)
+corrdat_full_xc <- subset(corrdat_miss_xc, !missing_x & !missing_cl)
 
 
 # missingness everywhere
 corrdat$effectsize[missing_y] <- NA
 corrdat$followup[missing_x] <- NA
 corrdat$studyid[missing_cl] <- NA
-corrdat_full <<- subset(corrdat, !missing_y & !missing_x & !missing_cl)
-corrdat <<- corrdat
+corrdat_full <- subset(corrdat, !missing_y & !missing_x & !missing_cl)
+corrdat <- corrdat
 
 
 
@@ -114,25 +114,25 @@ test_that("Wald_test_cwb() works with robu objects that have missing values.", {
 
 compare_rmas <- function(dat_miss, dat_full, ...) {
 
-  dat_miss <<- dat_miss
-  dat_full <<- dat_full
+  dat_miss <- dat_miss
+  dat_full <- dat_full
 
-  V_miss <<- impute_covariance_matrix(vi = dat_miss$var,
+  V_miss <- impute_covariance_matrix(vi = dat_miss$var,
                                      cluster = dat_miss$studyid,
                                      r = 0.7)
 
   suppressWarnings(
-    mod_miss <<- rma.mv(effectsize ~ binge + followup + males + college,
+    mod_miss <- rma.mv(effectsize ~ binge + followup + males + college,
                         V = V_miss,
                         random = ~ 1 | studyid,
                         data = dat_miss)
   )
 
-  V_full <<- impute_covariance_matrix(vi = dat_full$var,
+  V_full <- impute_covariance_matrix(vi = dat_full$var,
                                      cluster = dat_full$studyid,
                                      r = 0.7)
 
-  mod_full <<- rma.mv(effectsize ~ binge + followup + males + college,
+  mod_full <- rma.mv(effectsize ~ binge + followup + males + college,
                      V = V_full,
                      random = ~ 1 | studyid,
                      data = dat_full)
