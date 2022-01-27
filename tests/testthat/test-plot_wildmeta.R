@@ -26,13 +26,6 @@ test_that("plot() returns a ggplot2 object when run on a Wald_test_wildemeta",{
 
 
 test_that("plot() throws an error if ggplot2 is not installed.", {
-  skip("I don't know how to hide ggplot2 so that requireNamespace('ggplot2') is FALSE.")
-  libs <- .libPaths()
-  new_lib <- tempdir()
-  .libPaths(new_lib)
-  on.exit(.libPaths(libs))
-  cat(.libPaths(), "\n")
-  cat(find.package("ggplot2"), "\n")
-  expect_error(requireNamespace("ggplot2"))
+  mockery::stub(plot.Wald_test_wildmeta, 'ggplot2_is_missing', TRUE)
   expect_error(plot(res))
 })

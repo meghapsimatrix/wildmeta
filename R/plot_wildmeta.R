@@ -32,7 +32,7 @@
 
 plot.Wald_test_wildmeta <- function(x, ...) {
 
-  if (!requireNamespace("ggplot2", quietly = TRUE)) stop("The plot() function requires the ggplot2 package. Please install it.", call. = FALSE)
+  if (ggplot2_is_missing()) stop("The plot() function requires the ggplot2 package. Please install it.", call. = FALSE)
 
   boots <- attributes(x)$bootstraps
   org_F <- attributes(x)$original
@@ -48,4 +48,8 @@ plot.Wald_test_wildmeta <- function(x, ...) {
     ggplot2::scale_y_continuous() +
     ggplot2::theme_minimal()
 
+}
+
+ggplot2_is_missing <- function() {
+  !requireNamespace("ggplot2", quietly = TRUE)
 }

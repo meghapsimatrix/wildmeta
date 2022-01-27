@@ -36,6 +36,7 @@ Suggests:
     knitr,
     rmarkdown,
     ggplot2,
-    covr
+    covr,
+    mockery
 VignetteBuilder: knitr
 Config/testthat/edition: 3
