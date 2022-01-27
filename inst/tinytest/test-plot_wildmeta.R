@@ -20,10 +20,10 @@ y <-
   plot(res, fill = "purple", alpha = 0.5) +
   ggplot2::theme_light()
 
-expect_inherits(x, "ggplot")
-expect_inherits(y, "ggplot")
+tinytest::expect_inherits(x, "ggplot")
+tinytest::expect_inherits(y, "ggplot")
 
 
 # plot() throws an error if ggplot2 is not installed.
 mockery::stub(plot.Wald_test_wildmeta, 'ggplot2_is_missing', TRUE)
-expect_error(plot(res))
+tinytest::expect_error(plot(res))

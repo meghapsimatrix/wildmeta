@@ -64,9 +64,9 @@ compare_robus <- function(dat_miss, dat_full, ...) {
   test_miss <- Wald_test_cwb(mod_miss, constraints = constrain_zero(2:4), ...)
   test_full <- Wald_test_cwb(mod_full, constraints = constrain_zero(2:4), ...)
 
-  expect_equal(coef(mod_miss), coef(mod_full))
-  expect_equal(attr(test_miss, "original"), attr(test_full, "original"))
-  expect_equal(attr(test_miss, "bootstraps"), attr(test_full, "bootstraps"))
+  tinytest::expect_equal(coef(mod_miss), coef(mod_full))
+  tinytest::expect_equal(attr(test_miss, "original"), attr(test_full, "original"))
+  tinytest::expect_equal(attr(test_miss, "bootstraps"), attr(test_full, "bootstraps"))
 
 }
 
@@ -139,9 +139,9 @@ compare_rmas <- function(dat_miss, dat_full, ...) {
   )
   test_full <- Wald_test_cwb(mod_full, constraints = constrain_zero(2:4), ...)
 
-  expect_equal(coef(mod_miss), coef(mod_full))
-  expect_equal(attr(test_miss, "original"), attr(test_full, "original"))
-  expect_equal(attr(test_miss, "bootstraps"), attr(test_full, "bootstraps"))
+  tinytest::expect_equal(coef(mod_miss), coef(mod_full))
+  tinytest::expect_equal(attr(test_miss, "original"), attr(test_full, "original"))
+  tinytest::expect_equal(attr(test_miss, "bootstraps"), attr(test_full, "bootstraps"))
 
 }
 

@@ -35,24 +35,24 @@ check_update <- function(mod, check_dfs = TRUE, tol = sqrt(.Machine$double.eps))
                                          vcov = update_mod$vcov,
                                          test = test_type)
 
-  expect_equal(
+  tinytest::expect_equal(
     as.vector(mod$b.r),
     as.vector(update_mod$coefficients)
   )
 
-  expect_equivalent(
+  tinytest::expect_equivalent(
     mod$VR.r, as.matrix(update_mod$vcov),
     tolerance = tol
   )
 
   if (mod$small) {
-    expect_equal(
+    tinytest::expect_equal(
       mod$reg_table$SE, update_tests$SE, tolerance = tol
     )
   }
 
   if (check_dfs) {
-    expect_equal(
+    tinytest::expect_equal(
       mod$reg_table$dfs, update_tests$df
     )
   }
@@ -62,20 +62,20 @@ check_update <- function(mod, check_dfs = TRUE, tol = sqrt(.Machine$double.eps))
                                          vcov = upup_mod$vcov_type,
                                          test = test_type)
 
-  expect_equal(
+  tinytest::expect_equal(
     as.vector(update_mod$coefficients),
     as.vector(upup_mod$coefficients)
   )
 
-  expect_equivalent(
+  tinytest::expect_equivalent(
     as.matrix(update_mod$vcov), as.matrix(upup_mod$vcov)
   )
 
-  expect_equal(
+  tinytest::expect_equal(
     update_tests$SE, upup_tests$SE
   )
 
-  expect_equal(
+  tinytest::expect_equal(
     update_tests$df, upup_tests$df
   )
 
@@ -94,24 +94,24 @@ check_update <- function(mod, check_dfs = TRUE, tol = sqrt(.Machine$double.eps))
   mod_call$data <- as.symbol("rand_data")
   mod_rand <- eval(mod_call)
 
-  expect_equal(
+  tinytest::expect_equal(
     as.vector(mod_rand$b.r),
     as.vector(update_rand$coefficients)
   )
 
-  expect_equivalent(
+  tinytest::expect_equivalent(
     mod_rand$VR.r, as.matrix(update_rand$vcov),
     tolerance = tol
   )
 
   if (mod_rand$small) {
-    expect_equal(
+    tinytest::expect_equal(
       mod_rand$reg_table$SE, rand_tests$SE, tolerance = tol
     )
   }
 
   if (check_dfs) {
-    expect_equal(
+    tinytest::expect_equal(
       mod_rand$reg_table$dfs, rand_tests$df
     )
   }
@@ -121,20 +121,20 @@ check_update <- function(mod, check_dfs = TRUE, tol = sqrt(.Machine$double.eps))
                                        vcov = upup_rand$vcov_type,
                                        test = test_type)
 
-  expect_equal(
+  tinytest::expect_equal(
     as.vector(update_rand$coefficients),
     as.vector(upup_rand$coefficients)
   )
 
-  expect_equivalent(
+  tinytest::expect_equivalent(
     as.matrix(update_rand$vcov), as.matrix(upup_rand$vcov)
   )
 
-  expect_equal(
+  tinytest::expect_equal(
     rand_tests$SE, upup_rand_tests$SE
   )
 
-  expect_equal(
+  tinytest::expect_equal(
     rand_tests$df, upup_rand_tests$df
   )
 
