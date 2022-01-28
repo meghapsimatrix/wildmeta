@@ -156,12 +156,11 @@ system.time(
 CWB takes longer with models fit using `metafor::rma.mv()`. Below is an example:
 
 ```{r, warning = FALSE}
-
 system.time(
   Wald_test_cwb(full_model = rma_model,
                 constraints = constrain_equal(1:3),
                 R = 999,
-                seed = 03142021)
+                seed = 20210314)
 )
 
 ```
