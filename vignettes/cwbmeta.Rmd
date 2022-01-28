@@ -82,10 +82,11 @@ The code below runs cluster wild bootstrapping to test the multiple-contrast hyp
 
 The `Wald_test_cwb()` function takes in a full model fit using the `robumeta::robu()` function. Further, users need to specify the constraint to be tested. Below, we create a constraint matrix using `clubSandwich::constrain_equal()`; indices 1 to 3 correspond to the three levels of the `study_type` variable. Users can specify the number of bootstrap replications R. In the examples below, we set the value to 99 to speed up computation time. In practice, we recommend using a higher number of bootstrap replications, such as 1999. Using more replications will improve power. Please see @davidson2000bootstrap for guidance on the number of bootstrap replications to use. Users can also set the seed in the `Wald_test_cwb()` function.
 
-```{r demo, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE}
 library(wildmeta)
 library(clubSandwich)
 library(robumeta)
+
 data("SATcoaching")
 SATcoaching <- subset(SATcoaching, !is.na(study_type) & !is.na(hrs) & !is.na(test))
 
@@ -105,7 +106,7 @@ The output of the function contains the name of the test, the adjustment used fo
 
 The users can also specify whether to adjust the residuals with `CR1` to `CR4`matrices when bootstrapping as below. The default value for the `adjust` argument is set to `CR0`. Below is an example where we set the adjust the residuals using `CR2` matrices.
 
-```{r CR2}
+```{r}
 Wald_test_cwb(full_model = robu_model,
               constraints = constrain_equal(1:3),
               R = 99,
@@ -113,11 +114,12 @@ Wald_test_cwb(full_model = robu_model,
               seed = 20201229)
 ```
 
+
 ## `metafor` models
 
 In the examples above, we used the `robumeta::robu()` function to fit the full model. In this section, we fit the full model using the `metafor::rma.mv()` function.
 
-```{r metafor, warning = FALSE}
+```{r, warning = FALSE}
 library(metafor)
 
 rma_model <- rma.mv(yi = d ~ 0 + study_type + hrs + test,
@@ -129,7 +131,7 @@ rma_model <- rma.mv(yi = d ~ 0 + study_type + hrs + test,
 Wald_test_cwb(full_model = rma_model,
               constraints = constrain_equal(1:3),
               R = 99,
-              seed = 03142021)
+              seed = 20210314)
 ```
 
 ## Timing
@@ -138,7 +140,7 @@ Wald_test_cwb(full_model = rma_model,
 
 The `Wald_test_cwb()` function runs within a minute for correlated effects models even when using a large number of bootstrap replications. Below is an example with 999 bootstrap replications.
 
-```{r timing-robu}
+```{r}
 
 system.time(
   res <- Wald_test_cwb(full_model = robu_model,
@@ -148,11 +150,12 @@ system.time(
 )
 
 ```
+
 ### `metafor` models
 
 CWB takes longer with models fit using `metafor::rma.mv()`. Below is an example:
 
-```{r timing-rma, warning = FALSE}
+```{r, warning = FALSE}
 
 system.time(
   Wald_test_cwb(full_model = rma_model,
@@ -167,7 +170,7 @@ system.time(
 
 The function [`plot()`](https://meghapsimatrix.github.io/wildmeta/reference/plot.Wald_test_wildmeta.html) creates a `ggplot` figure representing the distribution of the bootstrap replicates based on the results from the `Wald_test_cwb()` function. The dashed line represents the $F$ test statistic from the original full model. The bootstrapped p-value is the proportion of bootstrapped $F$ test statistics that are greater than the original $F$ statistic.
 
-```{r boot-plot, fig.width = 6, fig.height = 2.5}
+```{r, fig.width = 6, fig.height = 2.5}
 plot(res, fill = "darkred", alpha = 0.5)
 ```
 
