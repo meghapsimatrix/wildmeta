@@ -87,9 +87,6 @@ library(wildmeta)
 library(clubSandwich)
 library(robumeta)
 
-data("SATcoaching")
-SATcoaching <- subset(SATcoaching, !is.na(study_type) & !is.na(hrs) & !is.na(test))
-
 robu_model <- robu(d ~ 0 + study_type + hrs + test,
                    studynum = study,
                    var.eff.size = V,
