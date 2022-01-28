@@ -2,6 +2,7 @@ data("SATcoaching", package = "clubSandwich")
 suppressPackageStartupMessages(library(robumeta))
 
 
+
 full_model <- robu(d ~ 0 + study_type + hrs + test,
                    studynum = study,
                    var.eff.size = V,
