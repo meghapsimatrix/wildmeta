@@ -1,8 +1,10 @@
 suppressPackageStartupMessages(library(metafor))
 suppressPackageStartupMessages(library(clubSandwich))
 
-
+set.seed(20220126)
 data("oswald2013", package = "robumeta")
+
+# Create variables
 oswald2013$yi <- atanh(oswald2013$R)
 oswald2013$vi <- 1 / (oswald2013$N - 3)
 oswald2013$esID <- 1:nrow(oswald2013)
@@ -10,6 +12,13 @@ oswald2013$wt <- 1 + rpois(nrow(oswald2013), lambda = 1)
 table(oswald2013$wt)
 oswald2013 <- oswald2013
 
+# Use a subset of 30 studies
+oswald2013_full <- oswald2013
+study_sample <- sample(unique(oswald2013$Study), size = 30)
+oswald2013 <- subset(oswald2013, Study %in% study_sample)
+
+
+# Fit some models
 V <- impute_covariance_matrix(vi = oswald2013$vi, cluster = oswald2013$Study, r = 0.4)
 
 mod_A <- rma.mv(yi = yi, V = V,
@@ -167,21 +176,21 @@ test_that("get_boot_F() works for rma.mv objects.", {
 
 test_that("run_cwb options work for rma.mv objects.", {
 
-  boot_yi_A <- run_cwb(mod_A, cluster = get_cluster(mod_A), R = 9,
+  boot_yi_A <- run_cwb(mod_A, cluster = get_cluster(mod_A), R = 3,
                        auxiliary_dist = "Rademacher")
   fit_A <- get_fitted(mod_A)
   abs_res_A <- abs(get_res(mod_A))
   A_check <- sapply(boot_yi_A, function(x) all.equal(abs(x - fit_A), abs_res_A))
   expect_true(all(A_check))
 
-  boot_yi_B <- run_cwb(mod_B, cluster = get_cluster(mod_B), R = 9,
+  boot_yi_B <- run_cwb(mod_B, cluster = get_cluster(mod_B), R = 3,
                        auxiliary_dist = "Rademacher")
   fit_B <- get_fitted(mod_B)
   abs_res_B <- abs(get_res(mod_B))
   B_check <- sapply(boot_yi_B, function(x) all.equal(abs(x - fit_B), abs_res_B))
   expect_true(all(B_check))
 
-  boot_yi_C <- run_cwb(mod_C1, cluster = get_cluster(mod_C1), R = 9,
+  boot_yi_C <- run_cwb(mod_C1, cluster = get_cluster(mod_C1), R = 3,
                        auxiliary_dist = "Rademacher")
   fit_C <- get_fitted(mod_C1)
   abs_res_C <- abs(get_res(mod_C1))
@@ -312,9 +321,11 @@ test_that("Wald_test_cwb() results do not depend on sort order.", {
 
 test_that("Wald_test_cwb() works when rma.mv uses subset.", {
 
-  oswald_sub <- subset(oswald2013, Crit.Cat == "Microbehavior")
+  oswald_sub <- subset(oswald2013_full, Crit.Cat == "Microbehavior")
 
+  V_full <- impute_covariance_matrix(vi = oswald2013_full$vi, cluster = oswald2013_full$Study, r = 0.4)
   V_sub <- impute_covariance_matrix(vi = oswald_sub$vi, cluster = oswald_sub$Study, r = 0.4)
+
 
   mod_full <- rma.mv(yi = yi, V = V_sub,
                      mods = ~ 0 + IAT.Focus + Crit.Domain,
@@ -322,10 +333,10 @@ test_that("Wald_test_cwb() works when rma.mv uses subset.", {
                      data = oswald_sub,
                      sparse = TRUE)
 
-  mod_sub <- rma.mv(yi = yi, V = V,
+  mod_sub <- rma.mv(yi = yi, V = V_full,
                     mods = ~ 0 + IAT.Focus + Crit.Domain,
                     random = ~ 1 | Study / esID,
-                    data = oswald2013,
+                    data = oswald2013_full,
                     subset = Crit.Cat == "Microbehavior",
                     sparse = TRUE)
 
