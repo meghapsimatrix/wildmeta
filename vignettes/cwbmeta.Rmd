@@ -17,7 +17,7 @@ vignette: >
   %\VignetteDepends{metafor}
 ---
 
-```{r setup, include = FALSE}
+```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -119,7 +119,7 @@ Wald_test_cwb(full_model = robu_model,
 
 In the examples above, we used the `robumeta::robu()` function to fit the full model. In this section, we fit the full model using the `metafor::rma.mv()` function.
 
-```{r, warning = FALSE}
+```{r, warning=FALSE, message=FALSE}
 library(metafor)
 
 rma_model <- rma.mv(yi = d ~ 0 + study_type + hrs + test,
@@ -140,14 +140,12 @@ Wald_test_cwb(full_model = rma_model,
 The `Wald_test_cwb()` function runs within a minute for correlated effects models even when using a large number of bootstrap replications. Below is an example with 999 bootstrap replications.
 
 ```{r}
-
 system.time(
   res <- Wald_test_cwb(full_model = robu_model,
                        constraints = constrain_equal(1:3),
                        R = 999, 
                        seed = 20201229)
 )
-
 ```
 
 ### `metafor` models
