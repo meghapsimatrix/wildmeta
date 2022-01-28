@@ -8,49 +8,49 @@ oswald2013$vi <- 1 / (oswald2013$N - 3)
 oswald2013$esID <- 1:nrow(oswald2013)
 oswald2013$wt <- 1 + rpois(nrow(oswald2013), lambda = 1)
 table(oswald2013$wt)
-oswald2013 <<- oswald2013
+oswald2013 <- oswald2013
 
-V <<- impute_covariance_matrix(vi = oswald2013$vi, cluster = oswald2013$Study, r = 0.4)
+V <- impute_covariance_matrix(vi = oswald2013$vi, cluster = oswald2013$Study, r = 0.4)
 
-mod_A <<- rma.mv(yi = yi, V = V,
+mod_A <- rma.mv(yi = yi, V = V,
                 random = ~ 1 | Study / esID,
                 data = oswald2013,
                 sparse = TRUE)
 
-mod_B <<- rma.mv(yi ~ 0 + Crit.Cat, V = V,
+mod_B <- rma.mv(yi ~ 0 + Crit.Cat, V = V,
                 random = ~ 1 | Study / esID,
                 data = oswald2013,
                 sparse = TRUE)
 
-mod_C1 <<- rma.mv(yi ~ Crit.Cat + Crit.Domain + IAT.Focus + Scoring, V = V,
+mod_C1 <- rma.mv(yi ~ Crit.Cat + Crit.Domain + IAT.Focus + Scoring, V = V,
                  random = ~ 1 | Study / esID,
                  data = oswald2013,
                  sparse = TRUE)
 
-mod_C2 <<- rma.mv(yi ~ Crit.Cat + Crit.Domain + IAT.Focus + Scoring, V = V,
+mod_C2 <- rma.mv(yi ~ Crit.Cat + Crit.Domain + IAT.Focus + Scoring, V = V,
                  random = ~ 1 | Study,
                  data = oswald2013,
                  sparse = TRUE)
 
-mod_D <<- rma.mv(yi ~ Crit.Domain + IAT.Focus + Scoring, V = V,
+mod_D <- rma.mv(yi ~ Crit.Domain + IAT.Focus + Scoring, V = V,
                 random = ~ 1 | Study / esID,
                 data = oswald2013,
                 sparse = TRUE)
 
-mod_E <<- rma.mv(yi ~ Crit.Cat + IAT.Focus + Scoring, V = V,
+mod_E <- rma.mv(yi ~ Crit.Cat + IAT.Focus + Scoring, V = V,
                 random = ~ 1 | Study,
                 data = oswald2013,
                 sparse = TRUE)
 
-mod_F <<- rma.mv(yi ~ Crit.Cat + Crit.Domain + IAT.Focus, V = V,
+mod_F <- rma.mv(yi ~ Crit.Cat + Crit.Domain + IAT.Focus, V = V,
                 random = ~ 1 | Study,
                 data = oswald2013,
                 sparse = TRUE)
 
-Cmat_A <<- constrain_equal("Crit.Cat", reg_ex = TRUE, coef(mod_B))
-Cmat_B <<- constrain_zero(7:10, coef(mod_C1))
-Cmat_D <<- constrain_zero("Crit.Cat", reg_ex = TRUE, coef(mod_C1))
-Cmat_E <<- constrain_zero("Crit.Domain", reg_ex = TRUE, coef(mod_C2))
+Cmat_A <- constrain_equal("Crit.Cat", reg_ex = TRUE, coef(mod_B))
+Cmat_B <- constrain_zero(7:10, coef(mod_C1))
+Cmat_D <- constrain_zero("Crit.Cat", reg_ex = TRUE, coef(mod_C1))
+Cmat_E <- constrain_zero("Crit.Domain", reg_ex = TRUE, coef(mod_C2))
 Cmat_F <- constrain_zero("Scoring", reg_ex = TRUE, coef(mod_C2))
 
 test_that("estimate_null() works for rma.mv objects.", {
@@ -74,6 +74,14 @@ test_that("estimate_null() works for rma.mv objects.", {
   mod_B_con <- estimate_null(mod_C1, Cmat_B)
   expect_equal(get_fitted(mod_B), get_fitted(mod_B_con))
   expect_equal(get_res(mod_B), get_res(mod_B_con))
+
+  oswald2013_mod <- oswald2013
+  oswald2013_mod$Xnull_f <- 2
+
+  mod_G <- update(mod_C2, data = oswald2013_mod)
+  mod_F_Xnull <- estimate_null(mod_G, Cmat_F)
+  expect_equal(get_fitted(mod_F), get_fitted(mod_F_Xnull))
+  expect_equal(get_res(mod_F), get_res(mod_F_Xnull))
 
 })
 
@@ -128,6 +136,33 @@ test_that("get_boot_F() works for rma.mv objects.", {
     Wald_test(mod_C2, constraints = Cmat_F, vcov = "CR0", test = "HTA")$Fstat
   )
 
+  oswald2013$yi_boot <- oswald2013$yi + rnorm(nrow(oswald2013))
+
+  mod_G <- rma.mv(yi = yi_boot, mods = ~ Crit.Cat + Crit.Domain + IAT.Focus, V = V,
+                  random = ~ 1 | Study,
+                  data = oswald2013,
+                  sparse = TRUE)
+  mod_H <- rma.mv(yi = yi_boot ~ Crit.Cat + Crit.Domain + IAT.Focus, V = V,
+                  random = ~ 1 | Study,
+                  data = oswald2013,
+                  sparse = TRUE)
+  expect_false(all(coef(mod_F) == coef(mod_G)))
+  expect_equal(coef(mod_G), coef(mod_H))
+  expect_false(all(y_boot == oswald2013$y_new))
+
+  Cmat_G <- constrain_equal("Crit.Cat", reg_ex = TRUE, coefs = coef(mod_G))
+  F_stat <- Wald_test(mod_F, constraints = Cmat_G, vcov = "CR0", test = "HTZ")$Fstat
+  G_stat <- get_boot_F(mod_G, y_boot = y_boot, C_mat = Cmat_G, cluster = get_cluster(mod_G),
+                       type = "CR0", test = "HTZ")
+  H_stat <- get_boot_F(mod_H, y_boot = y_boot, C_mat = Cmat_G, cluster = get_cluster(mod_G),
+                       type = "CR0", test = "HTZ")
+
+  expect_equal(G_stat, F_stat)
+
+  expect_equal(H_stat, F_stat)
+
+  expect_false(G_stat == Wald_test(mod_G, constraints = Cmat_G, vcov = "CR0", test = "HTZ")$Fstat)
+
 })
 
 test_that("run_cwb options work for rma.mv objects.", {
@@ -167,29 +202,29 @@ test_that("Wald_test_cwb() results do not depend on sort order.", {
   skip_on_cran()
 
   ord <- sample(1:nrow(oswald2013))
-  oswald_scram <<- oswald2013[ord,]
+  oswald_scram <- oswald2013[ord,]
 
-  V_scram <<- impute_covariance_matrix(vi = oswald_scram$vi, cluster = oswald_scram$Study, r = 0.4)
+  V_scram <- impute_covariance_matrix(vi = oswald_scram$vi, cluster = oswald_scram$Study, r = 0.4)
 
-  scram_A <<- rma.mv(yi = yi, V = V_scram,
+  scram_A <- rma.mv(yi = yi, V = V_scram,
                     random = ~ 1 | Study / esID,
                     data = oswald_scram,
                     sparse = TRUE)
   compare_mod_results(mod_A, scram_A, ord)
 
-  scram_B <<- rma.mv(yi ~ 0 + Crit.Cat, V = V_scram,
+  scram_B <- rma.mv(yi ~ 0 + Crit.Cat, V = V_scram,
                     random = ~ 1 | Study / esID,
                     data = oswald_scram,
                     sparse = TRUE)
   compare_mod_results(mod_B, scram_B, ord)
 
-  scram_C1 <<- rma.mv(yi ~ Crit.Cat + Crit.Domain + IAT.Focus + Scoring, V = V_scram,
+  scram_C1 <- rma.mv(yi ~ Crit.Cat + Crit.Domain + IAT.Focus + Scoring, V = V_scram,
                      random = ~ 1 | Study / esID,
                      data = oswald_scram,
                      sparse = TRUE)
   compare_mod_results(mod_C1, scram_C1, ord)
 
-  scram_C2 <<- rma.mv(yi ~ Crit.Cat + Crit.Domain + IAT.Focus + Scoring, V = V_scram,
+  scram_C2 <- rma.mv(yi ~ Crit.Cat + Crit.Domain + IAT.Focus + Scoring, V = V_scram,
                      random = ~ 1 | Study,
                      data = oswald_scram,
                      sparse = TRUE)
@@ -277,17 +312,17 @@ test_that("Wald_test_cwb() results do not depend on sort order.", {
 
 test_that("Wald_test_cwb() works when rma.mv uses subset.", {
 
-  oswald_sub <<- subset(oswald2013, Crit.Cat == "Microbehavior")
+  oswald_sub <- subset(oswald2013, Crit.Cat == "Microbehavior")
 
-  V_sub <<- impute_covariance_matrix(vi = oswald_sub$vi, cluster = oswald_sub$Study, r = 0.4)
+  V_sub <- impute_covariance_matrix(vi = oswald_sub$vi, cluster = oswald_sub$Study, r = 0.4)
 
-  mod_full <<- rma.mv(yi = yi, V = V_sub,
+  mod_full <- rma.mv(yi = yi, V = V_sub,
                      mods = ~ 0 + IAT.Focus + Crit.Domain,
                      random = ~ 1 | Study / esID,
                      data = oswald_sub,
                      sparse = TRUE)
 
-  mod_sub <<- rma.mv(yi = yi, V = V,
+  mod_sub <- rma.mv(yi = yi, V = V,
                     mods = ~ 0 + IAT.Focus + Crit.Domain,
                     random = ~ 1 | Study / esID,
                     data = oswald2013,
@@ -298,7 +333,7 @@ test_that("Wald_test_cwb() works when rma.mv uses subset.", {
 
   test_full <- Wald_test_cwb(mod_full,
                              constraints = constrain_equal("IAT.Focus", reg_ex = TRUE),
-                             R = 4,
+                             R = 3,
                              auxiliary_dist = "Rademacher",
                              adjust = "CR0",
                              type = "CR0",
@@ -307,7 +342,7 @@ test_that("Wald_test_cwb() works when rma.mv uses subset.", {
 
   test_sub <- Wald_test_cwb(mod_sub,
                             constraints = constrain_equal("IAT.Focus", reg_ex = TRUE),
-                            R = 4,
+                            R = 3,
                             auxiliary_dist = "Rademacher",
                             adjust = "CR0",
                             type = "CR0",
@@ -325,8 +360,8 @@ test_that("Wald_test_cwb() works with user-weighted rma.mv models.", {
 
   skip_if(packageVersion("clubSandwich") < '0.5.5.9999')
 
-  W_mat <<- impute_covariance_matrix(vi = oswald2013$wt, cluster = oswald2013$Study, r = 0, return_list = FALSE)
-  mod_wt1 <<- rma.mv(yi ~ 0 + Crit.Cat + Crit.Domain + IAT.Focus + Scoring,
+  W_mat <- impute_covariance_matrix(vi = oswald2013$wt, cluster = oswald2013$Study, r = 0, return_list = FALSE)
+  mod_wt1 <- rma.mv(yi ~ 0 + Crit.Cat + Crit.Domain + IAT.Focus + Scoring,
                      V = V, W = W_mat,
                      random = ~ 1 | Study,
                      data = oswald2013,
@@ -340,7 +375,7 @@ test_that("Wald_test_cwb() works with user-weighted rma.mv models.", {
 
   expect_s3_class(test_wt1, "Wald_test_wildmeta")
 
-  mod_wt2 <<- rma.mv(yi ~ 0 + Crit.Cat + Crit.Domain + IAT.Focus + Scoring,
+  mod_wt2 <- rma.mv(yi ~ 0 + Crit.Cat + Crit.Domain + IAT.Focus + Scoring,
                      V = V, W = wt,
                      random = ~ 1 | Study,
                      data = oswald2013,
