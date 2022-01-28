@@ -76,7 +76,7 @@ test_that("estimate_null() works for rma.mv objects.", {
   expect_equal(get_res(mod_B), get_res(mod_B_con))
 
   oswald2013_mod <- oswald2013
-  oswald2013_mod$Xnull_f <- 2
+  oswald2013_mod$X_null <- 2
 
   mod_G <- update(mod_C2, data = oswald2013_mod)
   mod_F_Xnull <- estimate_null(mod_G, Cmat_F)
@@ -148,7 +148,7 @@ test_that("get_boot_F() works for rma.mv objects.", {
                   sparse = TRUE)
   expect_false(all(coef(mod_F) == coef(mod_G)))
   expect_equal(coef(mod_G), coef(mod_H))
-  expect_false(all(y_boot == oswald2013$y_new))
+  expect_false(all(y_boot == oswald2013$yi_boot))
 
   Cmat_G <- constrain_equal("Crit.Cat", reg_ex = TRUE, coefs = coef(mod_G))
   F_stat <- Wald_test(mod_F, constraints = Cmat_G, vcov = "CR0", test = "HTZ")$Fstat

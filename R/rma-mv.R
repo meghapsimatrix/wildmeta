@@ -1,5 +1,6 @@
 
 # estimate null model -----------------------------------------------------
+#' @importFrom stats reformulate
 #' @importFrom metafor update.rma
 #' @importFrom clubSandwich findCluster.rma.mv
 #' @export
@@ -8,16 +9,20 @@ estimate_null.rma.mv <- function(full_model,
                                  C_mat) {
 
   # set up child environment ---------------------------------------------------
-  null_env <- new.env(parent = attr(full_model$random[[1]], ".Environment"))
+  eval_env <- attr(full_model$random[[1]], ".Environment")
+  null_env <- new.env(parent = eval_env)
 
   # handle formulas in yi call
   yi <- full_model$call$yi
   if (length(yi) > 1) full_model$call$yi <- yi[[2]]
 
+  # Find name for null predictor matrix
+  data_names <- names(get(full_model$call$data, envir = eval_env))
+  Xnull_name <- "X_null"
+  while (Xnull_name %in% data_names) Xnull_name <- paste(Xnull_name, "null", sep = "_")
+  mod_formula <- stats::reformulate(Xnull_name, intercept = FALSE, env = null_env)
+
   # compute null matrix --------------------------------------------------------
-
-  Xnull <- constrain_predictors(full_model$X, C_mat)
-
 
   if (is.null(full_model$subset)) {
     obs_rows <- full_model$not.na
@@ -26,13 +31,13 @@ estimate_null.rma.mv <- function(full_model,
     obs_rows[full_model$subset] <- full_model$not.na
   }
 
-  Xnull_f <- matrix(NA, nrow = length(obs_rows), ncol = ncol(Xnull))
-  Xnull_f[obs_rows,] <- Xnull
-  null_env$Xnull_f <- Xnull_f
+  Xnull <- matrix(NA, nrow = length(obs_rows), ncol = ncol(C_mat) - nrow(C_mat))
+  Xnull[obs_rows,] <- constrain_predictors(full_model$X, C_mat)
+  assign(Xnull_name, Xnull, envir = null_env)
 
   # estimate null model --------------------------------------------------------
-
-  null_model_call <- metafor::update.rma(full_model, mods = ~ 0 + Xnull_f, evaluate = FALSE)
+  arg_list <- list(object = full_model, mods = mod_formula, evaluate = FALSE)
+  null_model_call <- do.call(metafor::update.rma, args = arg_list)
 
   eval(null_model_call, envir = null_env)
 
