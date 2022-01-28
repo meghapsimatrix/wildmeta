@@ -7,31 +7,34 @@
 estimate_null.rma.mv <- function(full_model,
                                  C_mat) {
 
-  # info -------------------------------------------------------------------
-  dat <- eval(full_model$call$data)
+  # set up child environment ---------------------------------------------------
+  null_env <- new.env(parent = attr(full_model$random[[1]], ".Environment"))
 
-  X_mat <- full_model$X
-  cluster <- clubSandwich::findCluster.rma.mv(full_model)
+  # handle formulas in yi call
   yi <- full_model$call$yi
   if (length(yi) > 1) full_model$call$yi <- yi[[2]]
 
-  # null model --------------------------------------------------------------
+  # compute null matrix --------------------------------------------------------
 
-  Xnull <- constrain_predictors(X_mat, C_mat)
+  Xnull <- constrain_predictors(full_model$X, C_mat)
 
-  Xnull_f <- matrix(NA, nrow = nrow(dat), ncol = ncol(Xnull))
+
   if (is.null(full_model$subset)) {
     obs_rows <- full_model$not.na
   } else {
     obs_rows <- full_model$subset
     obs_rows[full_model$subset] <- full_model$not.na
   }
+
+  Xnull_f <- matrix(NA, nrow = length(obs_rows), ncol = ncol(Xnull))
   Xnull_f[obs_rows,] <- Xnull
-  dat$Xnull_f <- Xnull_f
+  null_env$Xnull_f <- Xnull_f
 
-  null_model <- metafor::update.rma(full_model, mods = ~ 0 + Xnull_f, data = dat)
+  # estimate null model --------------------------------------------------------
 
-  return(null_model)
+  null_model_call <- metafor::update.rma(full_model, mods = ~ 0 + Xnull_f, evaluate = FALSE)
+
+  eval(null_model_call, envir = null_env)
 
 }
 
@@ -58,15 +61,18 @@ get_boot_F.rma.mv <- function(full_model,
                               type = "CR0",
                               test = "Naive-F") {
 
-  new_dat <- eval(full_model$call$data)
+  # set up child environment ---------------------------------------------------
+  boot_env <- new.env(parent = attr(full_model$random[[1]], ".Environment"))
 
-  if (is.null(full_model$formula.yi)) {
-    yi_name <- as.character(full_model$call$yi)
+  # handle formulas in yi call
+  yi <- full_model$call$yi
+  if (length(yi) > 1) {
+    y_name <- paste(as.character(yi[[2]]), "boot", sep = "_")
+    yi[[2]] <- NULL
+    full_model$call$mods <- yi
   } else {
-    yi_name <- as.character(full_model$formula.yi[[2]])
+    y_name <- paste(as.character(yi), "boot", sep = "_")
   }
-
-  y_new <- rep(NA, length = nrow(new_dat))
 
   if (is.null(full_model$subset)) {
     obs_rows <- full_model$not.na
@@ -75,12 +81,14 @@ get_boot_F.rma.mv <- function(full_model,
     obs_rows[full_model$subset] <- full_model$not.na
   }
 
+  y_new <- rep(NA, length = length(obs_rows))
   y_new[obs_rows] <- y_boot
+  assign(y_name, y_new, envir = boot_env)
 
-  new_dat[[yi_name]] <- y_new
+  arg_list <- list(object = full_model, yi = as.symbol(y_name), evaluate = FALSE)
+  boot_model_call <- do.call(metafor::update.rma, args = arg_list)
 
-
-  boot_mod <- tryCatch(metafor::update.rma(full_model, data = new_dat),
+  boot_mod <- tryCatch(eval(boot_model_call, envir = boot_env),
                        error = function(e) NA)
 
   if (inherits(boot_mod, "rma.mv")) {
