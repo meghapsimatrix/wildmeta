@@ -85,6 +85,8 @@ The `Wald_test_cwb()` function takes in a full model fit using the `robumeta::ro
 library(wildmeta)
 library(clubSandwich)
 library(robumeta)
+data("SATcoaching")
+SATcoaching <- subset(SATcoaching, !is.na(study_type) & !is.na(hrs) & !is.na(test))
 
 full_model <- robu(d ~ 0 + study_type + hrs + test,
               studynum = study,
@@ -159,7 +161,8 @@ system.time(
 
 Below is an example with a model fit using `metafor::rma.mv()`. CWB takes a bit longer with `metafor` models. 
 
-```{r, warning = F}
+```{r, warning = FALSE}
+
 full_model <- rma.mv(yi = d ~ 0 + study_type + hrs + test,
                      V = V,
                      random = ~ study_type| study,
@@ -167,10 +170,13 @@ full_model <- rma.mv(yi = d ~ 0 + study_type + hrs + test,
 
 C_mat <- constrain_equal(1:3, coefs = coef(full_model))
 
-system.time(Wald_test_cwb(full_model = full_model,
-                          constraints = C_mat,
-                          R = 999,
-                          seed = 20210113))
+system.time(
+  Wald_test_cwb(full_model = full_model,
+                constraints = C_mat,
+                R = 999,
+                seed = 20210113)
+)
+
 ```
 
 # Bootstrap Distribution Plot
