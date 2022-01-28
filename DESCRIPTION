@@ -15,7 +15,7 @@ Authors@R: c(
     person(given = "Sangdon", 
            family = "Lim", 
            email = "sangdonlim@utexas.edu", 
-           role = "aut"),
+           role = "aut",
            comment = c(ORCID = "0000-0002-2988-014X")),
     person(given = "Pierce", 
            family = "Cappelli", 
