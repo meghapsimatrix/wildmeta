@@ -17,7 +17,7 @@ Authors@R: c(
            email = "pierce.cappelli@utexas.edu", 
            role = "aut"))
 Maintainer: Megha Joshi <megha.j456@gmail.com>
-Description: Conducts single coefficient tests and multiple-contrast hypothesis tests of meta-regression models using cluster wild bootstrapping, based on methods examined in Joshi, Pustejovsky, and Beretvas (2021) <DOI: 10.31222/osf.io/x6uhk>. 
+Description: Conducts single coefficient tests and multiple-contrast hypothesis tests of meta-regression models using cluster wild bootstrapping, based on methods examined in Joshi, Pustejovsky, and Beretvas (2021) <DOI:10.31222/osf.io/x6uhk>. 
 URL: https://meghapsimatrix.github.io/wildmeta/index.html
 BugReports: https://github.com/meghapsimatrix/wildmeta/issues
 License: GPL-3
