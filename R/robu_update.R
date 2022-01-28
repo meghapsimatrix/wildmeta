@@ -225,7 +225,6 @@ bread.handmade.robu <- function(x, ...) {
 }
 
 #' @export
-#'
 
 bread.handmade_robu <- function(x, ...) {
   x$nobs * chol2inv(chol(crossprod(x$X, x$w_ij * x$X)))
@@ -269,12 +268,16 @@ update_robu <- function(mod, y, vcov = NULL) {
 
 update_robu.default <- function(mod, y, vcov = NULL) {
 
-  modelweights <- switch(EXPR = mod$mod_label[[1]],
-                         "RVE: Correlated Effects Model" = "CORR",
-                         "RVE: Hierarchical Effects Model" = "HIER",
-                         "RVE: User Specified Weights" = "user",
-                         "missing")
-  if (modelweights == "missing") stop("mod must be a robu object.")
+  lab <- mod$mod_label[[1]]
+  if (!is.null(lab)) {
+    modelweights <- switch(lab,
+                           "RVE: Correlated Effects Model" = "CORR",
+                           "RVE: Hierarchical Effects Model" = "HIER",
+                           "RVE: User Specified Weights" = "user",
+                           "missing")
+  }
+
+  if (is.null(lab) || modelweights == "missing") stop("mod must be a robu object.")
 
   cluster <- as.factor(mod$study_orig_id)
   resort <- order(order(cluster))

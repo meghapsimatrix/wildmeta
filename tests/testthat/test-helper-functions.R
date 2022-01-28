@@ -14,6 +14,9 @@ test_that("constrain_predictors works as expected.", {
   b <- residuals(update(lm_full, . ~ . + 1 - school_type))
   expect_equal(a, b, ignore_attr = TRUE)
 
+  C_wrong <- cbind(diag(nrow = 3), diag(rep(0, 3)))
+  expect_error(constrain_predictors(Xmat, C_wrong))
+
   Cmat <- constrain_zero("year", reg_ex = TRUE, coef(lm_full))
   X_reduced <- constrain_predictors(Xmat, Cmat)
   a <- residuals(lm.fit(X_reduced, AchievementAwardsRCT$awarded))
