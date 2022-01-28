@@ -170,8 +170,7 @@
 
 <span class="va">rma_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.mv.html" class="external-link">rma.mv</a></span><span class="op">(</span>yi <span class="op">=</span> <span class="va">d</span> <span class="op">~</span> <span class="fl">0</span> <span class="op">+</span> <span class="va">study_type</span> <span class="op">+</span> <span class="va">hrs</span> <span class="op">+</span> <span class="va">test</span>,
                     V <span class="op">=</span> <span class="va">V</span>,
-                    random <span class="op">=</span> <span class="op">~</span> <span class="va">test</span> <span class="op">|</span> <span class="va">study</span>,
-                    struct <span class="op">=</span> <span class="st">"DIAG"</span>,
+                    random <span class="op">=</span> <span class="op">~</span> <span class="va">study_type</span> <span class="op">|</span> <span class="va">study</span>,
                     data <span class="op">=</span> <span class="va">SATcoaching</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">rma_model</span>,
@@ -179,7 +178,7 @@
               R <span class="op">=</span> <span class="fl">99</span>,
               seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span>
 <span class="co">#&gt;   Test Adjustment CR_type Statistic  R     p_val</span>
-<span class="co">#&gt; 1  CWB        CR0     CR0   Naive-F 99 0.2105263</span></code></pre></div>
+<span class="co">#&gt; 1  CWB        CR0     CR0   Naive-F 99 0.3030303</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="timing">Timing<a class="anchor" aria-label="anchor" href="#timing"></a>
@@ -198,7 +197,7 @@
                        seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;  11.794   0.262  15.104</span></code></pre></div>
+<span class="co">#&gt;   8.306   0.077   8.450</span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="metafor-models-1">
@@ -213,7 +212,7 @@
                 seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt; 296.845  42.948 355.382</span></code></pre></div>
+<span class="co">#&gt; 227.596  32.747 281.015</span></code></pre></div>
 </div>
 </div>
 </div>
