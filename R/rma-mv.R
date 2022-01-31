@@ -17,7 +17,7 @@ estimate_null.rma.mv <- function(full_model,
   if (length(yi) > 1) full_model$call$yi <- yi[[2]]
 
   # Find name for null predictor matrix
-  data_names <- names(get(full_model$call$data, envir = eval_env))
+  data_names <- names(eval(full_model$call$data, envir = eval_env))
   Xnull_name <- "X_null"
   while (Xnull_name %in% data_names) Xnull_name <- paste(Xnull_name, "null", sep = "_")
   mod_formula <- stats::reformulate(Xnull_name, intercept = FALSE, env = null_env)
