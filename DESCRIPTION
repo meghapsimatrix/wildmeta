@@ -15,12 +15,12 @@ Authors@R: c(
     person(given = "Sangdon", 
            family = "Lim", 
            email = "sangdonlim@utexas.edu", 
-           role = "aut",
+           role = "ctb",
            comment = c(ORCID = "0000-0002-2988-014X")),
     person(given = "Pierce", 
            family = "Cappelli", 
            email = "pierce.cappelli@utexas.edu", 
-           role = "aut"))
+           role = "ctb"))
 Maintainer: Megha Joshi <megha.j456@gmail.com>
 Description: Conducts single coefficient tests and multiple-contrast hypothesis tests of meta-regression models using cluster wild bootstrapping, based on methods examined in Joshi, Pustejovsky, and Beretvas (2021) <DOI:10.31222/osf.io/x6uhk>. 
 URL: https://meghapsimatrix.github.io/wildmeta/index.html
