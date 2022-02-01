@@ -1,3 +1,12 @@
+## Resubmission
+This is a resubmission. In this version I have:
+
+* fixed URL in citations
+* updated estimate_null.rma.mv() so it works with testthat functions without requiring super-assignment   
+* removed super-assignment from unit tests
+* added co-author Sangdon Lim who helped us with the above steps
+
+
 ## Test environments
 
 * local OS Big Sur, R 4.1.2
