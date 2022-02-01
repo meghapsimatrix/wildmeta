@@ -27,9 +27,9 @@ There were no ERRORs or WARNINGs.
 There was 1 NOTE:
 
 * Possibly misspelled words in DESCRIPTION:
-  Beretvas (12:200)
-  Joshi (12:176)
-  Pustejovsky (12:183)
+  Beretvas (14:200)
+  Joshi (14:176)
+  Pustejovsky (14:183)
   
   All of the identified words are spelled correctly. 
 
