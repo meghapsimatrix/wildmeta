@@ -10,6 +10,8 @@
 [![R-CMD-check](https://github.com/meghapsimatrix/wildmeta/workflows/R-CMD-check/badge.svg)](https://github.com/meghapsimatrix/wildmeta/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/meghapsimatrix/wildmeta/branch/main/graph/badge.svg)](https://app.codecov.io/gh/meghapsimatrix/wildmeta?branch=main)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/wildmeta)](https://CRAN.R-project.org/package=wildmeta)
 <!-- badges: end -->
 
 Typical methods to conduct meta-analysis—pooling effect sizes or
@@ -45,6 +47,12 @@ a set of functions with which they can conduct single coefficient tests
 or multiple-contrast hypothesis tests using cluster wild bootstrapping.
 
 ## Installation
+
+Install the latest release from CRAN:
+
+``` r
+install.packages("wildmeta")
+```
 
 You can install the development version from
 [GitHub](https://github.com/) with:
@@ -169,7 +177,7 @@ Standard Error Clustering. R package version 1.2.3.
 
 Hedges, L. V., Tipton, E., & Johnson, M. C. (2010). Robust variance
 estimation in meta-regression with dependent effect size estimates.
-Research Synthesis Methods, 1(1), 39–65. &lt;
+Research Synthesis Methods, 1(1), 39–65.
 
 Heyman, M. (2019). lmboot: Bootstrap in Linear Models. R package version
 0.0.1. <https://CRAN.R-project.org/package=lmboot>
