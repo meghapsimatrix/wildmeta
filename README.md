@@ -40,7 +40,6 @@ literature but not in the meta-analytic context. The results of the
 simulations from Joshi, Pustejovsky & Beretvas (2021) showed that CWB
 adequately controlled for Type 1 error rate and provided higher power
 than the HTZ test, especially for multiple-contrast hypothesis tests.
-hypothesis tests.
 
 The goal of this package is to provide applied meta-analytic researchers
 a set of functions with which they can conduct single coefficient tests
