@@ -89,15 +89,13 @@ library(clubSandwich)
 library(robumeta)
 
 full_model <- robu(d ~ 0 + study_type + hrs + test,
-              studynum = study,
-              var.eff.size = V,
-              small = FALSE,
-              data = SATcoaching)
-
-C_mat <- constrain_equal(1:3, coefs = full_model$b.r)
+                   studynum = study,
+                   var.eff.size = V,
+                   small = FALSE,
+                   data = SATcoaching)
 
 Wald_test_cwb(full_model = full_model,
-              constraints = C_mat,
+              constraints = constrain_equal(1:3),
               R = 12,
               seed = 20201210)
 #>   Test Adjustment CR_type Statistic  R     p_val
