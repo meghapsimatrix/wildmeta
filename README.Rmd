@@ -23,6 +23,8 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/meghapsimatrix/wildmeta/workflows/R-CMD-check/badge.svg)](https://github.com/meghapsimatrix/wildmeta/actions)
 [![Codecov test coverage](https://codecov.io/gh/meghapsimatrix/wildmeta/branch/main/graph/badge.svg)](https://app.codecov.io/gh/meghapsimatrix/wildmeta?branch=main)
 [![CRAN status](https://www.r-pkg.org/badges/version/wildmeta)](https://CRAN.R-project.org/package=wildmeta)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/wildmeta)](https://CRAN.R-project.org/package=wildmeta)
+[![](http://cranlogs.r-pkg.org/badges/last-month/wildmeta)](https://CRAN.R-project.org/package=wildmeta)
 <!-- badges: end -->
 
 Typical methods to conduct meta-analysis---pooling effect sizes or analyzing moderating effects with meta-regression---work under the assumption that the effect size estimates are independent. However, primary studies often report multiple estimates of effect sizes. Presence of multiple effect sizes leads to dependence as the estimates within each study are likely correlated (e.g., because the same participants provide multiple outcome scores). The increasingly popular method to handle such dependence, robust variance estimation (RVE), results in inflated Type 1 error rate when the number of studies is small (Hedges, Tipton & Johnson, 2010; Tipton, 2015).

@@ -12,6 +12,8 @@
 coverage](https://codecov.io/gh/meghapsimatrix/wildmeta/branch/main/graph/badge.svg)](https://app.codecov.io/gh/meghapsimatrix/wildmeta?branch=main)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/wildmeta)](https://CRAN.R-project.org/package=wildmeta)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/wildmeta)](https://CRAN.R-project.org/package=wildmeta)
+[![](http://cranlogs.r-pkg.org/badges/last-month/wildmeta)](https://CRAN.R-project.org/package=wildmeta)
 <!-- badges: end -->
 
 Typical methods to conduct meta-analysis—pooling effect sizes or
