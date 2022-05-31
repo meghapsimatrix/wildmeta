@@ -69,3 +69,15 @@ boot_stats <- future_sapply(bootstraps,
                             C_mat = C_mat)
 
 boot_stats
+
+
+
+
+# check function -----------------------------------------------------------
+
+
+# error can't find return_wts?
+
+robu_res <- Wald_test_cwb(full_model = model,
+                          constraints = C_mat,
+                          R = 10)

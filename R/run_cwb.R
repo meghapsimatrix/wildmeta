@@ -110,7 +110,11 @@ run_cwb <- function(model,
   }
 
   # use future sapply
-  boot_stats <- future.apply::future_sapply(bootstraps, f, cluster = cluster, ..., simplify = simplify)
+  boot_stats <- future.apply::future_sapply(bootstraps,
+                                            f,
+                                            cluster = cluster,
+                                            ...,
+                                            simplify = simplify)
 
   return(boot_stats)
 }
