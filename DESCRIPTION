@@ -32,7 +32,8 @@ Imports:
     stringr,
     stats,
     vctrs,
-    sandwich
+    sandwich,
+    future.apply
 Suggests: 
     testthat (>= 3.0.0),
     knitr,

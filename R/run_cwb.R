@@ -93,7 +93,7 @@ run_cwb <- function(model,
   # bootstrap ---------------------------------------------------------------
   num_cluster <- unique(cluster)
 
-  bootstraps <- replicate(n = R, {
+  bootstraps <- future.apply::future_replicate(n = R, {
 
     wts <- return_wts(auxiliary_dist = auxiliary_dist, cluster_var = num_cluster)
     eta <- wts[cluster]
@@ -106,6 +106,7 @@ run_cwb <- function(model,
     return(bootstraps)
   }
 
+  # use future sapply
   boot_stats <- sapply(bootstraps, f, cluster = cluster, ..., simplify = simplify)
 
   return(boot_stats)
