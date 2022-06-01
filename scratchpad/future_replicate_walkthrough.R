@@ -3,6 +3,7 @@ library(clubSandwich)
 library(robumeta)
 library(metafor)
 library(tidyverse)
+library(wildmeta)
 
 
 devtools::load_all()
@@ -42,14 +43,24 @@ simplify <- TRUE
 plan(multisession)
 
 
-bootstraps <- future.apply::future_replicate(n = 10, {
+system.time(bootstraps <- future.apply::future_replicate(n = 100, {
 
   wts <- return_wts(auxiliary_dist = auxiliary_dist, cluster_var = num_cluster)
   eta <- wts[cluster]
   y_boot <- pred + res * eta
 
 
-}, simplify = simplify & is.null(f))
+}, simplify = simplify & is.null(f)))
+
+
+system.time(bootstraps <- replicate(n = 100, {
+
+  wts <- return_wts(auxiliary_dist = auxiliary_dist, cluster_var = num_cluster)
+  eta <- wts[cluster]
+  y_boot <- pred + res * eta
+
+
+}, simplify = simplify & is.null(f)))
 
 if (is.null(f)) {
   return(bootstraps)
@@ -62,11 +73,17 @@ if (is.null(f)) {
 C_mat <- constrain_equal(1:3, coefs = model$b.r)
 
 
-boot_stats <- future_sapply(bootstraps,
+system.time(boot_stats <- future_sapply(bootstraps,
                             FUN = get_boot_F,
                             cluster = cluster,
                             full_model = model,
-                            C_mat = C_mat)
+                            C_mat = C_mat))
+
+system.time(boot_stats <- sapply(bootstraps,
+                                 FUN = get_boot_F,
+                                 cluster = cluster,
+                                 full_model = model,
+                                 C_mat = C_mat))
 
 boot_stats
 
@@ -81,3 +98,5 @@ boot_stats
 robu_res <- Wald_test_cwb(full_model = model,
                           constraints = C_mat,
                           R = 10)
+
+
