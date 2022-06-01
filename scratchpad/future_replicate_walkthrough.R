@@ -6,6 +6,7 @@ library(tidyverse)
 library(wildmeta)
 
 
+
 devtools::load_all()
 source("R/helpers.R")
 
@@ -43,7 +44,7 @@ simplify <- TRUE
 plan(multisession)
 
 
-system.time(bootstraps <- future.apply::future_replicate(n = 100, {
+system.time(bootstraps <- future.apply::future_replicate(n = 1999, {
 
   wts <- return_wts(auxiliary_dist = auxiliary_dist, cluster_var = num_cluster)
   eta <- wts[cluster]
@@ -53,7 +54,8 @@ system.time(bootstraps <- future.apply::future_replicate(n = 100, {
 }, simplify = simplify & is.null(f)))
 
 
-system.time(bootstraps <- replicate(n = 100, {
+
+system.time(bootstraps <- replicate(n = 1999, {
 
   wts <- return_wts(auxiliary_dist = auxiliary_dist, cluster_var = num_cluster)
   eta <- wts[cluster]
@@ -94,6 +96,8 @@ boot_stats
 
 
 # error can't find return_wts?
+
+options(future.debug = TRUE)
 
 robu_res <- Wald_test_cwb(full_model = model,
                           constraints = C_mat,
