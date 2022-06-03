@@ -6,7 +6,7 @@ library(tidyverse)
 devtools::load_all()
 
 source("R/helpers.R")
-source("R/robu_update.R")
+source("R/run_cwb.R")
 source("R/plot_wildmeta.R") #why won't this get loaded?
 
 # robumeta ----------------------------------------------------------------
@@ -29,6 +29,13 @@ boots <- run_cwb(null_model,
                  cluster = cluster_id,
                  R = 12,
                  simplify = FALSE)
+
+boots
+
+boots <- run_cwb(null_model,
+                 cluster = cluster_id,
+                 R = 12,
+                 f = get_boot_F)
 
 sapply(boots,
        FUN = get_boot_F,

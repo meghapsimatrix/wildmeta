@@ -94,7 +94,11 @@ run_cwb <- function(model,
   # bootstrap ---------------------------------------------------------------
   n_clusters <- length(unique(cluster))
 
-  bootstraps <- replicate(n = R, {
+  # option to not do parallel?
+
+  plan(multisession)
+
+  bootstraps <- future.apply::future_replicate(n = R, {
 
     wts <- wild_wts(auxiliary_dist = auxiliary_dist, n_clusters = n_clusters)
     eta <- wts[cluster]
@@ -107,7 +111,12 @@ run_cwb <- function(model,
     return(bootstraps)
   }
 
-  boot_stats <- sapply(bootstraps, f, cluster = cluster, ..., simplify = simplify)
+  # use future sapply
+  boot_stats <- future.apply::future_sapply(bootstraps,
+                                            f,
+                                            cluster = cluster,
+                                            ...,
+                                            simplify = simplify)
 
   return(boot_stats)
 }
