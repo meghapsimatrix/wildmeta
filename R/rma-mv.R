@@ -1,5 +1,6 @@
 
 # estimate null model -----------------------------------------------------
+#' @importFrom stats reformulate
 #' @importFrom metafor update.rma
 #' @importFrom clubSandwich findCluster.rma.mv
 #' @export
@@ -7,22 +8,38 @@
 estimate_null.rma.mv <- function(full_model,
                                  C_mat) {
 
-  # info -------------------------------------------------------------------
+  # set up child environment ---------------------------------------------------
+  eval_env <- attr(full_model$random[[1]], ".Environment")
+  null_env <- new.env(parent = eval_env)
 
-  X_mat <- full_model$X
-  cluster <- clubSandwich::findCluster.rma.mv(full_model)
+  # handle formulas in yi call
+  yi <- full_model$call$yi
+  if (length(yi) > 1) full_model$call$yi <- yi[[2]]
 
+  # Find name for null predictor matrix
+  data_names <- names(eval(full_model$call$data, envir = eval_env))
+  Xnull_name <- "X_null"
+  while (Xnull_name %in% data_names) Xnull_name <- paste(Xnull_name, "null", sep = "_")
+  mod_formula <- stats::reformulate(Xnull_name, intercept = FALSE, env = null_env)
 
-  # null model --------------------------------------------------------------
+  # compute null matrix --------------------------------------------------------
 
-  Xnull <- constrain_predictors(X_mat, C_mat)
+  if (is.null(full_model$subset)) {
+    obs_rows <- full_model$not.na
+  } else {
+    obs_rows <- full_model$subset
+    obs_rows[full_model$subset] <- full_model$not.na
+  }
 
-  Xnull_f <- matrix(NA, nrow = nrow(full_model$X.f), ncol = ncol(Xnull))
-  Xnull_f[full_model$not.na,] <- Xnull
+  Xnull <- matrix(NA, nrow = length(obs_rows), ncol = ncol(C_mat) - nrow(C_mat))
+  Xnull[obs_rows,] <- constrain_predictors(full_model$X, C_mat)
+  assign(Xnull_name, Xnull, envir = null_env)
 
-  null_model <- metafor::update.rma(full_model, yi = full_model$yi.f,  mods = ~ 0 + Xnull_f)
+  # estimate null model --------------------------------------------------------
+  arg_list <- list(object = full_model, mods = mod_formula, evaluate = FALSE)
+  null_model_call <- do.call(metafor::update.rma, args = arg_list)
 
-  return(null_model)
+  eval(null_model_call, envir = null_env)
 
 }
 
@@ -49,21 +66,34 @@ get_boot_F.rma.mv <- function(full_model,
                               type = "CR0",
                               test = "Naive-F") {
 
-  new_dat <- eval(full_model$call$data)
+  # set up child environment ---------------------------------------------------
+  boot_env <- new.env(parent = attr(full_model$random[[1]], ".Environment"))
 
-  if (is.null(full_model$formula.yi)) {
-    yi_name <- as.character(full_model$call$yi)
+  # handle formulas in yi call
+  yi <- full_model$call$yi
+  if (length(yi) > 1) {
+    y_name <- paste(as.character(yi[[2]]), "boot", sep = "_")
+    yi[[2]] <- NULL
+    full_model$call$mods <- yi
   } else {
-    yi_name <- as.character(full_model$formula.yi[[2]])
+    y_name <- paste(as.character(yi), "boot", sep = "_")
   }
 
-  y_new <- rep(NA, length = nrow(full_model$X.f))
-  y_new[full_model$not.na] <- y_boot
+  if (is.null(full_model$subset)) {
+    obs_rows <- full_model$not.na
+  } else {
+    obs_rows <- full_model$subset
+    obs_rows[full_model$subset] <- full_model$not.na
+  }
 
-  new_dat[[yi_name]] <- y_new
+  y_new <- rep(NA, length = length(obs_rows))
+  y_new[obs_rows] <- y_boot
+  assign(y_name, y_new, envir = boot_env)
 
+  arg_list <- list(object = full_model, yi = as.symbol(y_name), evaluate = FALSE)
+  boot_model_call <- do.call(metafor::update.rma, args = arg_list)
 
-  boot_mod <- tryCatch(metafor::update.rma(full_model, data = new_dat),
+  boot_mod <- tryCatch(eval(boot_model_call, envir = boot_env),
                        error = function(e) NA)
 
   if (inherits(boot_mod, "rma.mv")) {

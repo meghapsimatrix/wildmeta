@@ -1,9 +1,19 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+<img src="man/figures/wildmeta_hex.png" align="right" alt="" width="180" />
+
 # wildmeta
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/meghapsimatrix/wildmeta/workflows/R-CMD-check/badge.svg)](https://github.com/meghapsimatrix/wildmeta/actions)
+[![Codecov test
+coverage](https://codecov.io/gh/meghapsimatrix/wildmeta/branch/main/graph/badge.svg)](https://app.codecov.io/gh/meghapsimatrix/wildmeta?branch=main)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/wildmeta)](https://CRAN.R-project.org/package=wildmeta)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/wildmeta)](https://CRAN.R-project.org/package=wildmeta)
+[![](http://cranlogs.r-pkg.org/badges/last-month/wildmeta)](https://CRAN.R-project.org/package=wildmeta)
 <!-- badges: end -->
 
 Typical methods to conduct meta-analysis—pooling effect sizes or
@@ -21,25 +31,29 @@ Tipton (2015) and Tipton & Pustejovsky (2015) examined several small
 sample correction methods. Tipton (2015) recommended CR2 type correction
 for RVE as well as the use of Satterthwaite degrees of freedom for
 single coefficient tests. Tipton & Pustejovsky (2015) examined
-corrections for [multiple-contrast hypothesis
-tests](https://cran.r-project.org/web/packages/clubSandwich/vignettes/Wald-tests-in-clubSandwich.html).
-The authors found that the HTZ test, which is an extension of the CR2
-correction method with the Satterthwaite degrees of freedom, controlled
-Type 1 error rate adequately even when the number of studies was small.
-However, Joshi, Pustejovsky & Beretvas (2021) showed, through
-simulations, that the HTZ test can be conservative. The authors examined
-another method, cluster wild bootstrapping (CWB), that has been studied
-in the econometrics literature but not in the meta-analytic context. The
-results of the simulations from Joshi, Pustejovsky & Beretvas (2021)
-showed that CWB adequately controlled for Type 1 error rate and provided
-higher power than the HTZ test, especially for multiple-contrast
-hypothesis tests. hypothesis tests.
+corrections for multiple-contrast hypothesis tests. The authors found
+that the HTZ test, which is an extension of the CR2 correction method
+with the Satterthwaite degrees of freedom, controlled Type 1 error rate
+adequately even when the number of studies was small. However, Joshi,
+Pustejovsky & Beretvas (2021) showed, through simulations, that the HTZ
+test can be conservative. The authors examined another method, cluster
+wild bootstrapping (CWB), that has been studied in the econometrics
+literature but not in the meta-analytic context. The results of the
+simulations from Joshi, Pustejovsky & Beretvas (2021) showed that CWB
+adequately controlled for Type 1 error rate and provided higher power
+than the HTZ test, especially for multiple-contrast hypothesis tests.
 
 The goal of this package is to provide applied meta-analytic researchers
 a set of functions with which they can conduct single coefficient tests
 or multiple-contrast hypothesis tests using cluster wild bootstrapping.
 
 ## Installation
+
+Install the latest release from CRAN:
+
+``` r
+install.packages("wildmeta")
+```
 
 You can install the development version from
 [GitHub](https://github.com/) with:
@@ -59,45 +73,34 @@ scores.
 
 The code below runs cluster wild bootstrapping to test the
 multiple-contrast hypothesis that the effect of coaching does not differ
-based on study type. The study\_type variable indicates whether groups
+based on study type. The `study_type` variable indicates whether groups
 compared in primary studies were matched, randomized, or non-equivalent.
 The meta-regression model also controls for hours of coaching provided
-(hrs) and whether the students took math or verbal test (test). Below,
-we run a zero-intercept meta-regression model.
+(`hrs`) and whether the students took math or verbal test (`test`).
+Below, we run a zero-intercept meta-regression model.
 
-Below, we use the `robu()` function from the `robumeta` package to fit
-the full model. The functions in our package work with models fit using
-[`robu()`](https://cran.r-project.org/web/packages/robumeta/robumeta.pdf)
-from the robumeta package (Fisher, Tipton, & Zhipeng, 2017) and
-[`rma.mv()`](https://wviechtb.github.io/metafor/reference/rma.mv.html)
-from the metafor package (Viechtbauer, 2010).
+Below, we use the `robumeta::robu()` function to fit the full model. The
+functions in our package work with models fit using `robumeta::robu()`
+(Fisher, Tipton, & Zhipeng, 2017) and `metafor::rma.mv()` (Viechtbauer,
+2010).
 
 ``` r
 library(wildmeta)
 library(clubSandwich)
 library(robumeta)
 
-source("R/helpers.R")
-source("R/robu_update.R")
-source("R/plot_wildmeta.R")
-source("R/S3_methods.R")
-
-
-set.seed(12102020)
-
 full_model <- robu(d ~ 0 + study_type + hrs + test,
-              studynum = study,
-              var.eff.size = V,
-              small = FALSE,
-              data = SATcoaching)
-
-C_mat <- constrain_equal(1:3, coefs = full_model$b.r)
+                   studynum = study,
+                   var.eff.size = V,
+                   small = FALSE,
+                   data = SATcoaching)
 
 Wald_test_cwb(full_model = full_model,
-              constraint_matrix = C_mat,
-              R = 12)
-#>   test     p_val
-#> 1  CWB 0.1666667
+              constraints = constrain_equal(1:3),
+              R = 12,
+              seed = 20201210)
+#>   Test Adjustment CR_type Statistic  R     p_val
+#> 1  CWB        CR0     CR0   Naive-F 12 0.5833333
 ```
 
 # Related Work
@@ -140,6 +143,17 @@ weights for wild bootstrapping. The output of the function is a
 bootstrap sampling distribution. Further, the package does not work with
 clustered data.
 
+# Acknowledgments
+
+Huge shout out to my extremely talented friend
+[RAZ](https://ms-raz.com/) for creating our hex sticker within minutes.
+We are also extremely thankful to [Wolfgang
+Viechtbauer](https://wvbauer.com/doku.php/home) for helping us solve
+[this
+issue](https://stat.ethz.ch/pipermail/r-help/2021-November/472977.html)
+we had with the `update()` function. We also thank Mikkel Vembye for
+testing our package and giving us very helpful feedback.
+
 # References
 
 Canty A. & Ripley B. (2020). boot: Bootstrap R (S-Plus) Functions. R
@@ -152,7 +166,7 @@ Fischer, A. & Roodman, D. (2021). fwildclusterboot: Fast Wild Cluster
 Bootstrap Inference for Linear Regression Models. Available from
 <https://cran.r-project.org/package=fwildclusterboot>.
 
-Fisher, Z., Tipton, E., & Zhipeng, H. (2017). Robumeta: Robust variance
+Fisher, Z., Tipton, E., & Zhipeng, H. (2017). robumeta: Robust variance
 meta-regression. Retrieved from
 <https://CRAN.R-project.org/package=robumeta>
 
@@ -163,14 +177,13 @@ Standard Error Clustering. R package version 1.2.3.
 Hedges, L. V., Tipton, E., & Johnson, M. C. (2010). Robust variance
 estimation in meta-regression with dependent effect size estimates.
 Research Synthesis Methods, 1(1), 39–65.
-<https://doi.org/10.1002/jrsm.5>
 
 Heyman, M. (2019). lmboot: Bootstrap in Linear Models. R package version
 0.0.1. <https://CRAN.R-project.org/package=lmboot>
 
 Joshi, M., Pustejovsky, J. E., & Beretvas, S. N. (2021). Cluster wild
-bootstrapping to handle dependent effect sizes in meta-Analysis with
-small number of studies. Working paper.
+bootstrapping to handle dependent effect sizes in meta-analysis with
+small number of studies. <https://doi.org/10.31222/osf.io/x6uhk>
 
 Pustejovsky, J. E. (2020). clubSandwich: Cluster-robust (sandwich)
 variance estimators with small-sample corrections \[R package version
@@ -179,12 +192,11 @@ variance estimators with small-sample corrections \[R package version
 
 Tipton, E. (2015). Small sample adjustments for robust variance
 estimation with meta-regression. Psychological Methods, 20(3), 375–393.
-<https://doi.org/10.1037/met0000011>
 
 Tipton, E., & Pustejovsky, J. E. (2015). Small-Sample Adjustments for
 Tests of Moderators and Model Fit Using Robust Variance Estimation in
 Meta-Regression. Journal of Educational and Behavioral Statistics (Vol.
-40). <https://doi.org/10.3102/1076998615606099>
+40).
 
 Viechtbauer, W. (2010). Conducting meta-analyses in R with the metafor
 package. Journal of Statistical Software, 36(3), 1–48.

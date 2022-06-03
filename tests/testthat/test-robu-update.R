@@ -1,4 +1,4 @@
-library(robumeta)
+suppressPackageStartupMessages(library(robumeta))
 
 data("SATcoaching", package = "clubSandwich")
 
@@ -31,6 +31,14 @@ check_update <- function(mod, check_dfs = TRUE, tol = testthat_tolerance()) {
   }
 
   update_mod <- update_robu(mod, y = y, vcov = vcov_type)
+
+  # Check bread calculations
+  bread_update <- bread(update_mod)
+  X_update <- model.matrix(update_mod)
+  w <- update_mod$w_ij
+  XwX_inv <- chol2inv(chol(crossprod(X_update, w * X_update)))
+  expect_equal(bread_update, update_mod$nobs * XwX_inv)
+
   update_tests <- clubSandwich::conf_int(update_mod,
                                          vcov = update_mod$vcov,
                                          test = test_type)
@@ -246,5 +254,20 @@ test_that("update_robu.default works for user-weighted models",{
                    data = SATcoaching)
 
   check_update(reg_user, check_dfs = FALSE)
+
+})
+
+test_that("update_robu.default doesn't works for lm objects",{
+
+
+  reg_user <- lm(d ~ 0 + study_type + hrs + test,
+                 weights = wt,
+                 data = SATcoaching)
+
+  expect_error(update_robu(reg_user, y = rnorm(nrow(SATcoaching))))
+
+  reg_user$mod_label <- "linear regression"
+
+  expect_error(update_robu(reg_user, y = rnorm(nrow(SATcoaching))))
 
 })

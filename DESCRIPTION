@@ -1,6 +1,6 @@
 Package: wildmeta
 Title: Cluster Wild Bootstrapping for Meta-Analysis
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: c(
     person(given = "Megha", 
            family = "Joshi", 
@@ -12,12 +12,17 @@ Authors@R: c(
            email = "jepusto@gmail.com", 
            role = c("aut"), 
            comment = c(ORCID = "0000-0003-0591-9465")),
+    person(given = "Sangdon", 
+           family = "Lim", 
+           email = "sangdonlim@utexas.edu", 
+           role = "ctb",
+           comment = c(ORCID = "0000-0002-2988-014X")),
     person(given = "Pierce", 
            family = "Cappelli", 
            email = "pierce.cappelli@utexas.edu", 
-           role = "aut"))
+           role = "ctb"))
 Maintainer: Megha Joshi <megha.j456@gmail.com>
-Description: What the package does (one paragraph).
+Description: Conducts single coefficient tests and multiple-contrast hypothesis tests of meta-regression models using cluster wild bootstrapping, based on methods examined in Joshi, Pustejovsky, and Beretvas (2021) <DOI:10.31222/osf.io/x6uhk>. 
 URL: https://meghapsimatrix.github.io/wildmeta/index.html
 BugReports: https://github.com/meghapsimatrix/wildmeta/issues
 License: GPL-3
@@ -27,6 +32,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Imports: 
     clubSandwich (>= 0.5.4),
+    sandwich,
     robumeta,
     metafor,
     stringr,
@@ -38,6 +44,8 @@ Suggests:
     testthat (>= 3.0.0),
     knitr,
     rmarkdown,
-    ggplot2
+    ggplot2,
+    covr,
+    mockery
 VignetteBuilder: knitr
 Config/testthat/edition: 3

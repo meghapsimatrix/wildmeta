@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{Results from Wald_test_cwb function}
 
-\item{...}{Any other arguments to be passed to \code{ggplot2::geom_density())}}
+\item{...}{Any other arguments to be passed to \code{ggplot2::geom_density()}}
 }
 \value{
 A ggplot2 density plot.
@@ -18,18 +18,20 @@ A ggplot2 density plot.
 Creates a density plot showing the distribution of bootstrap test statistics.
 }
 \examples{
+data("SATcoaching", package = "clubSandwich")
 library(clubSandwich)
 library(robumeta)
 
-model <- robu(d ~ 0 + study_type + hrs + test,
-             studynum = study,
-              var.eff.size = V,
-              small = FALSE,
-              data = SATcoaching)
+full_model <- robu(d ~ 0 + study_type + hrs + test,
+                   studynum = study,
+                   var.eff.size = V,
+                   small = FALSE,
+                   data = SATcoaching)
+
 
 res <- Wald_test_cwb(full_model = full_model,
-                     constraint_matrix = C_mat,
-                     R = 12)
+                     constraints = constrain_equal(1:3),
+                     R = 99)
 
 plot(res, fill = "darkred", alpha = 0.5)
 

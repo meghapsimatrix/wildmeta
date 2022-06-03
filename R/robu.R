@@ -6,15 +6,17 @@
 estimate_null.robu <- function(full_model,
                                C_mat) {
 
+  ord <- order(order(full_model$study_orig_id))
+
   dep <- full_model$modelweights
 
   # assembling data ---------------------------------------------------------
 
-  es_dat <- full_model$data.full[, c("effect.size", "var.eff.size", "study")]
+  es_dat <- full_model$data.full[ord, c("effect.size", "var.eff.size", "study")]
 
   # null_model --------------------------------------------------------------
 
-  X_mat <- as.matrix(full_model$X.full[, -1])
+  X_mat <- as.matrix(full_model$X.full[ord, -1])
   Xnull <- as.data.frame(constrain_predictors(Xmat = X_mat, Cmat = C_mat))
 
   null_dat <- cbind(es_dat, Xnull)
@@ -38,7 +40,8 @@ estimate_null.robu <- function(full_model,
 
 get_cluster.robu <- function(full_model) {
 
-  cluster <- full_model$data.full$study
+  ord <- order(order(full_model$study_orig_id))
+  cluster <- full_model$data.full$study[ord]
 
   return(cluster)
 }

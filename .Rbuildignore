@@ -6,3 +6,7 @@
 ^pkgdown$
 ^.github
 ^scratchpad$
+^\.github$
+^codecov\.yml$
+cran-comments.md
+^CRAN-SUBMISSION$

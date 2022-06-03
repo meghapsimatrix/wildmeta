@@ -1,2 +1,2 @@
-utils::globalVariables(c("test", "p_val", "Fstat", ".", "study", "v",
-                         "working_model", "boot_F"))
+
+utils::globalVariables(c("var.eff.size","study"))
