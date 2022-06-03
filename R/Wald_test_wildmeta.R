@@ -63,7 +63,8 @@ Wald_test_cwb <- function(full_model,
                           adjust = "CR0",
                           type = "CR0",
                           test = "Naive-F",
-                          seed = NULL) {
+                          seed = NULL,
+                          future_args = NULL) {
 
   if (inherits(constraints, "function")) {
     constraints <- constraints(stats::coef(full_model))
@@ -88,7 +89,8 @@ Wald_test_cwb <- function(full_model,
                    auxiliary_dist = auxiliary_dist,
                    adjust = adjust,
                    simplify = TRUE,
-                   seed = seed)
+                   seed = seed,
+                   future_args = future_args)
 
   full_vcov <- clubSandwich::vcovCR(full_model, type = type, cluster = cluster)
   org_F <- clubSandwich::Wald_test(full_model,

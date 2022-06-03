@@ -3,12 +3,10 @@ library(clubSandwich)
 library(robumeta)
 library(metafor)
 library(tidyverse)
-library(wildmeta)
-
-
+# library(wildmeta)
 
 devtools::load_all()
-source("R/helpers.R")
+#source("R/helpers.R")
 
 # need to figure out how to set plan(multisession) within run_cwb()
 # any special input needed for future apply
@@ -44,14 +42,16 @@ simplify <- TRUE
 plan(multisession)
 
 
-system.time(bootstraps <- future.apply::future_replicate(n = 1999, {
+system.time(
+  bootstraps <- future.apply::future_replicate(n = 1999, {
 
-  wts <- return_wts(auxiliary_dist = auxiliary_dist, cluster_var = num_cluster)
-  eta <- wts[cluster]
-  y_boot <- pred + res * eta
+    wts <- return_wts(auxiliary_dist = auxiliary_dist, cluster_var = num_cluster)
+    eta <- wts[cluster]
+    y_boot <- pred + res * eta
 
 
-}, simplify = simplify & is.null(f)))
+  }, simplify = simplify & is.null(f))
+)
 
 
 
