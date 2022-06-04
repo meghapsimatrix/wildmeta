@@ -110,6 +110,7 @@ test_that("get_boot_F() works for rma.mv objects.", {
   y_boot <- oswald2013$yi
 
   Cmat_int <- constrain_zero(1, coefs = coef(mod_A))
+
   expect_equal(
     get_boot_F(mod_A, y_boot = y_boot, C_mat = Cmat_int, cluster = get_cluster(mod_A)),
     Wald_test(mod_A, constraints = Cmat_int, vcov = "CR0", test = "Naive-F")$Fstat
@@ -145,6 +146,49 @@ test_that("get_boot_F() works for rma.mv objects.", {
     Wald_test(mod_C2, constraints = Cmat_F, vcov = "CR0", test = "HTA")$Fstat
   )
 
+  # get_boot_F_f
+
+  expect_equal(
+    get_boot_F(mod_A, y_boot = y_boot, C_mat = Cmat_int, cluster = get_cluster(mod_A)),
+    get_boot_F_f(mod_A, C_mat = Cmat_int, cluster = get_cluster(mod_A))(y_boot)
+  )
+
+  expect_equal(
+    get_boot_F(mod_B, y_boot = y_boot, C_mat = Cmat_A, cluster = get_cluster(mod_B),
+               type = "CR1", test = "HTZ"),
+    get_boot_F_f(mod_B, C_mat = Cmat_A, cluster = get_cluster(mod_B),
+               type = "CR1", test = "HTZ")(y_boot)
+  )
+
+  expect_equal(
+    get_boot_F(mod_C1, y_boot = y_boot, C_mat = Cmat_B, cluster = get_cluster(mod_C1),
+               type = "CR2", test = "EDT"),
+    get_boot_F_f(mod_C1, C_mat = Cmat_B, cluster = get_cluster(mod_C1),
+               type = "CR2", test = "EDT")(y_boot)
+  )
+
+  expect_equal(
+    get_boot_F(mod_C1, y_boot = y_boot, C_mat = Cmat_D, cluster = get_cluster(mod_C1),
+               type = "CR3", test = "chi-sq"),
+    get_boot_F_f(mod_C1, C_mat = Cmat_D, cluster = get_cluster(mod_C1),
+               type = "CR3", test = "chi-sq")(y_boot)
+  )
+
+  expect_equal(
+    get_boot_F(mod_C2, y_boot = y_boot, C_mat = Cmat_E, cluster = get_cluster(mod_C2),
+               type = "CR2", test = "Naive-Fp"),
+    get_boot_F_f(mod_C2, C_mat = Cmat_E, cluster = get_cluster(mod_C2),
+               type = "CR2", test = "Naive-Fp")(y_boot)
+  )
+
+  expect_equal(
+    get_boot_F(mod_C2, y_boot = y_boot, C_mat = Cmat_F, cluster = get_cluster(mod_C2),
+               type = "CR0", test = "HTA"),
+    get_boot_F_f(mod_C2, C_mat = Cmat_F, cluster = get_cluster(mod_C2),
+               type = "CR0", test = "HTA")(y_boot)
+  )
+
+
   oswald2013$yi_boot <- oswald2013$yi + rnorm(nrow(oswald2013))
 
   mod_G <- rma.mv(yi = yi_boot, mods = ~ Crit.Cat + Crit.Domain + IAT.Focus, V = V,
@@ -173,6 +217,7 @@ test_that("get_boot_F() works for rma.mv objects.", {
   expect_false(G_stat == Wald_test(mod_G, constraints = Cmat_G, vcov = "CR0", test = "HTZ")$Fstat)
 
 })
+
 
 test_that("run_cwb options work for rma.mv objects.", {
 

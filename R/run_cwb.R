@@ -105,7 +105,7 @@ run_cwb <- function(model,
     expr = quote({
       wts <- wild_wts(auxiliary_dist = auxiliary_dist, n_clusters = n_clusters)
       eta <- wts[cluster]
-      pred + res * eta
+      y_boot <- pred + res * eta
     }),
     simplify = simplify & is.null(f)
   )
@@ -127,14 +127,8 @@ run_cwb <- function(model,
     simplify = simplify
   )
 
-  # boot_stats <- do.call(future.apply::future_sapply,
-  #                       args = c(sapply_args, future_args))
-
-  boot_stats <- future.apply::future_sapply(bootstraps,
-                                            FUN = f,
-                                            cluster = cluster,
-                                            ...,
-                                            simplify = simplify)
+  boot_stats <- do.call(future.apply::future_sapply,
+                        args = c(sapply_args, future_args))
 
   return(boot_stats)
 }

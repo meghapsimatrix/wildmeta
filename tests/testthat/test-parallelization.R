@@ -127,6 +127,11 @@ test_that("Wald_test_cwb() returns the same results with plan(sequential) and pl
   expect_equal(robu_seq, robu_multi)
   expect_equal(rma_seq, rma_multi)
 
+  rma_multi <- run_cwb(rma_mod,
+                       cluster = get_cluster(rma_mod),
+                       R = 60,
+                       seed = 12, simplify = FALSE)
+
 })
 
 test_that("run_cwb uses future_args if specified.", {
