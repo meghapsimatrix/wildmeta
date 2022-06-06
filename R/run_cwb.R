@@ -94,10 +94,6 @@ run_cwb <- function(model,
   # bootstrap ---------------------------------------------------------------
   n_clusters <- length(unique(cluster))
 
-  # option to not do parallel?
-
-  plan(multisession)
-
   bootstraps <- future.apply::future_replicate(n = R, {
 
     wts <- wild_wts(auxiliary_dist = auxiliary_dist, n_clusters = n_clusters)
