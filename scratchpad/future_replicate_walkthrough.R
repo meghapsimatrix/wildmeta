@@ -37,6 +37,7 @@ auxiliary_dist <- "Rademacher"
 f <- get_boot_F
 simplify <- TRUE
 
+n_clusters <- length(unique(cluster))
 
 
 # future replicate --------------------------------------------------------
@@ -44,9 +45,9 @@ simplify <- TRUE
 plan(multisession)
 
 
-system.time(bootstraps <- future.apply::future_replicate(n = 1999, {
+system.time(bootstraps <- future.apply::future_replicate(n = 10, {
 
-  wts <- return_wts(auxiliary_dist = auxiliary_dist, cluster_var = num_cluster)
+  wts <- wild_wts(auxiliary_dist = auxiliary_dist, n_clusters = n_clusters)
   eta <- wts[cluster]
   y_boot <- pred + res * eta
 
@@ -55,9 +56,9 @@ system.time(bootstraps <- future.apply::future_replicate(n = 1999, {
 
 
 
-system.time(bootstraps <- replicate(n = 1999, {
+system.time(bootstraps <- replicate(n = 10, {
 
-  wts <- return_wts(auxiliary_dist = auxiliary_dist, cluster_var = num_cluster)
+  wts <- wild_wts(auxiliary_dist = auxiliary_dist, n_clusters = n_clusters)
   eta <- wts[cluster]
   y_boot <- pred + res * eta
 
