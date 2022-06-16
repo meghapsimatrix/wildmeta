@@ -1,0 +1,10 @@
+pandoc: 2.14.2
+pkgdown: 2.0.4
+pkgdown_sha: ~
+articles:
+  cwbmeta: cwbmeta.html
+last_built: 2022-06-16T15:07Z
+urls:
+  reference: https://meghapsimatrix.github.io/wildmeta/reference
+  article: https://meghapsimatrix.github.io/wildmeta/articles
+
