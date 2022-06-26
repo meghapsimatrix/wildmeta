@@ -93,8 +93,10 @@ get_boot_F.rma.mv <- function(full_model,
   arg_list <- list(object = full_model, yi = as.symbol(y_name), evaluate = FALSE)
   boot_model_call <- do.call(metafor::update.rma, args = arg_list)
 
-  boot_mod <- tryCatch(eval(boot_model_call, envir = boot_env),
-                       error = function(e) NA)
+  # boot_mod <- tryCatch(eval(boot_model_call, envir = boot_env),
+  #                      error = function(e) NA, warning = function(w) NA)
+
+  boot_mod <- eval(boot_model_call, envir = boot_env)
 
   if (inherits(boot_mod, "rma.mv")) {
 
@@ -111,10 +113,6 @@ get_boot_F.rma.mv <- function(full_model,
 
     res <- NA
   }
-
-  res$call <- boot_model_call
-  res$boot_mod <- boot_mod
-  res$env <- boot_env
 
   return(res)
 

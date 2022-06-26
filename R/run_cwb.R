@@ -117,8 +117,6 @@ run_cwb <- function(model,
     return(bootstraps)
   }
 
-  # evaluate f on each bootstrap
-
   sapply_args <- list(
     X = bootstraps,
     FUN = f,

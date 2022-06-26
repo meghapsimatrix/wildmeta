@@ -77,6 +77,11 @@ Wald_test_cwb <- function(full_model,
   # detect clusters if not specified
   if (is.null(cluster)) cluster <- get_cluster(null_model)
 
+  # evaluate f on each bootstrap
+  if (inherits(full_model,"rma")) {
+    future_args$future.packages <- c("clubSandwich","metafor")
+    future_args$future.envir <- attr(full_model$random[[1]], ".Environment")
+  }
 
   boots <- run_cwb(null_model,
                    cluster = cluster,
