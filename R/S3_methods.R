@@ -26,6 +26,15 @@ get_boot_F <- function(full_model,
   UseMethod("get_boot_F")
 }
 
+get_boot_F_f <- function(full_model,
+                         C_mat,
+                         cluster,
+                         type,
+                         test) {
+
+  UseMethod("get_boot_F_f")
+}
+
 
 get_fitted <- function(model) {
 

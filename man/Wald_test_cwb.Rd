@@ -14,7 +14,8 @@ Wald_test_cwb(
   adjust = "CR0",
   type = "CR0",
   test = "Naive-F",
-  seed = NULL
+  seed = NULL,
+  future_args = NULL
 )
 }
 \arguments{
@@ -34,15 +35,15 @@ belong to the same cluster. If \code{NULL} (the default), then the
 clustering variable will be inferred based on the structure of
 \code{full_mod}.}
 
-\item{auxiliary_dist}{Character string indicating the auxiliary
-distribution to be used for cluster wild bootstrapping, with available
-options: "Rademacher", "Mammen", "Webb six", "uniform", "standard normal".
-The default is set to "Rademacher." We recommend the Rademacher
-distribution for models that have at least 10 clusters. For models with
-less than 10 clusters, we recommend the use of "Webb six" distribution.}
+\item{auxiliary_dist}{Character string indicating the auxiliary distribution
+to be used for cluster wild bootstrapping, with available options:
+"Rademacher", "Mammen", "Webb six", "uniform", "standard normal". The
+default is set to "Rademacher." We recommend the Rademacher distribution
+for models that have at least 10 clusters. For models with less than 10
+clusters, we recommend the use of "Webb six" distribution.}
 
-\item{adjust}{Character string specifying which small-sample adjustment should
-be used to multiply the residuals by. The available options are
+\item{adjust}{Character string specifying which small-sample adjustment
+should be used to multiply the residuals by. The available options are
 \code{"CRO"}, \code{"CR1"}, \code{"CR2"}, \code{"CR3"}, or \code{"CR4"},
 with a default of \code{"CRO"}.}
 
@@ -56,6 +57,10 @@ adjustment is used in calculating the test statistic. Default is
 \code{"Naive-F"}, which does not make any small-sample adjustment.}
 
 \item{seed}{Optional seed value to ensure reproducibility.}
+
+\item{future_args}{Optional list of additional arguments passed to the
+\code{future_*()} functions used in calculating results across bootstrap
+replications. Ignored if the future.apply package is not available.}
 }
 \value{
 A \code{data.frame} containing the name of the test, the adjustment

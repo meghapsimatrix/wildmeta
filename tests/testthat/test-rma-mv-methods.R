@@ -110,6 +110,7 @@ test_that("get_boot_F() works for rma.mv objects.", {
   y_boot <- oswald2013$yi
 
   Cmat_int <- constrain_zero(1, coefs = coef(mod_A))
+
   expect_equal(
     get_boot_F(mod_A, y_boot = y_boot, C_mat = Cmat_int, cluster = get_cluster(mod_A)),
     Wald_test(mod_A, constraints = Cmat_int, vcov = "CR0", test = "Naive-F")$Fstat
@@ -145,6 +146,49 @@ test_that("get_boot_F() works for rma.mv objects.", {
     Wald_test(mod_C2, constraints = Cmat_F, vcov = "CR0", test = "HTA")$Fstat
   )
 
+  # get_boot_F_f
+
+  expect_equal(
+    get_boot_F(mod_A, y_boot = y_boot, C_mat = Cmat_int, cluster = get_cluster(mod_A)),
+    get_boot_F_f(mod_A, C_mat = Cmat_int, cluster = get_cluster(mod_A))(y_boot)
+  )
+
+  expect_equal(
+    get_boot_F(mod_B, y_boot = y_boot, C_mat = Cmat_A, cluster = get_cluster(mod_B),
+               type = "CR1", test = "HTZ"),
+    get_boot_F_f(mod_B, C_mat = Cmat_A, cluster = get_cluster(mod_B),
+               type = "CR1", test = "HTZ")(y_boot)
+  )
+
+  expect_equal(
+    get_boot_F(mod_C1, y_boot = y_boot, C_mat = Cmat_B, cluster = get_cluster(mod_C1),
+               type = "CR2", test = "EDT"),
+    get_boot_F_f(mod_C1, C_mat = Cmat_B, cluster = get_cluster(mod_C1),
+               type = "CR2", test = "EDT")(y_boot)
+  )
+
+  expect_equal(
+    get_boot_F(mod_C1, y_boot = y_boot, C_mat = Cmat_D, cluster = get_cluster(mod_C1),
+               type = "CR3", test = "chi-sq"),
+    get_boot_F_f(mod_C1, C_mat = Cmat_D, cluster = get_cluster(mod_C1),
+               type = "CR3", test = "chi-sq")(y_boot)
+  )
+
+  expect_equal(
+    get_boot_F(mod_C2, y_boot = y_boot, C_mat = Cmat_E, cluster = get_cluster(mod_C2),
+               type = "CR2", test = "Naive-Fp"),
+    get_boot_F_f(mod_C2, C_mat = Cmat_E, cluster = get_cluster(mod_C2),
+               type = "CR2", test = "Naive-Fp")(y_boot)
+  )
+
+  expect_equal(
+    get_boot_F(mod_C2, y_boot = y_boot, C_mat = Cmat_F, cluster = get_cluster(mod_C2),
+               type = "CR0", test = "HTA"),
+    get_boot_F_f(mod_C2, C_mat = Cmat_F, cluster = get_cluster(mod_C2),
+               type = "CR0", test = "HTA")(y_boot)
+  )
+
+
   oswald2013$yi_boot <- oswald2013$yi + rnorm(nrow(oswald2013))
 
   mod_G <- rma.mv(yi = yi_boot, mods = ~ Crit.Cat + Crit.Domain + IAT.Focus, V = V,
@@ -173,6 +217,7 @@ test_that("get_boot_F() works for rma.mv objects.", {
   expect_false(G_stat == Wald_test(mod_G, constraints = Cmat_G, vcov = "CR0", test = "HTZ")$Fstat)
 
 })
+
 
 test_that("run_cwb options work for rma.mv objects.", {
 
@@ -209,6 +254,8 @@ compare_mod_results <- function(mod, scram, ord = 1:length(get_res(mod)), tol = 
 test_that("Wald_test_cwb() results do not depend on sort order.", {
 
   skip_on_cran()
+
+  tol <- 1e-5
 
   ord <- sample(1:nrow(oswald2013))
   oswald_scram <- oswald2013[ord,]
@@ -255,8 +302,8 @@ test_that("Wald_test_cwb() results do not depend on sort order.", {
                            test = "Naive-F",
                            seed = 1)
 
-  expect_equal(attr(orig_A, "original"), attr(scram_A, "original"))
-  expect_equal(attr(orig_A, "bootstraps"), attr(scram_A, "bootstraps"))
+  expect_equal(attr(orig_A, "original"), attr(scram_A, "original"), tolerance = tol)
+  expect_equal(attr(orig_A, "bootstraps"), attr(scram_A, "bootstraps"), tolerance = tol)
 
 
   orig_D <- Wald_test_cwb(mod_C1, constraints = Cmat_D,
@@ -275,8 +322,8 @@ test_that("Wald_test_cwb() results do not depend on sort order.", {
                            test = "Naive-Fp",
                            seed = 2)
 
-  expect_equal(attr(orig_D, "original"), attr(scram_D, "original"))
-  expect_equal(attr(orig_D, "bootstraps"), attr(scram_D, "bootstraps"))
+  expect_equal(attr(orig_D, "original"), attr(scram_D, "original"), tolerance = tol)
+  expect_equal(attr(orig_D, "bootstraps"), attr(scram_D, "bootstraps"), tolerance = tol)
 
   orig_E <- Wald_test_cwb(mod_C2, constraints = Cmat_E,
                           R = 5,
@@ -294,8 +341,8 @@ test_that("Wald_test_cwb() results do not depend on sort order.", {
                            test = "HTZ",
                            seed = 3)
 
-  expect_equal(attr(orig_E, "original"), attr(scram_E, "original"))
-  expect_equal(attr(orig_E, "bootstraps"), attr(scram_E, "bootstraps"))
+  expect_equal(attr(orig_E, "original"), attr(scram_E, "original"), tolerance = tol)
+  expect_equal(attr(orig_E, "bootstraps"), attr(scram_E, "bootstraps"), tolerance = tol)
 
   orig_F <- Wald_test_cwb(mod_C2, constraints = Cmat_F,
                           R = 8,
@@ -313,8 +360,8 @@ test_that("Wald_test_cwb() results do not depend on sort order.", {
                            test = "EDT",
                            seed = 4)
 
-  expect_equal(attr(orig_F, "original"), attr(scram_F, "original"))
-  expect_equal(attr(orig_F, "bootstraps"), attr(scram_F, "bootstraps"))
+  expect_equal(attr(orig_F, "original"), attr(scram_F, "original"), tolerance = tol)
+  expect_equal(attr(orig_F, "bootstraps"), attr(scram_F, "bootstraps"), tolerance = tol)
 
 })
 
@@ -385,6 +432,7 @@ test_that("Wald_test_cwb() works with user-weighted rma.mv models.", {
                             seed = 19)
 
   expect_s3_class(test_wt1, "Wald_test_wildmeta")
+  expect_true(!is.na(test_wt1$p_val))
 
   mod_wt2 <- rma.mv(yi ~ 0 + Crit.Cat + Crit.Domain + IAT.Focus + Scoring,
                      V = V, W = wt,
@@ -398,6 +446,7 @@ test_that("Wald_test_cwb() works with user-weighted rma.mv models.", {
                             seed = 19)
 
   expect_s3_class(test_wt2, "Wald_test_wildmeta")
+  expect_true(!is.na(test_wt2$p_val))
 
   expect_equal(test_wt1, test_wt2)
 

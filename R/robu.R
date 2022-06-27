@@ -74,6 +74,36 @@ get_boot_F.robu <- function(full_model,
 
 }
 
+#' @export
+
+get_boot_F_f.robu <- function(full_model,
+                              C_mat,
+                              cluster,
+                              type = "CR0",
+                              test = "Naive-F") {
+
+  function(y_boot) {
+
+    # use update robu to fit bootstrapped model
+
+    boot_mod <- update_robu(full_model,
+                            y = y_boot)
+
+    cov_mat <- clubSandwich::vcovCR(boot_mod, cluster = cluster, type = type)
+
+    res <- clubSandwich::Wald_test(boot_mod,
+                                   constraints = C_mat,
+                                   vcov = cov_mat,
+                                   test = test)
+
+    res <- res$Fstat
+
+    return(res)
+
+  }
+
+}
+
 # get fitted values -------------------------------------------------------
 #' @export
 

@@ -33,6 +33,8 @@ res <- Wald_test_cwb(full_model = full_model,
                      constraints = constrain_equal(1:3),
                      R = 99)
 
+if (requireNamespace("ggplot2", quietly = TRUE)) {
 plot(res, fill = "darkred", alpha = 0.5)
+}
 
 }

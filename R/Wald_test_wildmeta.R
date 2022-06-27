@@ -63,7 +63,8 @@ Wald_test_cwb <- function(full_model,
                           adjust = "CR0",
                           type = "CR0",
                           test = "Naive-F",
-                          seed = NULL) {
+                          seed = NULL,
+                          future_args = NULL) {
 
   if (inherits(constraints, "function")) {
     constraints <- constraints(stats::coef(full_model))
@@ -76,19 +77,28 @@ Wald_test_cwb <- function(full_model,
   # detect clusters if not specified
   if (is.null(cluster)) cluster <- get_cluster(null_model)
 
+  # evaluate f on each bootstrap
+  future_f_args <- if (inherits(full_model,"rma")) {
+    list(
+      future.packages = c("clubSandwich","metafor"),
+      future.envir = attr(full_model$random[[1]], ".Environment")
+    )
+  } else {
+    NULL
+  }
 
   boots <- run_cwb(null_model,
                    cluster = cluster,
                    R = R,
-                   f = get_boot_F,  # this goes to sapply
+                   f = get_boot_F,
                    full_model = full_model,
-                   C_mat = constraints,
-                   type = type,
-                   test = test,
+                   C_mat = constraints, type = type, test = test,
                    auxiliary_dist = auxiliary_dist,
                    adjust = adjust,
                    simplify = TRUE,
-                   seed = seed)
+                   seed = seed,
+                   future_args = future_args,
+                   future_f_args = future_f_args)
 
   full_vcov <- clubSandwich::vcovCR(full_model, type = type, cluster = cluster)
   org_F <- clubSandwich::Wald_test(full_model,

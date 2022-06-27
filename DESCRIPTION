@@ -1,6 +1,6 @@
 Package: wildmeta
 Title: Cluster Wild Bootstrapping for Meta-Analysis
-Version: 0.1.0
+Version: 0.1.0.9999
 Authors@R: c(
     person(given = "Megha", 
            family = "Joshi", 
@@ -35,17 +35,16 @@ Imports:
     sandwich,
     robumeta,
     metafor,
-    stringr,
-    stats,
-    vctrs,
-    sandwich,
-    future.apply
+    stats
 Suggests: 
     testthat (>= 3.0.0),
     knitr,
     rmarkdown,
     ggplot2,
     covr,
-    mockery
+    mockery,
+    future,
+    future.apply,
+    parallelly
 VignetteBuilder: knitr
 Config/testthat/edition: 3
