@@ -14,7 +14,7 @@ hypothesis tests using cluster wild bootstrapping."><!-- mathjax --><script src=
     
     <a class="navbar-brand me-2" href="../index.html">wildmeta</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9999</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,7 +72,8 @@ hypothesis tests using cluster wild bootstrapping.</p>
   adjust <span class="op">=</span> <span class="st">"CR0"</span>,
   type <span class="op">=</span> <span class="st">"CR0"</span>,
   test <span class="op">=</span> <span class="st">"Naive-F"</span>,
-  seed <span class="op">=</span> <span class="cn">NULL</span>
+  seed <span class="op">=</span> <span class="cn">NULL</span>,
+  future_args <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -82,45 +83,70 @@ hypothesis tests using cluster wild bootstrapping.</p>
 <dd><p>Model fit using <code><a href="https://rdrr.io/pkg/robumeta/man/robu.html" class="external-link">robumeta::robu()</a></code> and
 <code><a href="https://wviechtb.github.io/metafor/reference/rma.mv.html" class="external-link">metafor::rma.mv()</a></code> that includes the full set of moderators in the
 meta-regression model.</p></dd>
+
+
 <dt>constraints</dt>
 <dd><p>A q X p constraint matrix be tested. Alternately, a
 function to create such a matrix, specified using
 <code><a href="https://rdrr.io/pkg/clubSandwich/man/constraint_matrices.html" class="external-link">clubSandwich::constrain_equal()</a></code> or
 <code><a href="https://rdrr.io/pkg/clubSandwich/man/constraint_matrices.html" class="external-link">clubSandwich::constrain_zero()</a></code>.</p></dd>
+
+
 <dt>R</dt>
 <dd><p>Number of bootstrap replications.</p></dd>
+
+
 <dt>cluster</dt>
 <dd><p>Vector of identifiers indicating which observations
 belong to the same cluster. If <code>NULL</code> (the default), then the
 clustering variable will be inferred based on the structure of
 <code>full_mod</code>.</p></dd>
+
+
 <dt>auxiliary_dist</dt>
-<dd><p>Character string indicating the auxiliary
-distribution to be used for cluster wild bootstrapping, with available
-options: "Rademacher", "Mammen", "Webb six", "uniform", "standard normal".
-The default is set to "Rademacher." We recommend the Rademacher
-distribution for models that have at least 10 clusters. For models with
-less than 10 clusters, we recommend the use of "Webb six" distribution.</p></dd>
+<dd><p>Character string indicating the auxiliary distribution
+to be used for cluster wild bootstrapping, with available options:
+"Rademacher", "Mammen", "Webb six", "uniform", "standard normal". The
+default is set to "Rademacher." We recommend the Rademacher distribution
+for models that have at least 10 clusters. For models with less than 10
+clusters, we recommend the use of "Webb six" distribution.</p></dd>
+
+
 <dt>adjust</dt>
-<dd><p>Character string specifying which small-sample adjustment should
-be used to multiply the residuals by. The available options are
+<dd><p>Character string specifying which small-sample adjustment
+should be used to multiply the residuals by. The available options are
 <code>"CRO"</code>, <code>"CR1"</code>, <code>"CR2"</code>, <code>"CR3"</code>, or <code>"CR4"</code>,
 with a default of <code>"CRO"</code>.</p></dd>
+
+
 <dt>type</dt>
 <dd><p>Character string specifying which small-sample adjustment is used
 to calculate the Wald test statistic. The available options are
 <code>"CRO"</code>, <code>"CR1"</code>, <code>"CR2"</code>, <code>"CR3"</code>, or <code>"CR4"</code>,
 with a default of <code>"CRO"</code>.</p></dd>
+
+
 <dt>test</dt>
 <dd><p>Character string specifying which (if any) small-sample
 adjustment is used in calculating the test statistic. Default is
 <code>"Naive-F"</code>, which does not make any small-sample adjustment.</p></dd>
+
+
 <dt>seed</dt>
 <dd><p>Optional seed value to ensure reproducibility.</p></dd>
+
+
+<dt>future_args</dt>
+<dd><p>Optional list of additional arguments passed to the
+<code>future_*()</code> functions used in calculating results across bootstrap
+replications. Ignored if the future.apply package is not available.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <code>data.frame</code> containing the name of the test, the adjustment
+    
+
+<p>A <code>data.frame</code> containing the name of the test, the adjustment
 used for the bootstrap process, the type of variance-covariance matrix
 used, the type of test statistic, the number of bootstrap replicates, and
 the bootstrapped p-value.</p>
@@ -143,14 +169,14 @@ the bootstrapped p-value.</p>
 <span class="r-in">              constraints <span class="op">=</span> <span class="va">C_mat</span>,</span>
 <span class="r-in">              R <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Test Adjustment CR_type Statistic  R     p_val</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  CWB        CR0     CR0   Naive-F 12 0.4166667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  CWB        CR0     CR0   Naive-F 12 0.5833333</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Equivalent, using constrain_equal()</span></span>
 <span class="r-in"><span class="fu">Wald_test_cwb</span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">model</span>,</span>
 <span class="r-in">              constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/clubSandwich/man/constraint_matrices.html" class="external-link">constrain_equal</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,</span>
 <span class="r-in">              R <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Test Adjustment CR_type Statistic  R     p_val</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  CWB        CR0     CR0   Naive-F 12 0.6666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  CWB        CR0     CR0   Naive-F 12 0.4166667</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
@@ -163,7 +189,7 @@ the bootstrapped p-value.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>
