@@ -62,7 +62,7 @@ test_that("run_cwb works without setting a future plan.",{
   expect_s3_class(sub_test, "Wald_test_wildmeta")
   expect_true(!is.na(sub_test$p_val))
 
-  expect_warning(
+  suppressWarnings(
     miss_test <- Wald_test_cwb(rma_miss,
                                constraints = constrain_zero(2:3),
                                R = 21, seed = 5)
@@ -71,8 +71,8 @@ test_that("run_cwb works without setting a future plan.",{
   expect_s3_class(miss_test, "Wald_test_wildmeta")
   expect_true(!is.na(miss_test$p_val))
 
-  expect_equivalent(rma_test, sub_test)
-  expect_equivalent(rma_test, miss_test)
+  expect_equal(rma_test, sub_test)
+  expect_equal(rma_test, miss_test)
 
 })
 
@@ -151,9 +151,11 @@ test_that("Wald_test_cwb() returns the same results with plan(sequential) and pl
                            constraints = constrain_zero(2:3),
                            R = 18, seed = 101)
 
-  mis_seq <- Wald_test_cwb(rma_miss,
-                           constraints = constrain_zero(2:3),
-                           R = 18, seed = 101)
+  suppressWarnings(
+    mis_seq <- Wald_test_cwb(rma_miss,
+                             constraints = constrain_zero(2:3),
+                             R = 18, seed = 101)
+  )
 
   expect_equal(rma_seq, sub_seq)
   expect_equal(rma_seq, mis_seq)
@@ -172,9 +174,11 @@ test_that("Wald_test_cwb() returns the same results with plan(sequential) and pl
                              constraints = constrain_zero(2:3),
                              R = 18, seed = 101)
 
-  mis_multi <- Wald_test_cwb(rma_miss,
-                             constraints = constrain_zero(2:3),
-                             R = 18, seed = 101)
+  suppressWarnings(
+    mis_multi <- Wald_test_cwb(rma_miss,
+                               constraints = constrain_zero(2:3),
+                               R = 18, seed = 101)
+  )
 
   expect_equal(robu_seq, robu_multi)
   expect_equal(rma_seq, rma_multi)
