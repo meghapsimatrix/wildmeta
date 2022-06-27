@@ -35,7 +35,7 @@ corrections for multiple-contrast hypothesis tests. The authors found
 that the HTZ test, which is an extension of the CR2 correction method
 with the Satterthwaite degrees of freedom, controlled Type 1 error rate
 adequately even when the number of studies was small. However, Joshi,
-Pustejovsky & Beretvas (2021) showed, through simulations, that the HTZ
+Pustejovsky & Beretvas (2022) showed, through simulations, that the HTZ
 test can be conservative. The authors examined another method, cluster
 wild bootstrapping (CWB), that has been studied in the econometrics
 literature but not in the meta-analytic context. The results of the
@@ -100,7 +100,7 @@ Wald_test_cwb(full_model = full_model,
               R = 12,
               seed = 20201210)
 #>   Test Adjustment CR_type Statistic  R     p_val
-#> 1  CWB        CR0     CR0   Naive-F 12 0.5833333
+#> 1  CWB        CR0     CR0   Naive-F 12 0.4166667
 ```
 
 # Related Work
@@ -181,9 +181,10 @@ Research Synthesis Methods, 1(1), 39–65.
 Heyman, M. (2019). lmboot: Bootstrap in Linear Models. R package version
 0.0.1. <https://CRAN.R-project.org/package=lmboot>
 
-Joshi, M., Pustejovsky, J. E., & Beretvas, S. N. (2021). Cluster wild
+Joshi, M., Pustejovsky, J. E., & Beretvas, S. N. (2022). Cluster wild
 bootstrapping to handle dependent effect sizes in meta-analysis with
-small number of studies. <https://doi.org/10.31222/osf.io/x6uhk>
+small number of studies. Research Synthesis Methods. \<
+<https://doi.org/10.1002/jrsm.1554>\>
 
 Pustejovsky, J. E. (2020). clubSandwich: Cluster-robust (sandwich)
 variance estimators with small-sample corrections \[R package version
