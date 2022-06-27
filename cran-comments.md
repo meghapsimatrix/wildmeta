@@ -1,3 +1,7 @@
+## Resubmission
+This is a resubmission. This is a minor release which adds parallel processing capabilities to run cluster wild bootstrapping.
+
+
 ## Test environments
 
 * local OS Big Sur, R 4.1.2
@@ -13,16 +17,9 @@
 
 ## R CMD check results
 
-There were no ERRORs or WARNINGs. 
+There were no ERRORs or WARNINGs or NOTEs. 
 
-There was 1 NOTE:
 
-* Possibly misspelled words in DESCRIPTION:
-  Beretvas (14:200)
-  Joshi (14:176)
-  Pustejovsky (14:183)
-  
-  All of the identified words are spelled correctly. 
 
 
 
