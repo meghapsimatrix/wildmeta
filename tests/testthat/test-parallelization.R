@@ -81,6 +81,7 @@ test_that("run_cwb returns the same results with plan(sequential) and plan(multi
   skip_on_cran()
 
   skip_if_not_installed("future")
+  skip_if_not_installed("parallelly")
   skip_if_not_installed("future.apply")
 
   library(future)
@@ -106,7 +107,11 @@ test_that("run_cwb returns the same results with plan(sequential) and plan(multi
                        seed = 12, simplify = TRUE)
   )
 
-  plan(multisession, workers = 2)
+  if (parallelly::supportsMulticore()) {
+    plan(multicore)
+  } else {
+    plan(multisession)
+  }
 
   time_robu_multi <- system.time(
     robu_multi <- run_cwb(robu_mod,
@@ -139,6 +144,7 @@ test_that("Wald_test_cwb() returns the same results with plan(sequential) and pl
   skip_on_cran()
 
   skip_if_not_installed("future")
+  skip_if_not_installed("parallelly")
   skip_if_not_installed("future.apply")
 
   library(future)
@@ -166,7 +172,11 @@ test_that("Wald_test_cwb() returns the same results with plan(sequential) and pl
   expect_equal(rma_seq, sub_seq)
   expect_equal(rma_seq, mis_seq)
 
-  plan(multisession, workers = 2)
+  if (parallelly::supportsMulticore()) {
+    plan(multicore)
+  } else {
+    plan(multisession)
+  }
 
   robu_multi <- Wald_test_cwb(robu_mod,
                               constraints = constrain_zero(2:3),
