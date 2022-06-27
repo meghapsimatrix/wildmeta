@@ -35,9 +35,7 @@ Imports:
     sandwich,
     robumeta,
     metafor,
-    stringr,
-    stats,
-    vctrs,
+    stats
 Suggests: 
     testthat (>= 3.0.0),
     knitr,
