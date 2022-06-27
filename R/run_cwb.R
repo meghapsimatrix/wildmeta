@@ -34,7 +34,7 @@
 #' @param seed Optional seed value to ensure reproducibility.
 #' @param future_args Optional list of additional arguments passed to the
 #'   \code{future_*()} functions used in calculating results across bootstrap
-#'   replications.
+#'   replications. Ignored if the future.apply package is not available.
 #'
 #' @return A list or matrix containing either the bootstrapped outcomes or
 #'   bootstrapped test statistics.
@@ -61,8 +61,6 @@
 #' )
 #'
 #' bootstraps
-#' @importFrom future.apply future_replicate
-#' @importFrom future.apply future_sapply
 
 
 run_cwb <- function(model,
@@ -75,6 +73,8 @@ run_cwb <- function(model,
                     simplify = FALSE,
                     seed = NULL,
                     future_args = NULL) {
+
+  future_available <- requireNamespace("future.sapply", quietly = TRUE)
 
   if (!is.null(seed)) set.seed(seed)
 
@@ -110,8 +110,12 @@ run_cwb <- function(model,
     simplify = simplify & is.null(f)
   )
 
-  bootstraps <- do.call(future.apply::future_replicate,
-                        args = c(replicate_args, future_args))
+  bootstraps <- if (future_available) {
+    do.call(future.apply::future_replicate,
+            args = c(replicate_args, future_args))
+  } else {
+    do.call(replicate, args = replicate_args)
+  }
 
   if (is.null(f)) {
     return(bootstraps)
@@ -125,8 +129,12 @@ run_cwb <- function(model,
     simplify = simplify
   )
 
-  boot_stats <- do.call(future.apply::future_sapply,
-                        args = c(sapply_args, future_args))
+  boot_stats <- if (future_available) {
+    do.call(future.apply::future_sapply,
+            args = c(sapply_args, future_args))
+  } else {
+    do.call(sapply, args = sapply_args)
+  }
 
   return(boot_stats)
 }

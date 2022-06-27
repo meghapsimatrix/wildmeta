@@ -38,14 +38,14 @@ Imports:
     stringr,
     stats,
     vctrs,
-    sandwich,
-    future.apply
 Suggests: 
     testthat (>= 3.0.0),
     knitr,
     rmarkdown,
     ggplot2,
     covr,
-    mockery
+    mockery,
+    future,
+    future.apply
 VignetteBuilder: knitr
 Config/testthat/edition: 3

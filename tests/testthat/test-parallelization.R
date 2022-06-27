@@ -80,6 +80,9 @@ test_that("run_cwb returns the same results with plan(sequential) and plan(multi
 
   skip_on_cran()
 
+  skip_if_not_installed("future")
+  skip_if_not_installed("future.apply")
+
   library(future)
 
   f <- function(x, cluster, time = 0.01) {
@@ -135,6 +138,9 @@ test_that("Wald_test_cwb() returns the same results with plan(sequential) and pl
 
   skip_on_cran()
 
+  skip_if_not_installed("future")
+  skip_if_not_installed("future.apply")
+
   library(future)
 
   plan(sequential)
@@ -188,5 +194,8 @@ test_that("Wald_test_cwb() returns the same results with plan(sequential) and pl
 })
 
 test_that("run_cwb uses future_args if specified.", {
+
+  skip_if_not_installed("future")
+  skip_if_not_installed("future.apply")
 
 })

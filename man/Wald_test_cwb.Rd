@@ -60,7 +60,7 @@ adjustment is used in calculating the test statistic. Default is
 
 \item{future_args}{Optional list of additional arguments passed to the
 \code{future_*()} functions used in calculating results across bootstrap
-replications.}
+replications. Ignored if the future.apply package is not available.}
 }
 \value{
 A \code{data.frame} containing the name of the test, the adjustment
