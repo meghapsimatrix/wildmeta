@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">wildmeta</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9999</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -141,11 +141,11 @@ hypothesis tests. <span class="citation">Tipton &amp; Pustejovsky
 correction method with the Satterthwaite degrees of freedom, controlled
 Type 1 error rate adequately even when the number of studies was small.
 However, <span class="citation">Joshi, Pustejovsky, &amp; Beretvas
-(2021)</span> showed, through simulations, that the HTZ test can be
+(2022)</span> showed, through simulations, that the HTZ test can be
 conservative. The authors examined another method, cluster wild
 bootstrapping (CWB), that has been studied in the econometrics
 literature but not in the meta-analytic context. The results of the
-simulations from <span class="citation">Joshi et al. (2021)</span>
+simulations from <span class="citation">Joshi et al. (2022)</span>
 showed that CWB adequately controlled for Type 1 error rate and provided
 higher power than the HTZ test, especially for multiple-contrast
 hypothesis tests.</p>
@@ -220,7 +220,7 @@ Calculate p-value:</p></li>
 </ol>
 <p><span class="math display">\[p = \frac{1}{R} \sum_{r = 1}^R
 I\left(F^{(r)} &gt; F\right)\]</span></p>
-<p>The results of the simulation studies conducted in <span class="citation">Joshi et al. (2021)</span> did not show any difference
+<p>The results of the simulation studies conducted in <span class="citation">Joshi et al. (2022)</span> did not show any difference
 in Type 1 error rates or power when multiplying the results by CR2
 adjustments matrices. However, the authors did not study major
 mis-specifications of the working model in the simulation studies.</p>
@@ -338,15 +338,19 @@ replications. Below is an example with 1999 bootstrap replications.</p>
                        seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;  20.166   0.403  21.940</span></code></pre></div>
+<span class="co">#&gt;  20.556   0.452  23.981</span></code></pre></div>
 <p>Computation speed can sometimes be improved by setting a parallel
 processing plan using the <code>future</code> package:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org" class="external-link">future</a></span><span class="op">)</span>
-<span class="fu"><a href="https://future.futureverse.org/reference/re-exports.html" class="external-link">availableCores</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; system </span>
-<span class="co">#&gt;      4</span>
-<span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
+
+<span class="kw">if</span> <span class="op">(</span><span class="fu">parallelly</span><span class="fu">::</span><span class="fu"><a href="https://parallelly.futureverse.org/reference/supportsMulticore.html" class="external-link">supportsMulticore</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multicore</span><span class="op">)</span> 
+<span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+  <span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="fu">parallelly</span><span class="fu">::</span><span class="fu"><a href="https://parallelly.futureverse.org/reference/availableWorkers.html" class="external-link">availableWorkers</a></span><span class="op">(</span><span class="op">)</span> |&gt; <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; [1] 4</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span>
   <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">robu_model</span>,
@@ -355,7 +359,7 @@ processing plan using the <code>future</code> package:</p>
                        seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.819   0.050  21.092</span>
+<span class="co">#&gt;   0.733   0.065  19.960</span>
 
 <span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></code></pre></div>
 </div>
@@ -364,34 +368,38 @@ processing plan using the <code>future</code> package:</p>
 <code>metafor</code> models<a class="anchor" aria-label="anchor" href="#metafor-models-1"></a>
 </h4>
 <p>CWB takes longer with models fit using
-<code><a href="https://wviechtb.github.io/metafor/reference/rma.mv.html" class="external-link">metafor::rma.mv()</a></code>. Below is an example with 199 bootstrap
+<code><a href="https://wviechtb.github.io/metafor/reference/rma.mv.html" class="external-link">metafor::rma.mv()</a></code>. Below is an example with 1999 bootstrap
 replications:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span>
   <span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">rma_model</span>,
                 constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/clubSandwich/man/constraint_matrices.html" class="external-link">constrain_equal</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,
-                R <span class="op">=</span> <span class="fl">199</span>,
+                R <span class="op">=</span> <span class="fl">1999</span>,
                 seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;  47.495   6.373  57.556</span></code></pre></div>
+<span class="co">#&gt; 522.073  77.047 699.495</span></code></pre></div>
 <p>Again, computation speed can sometimes be improved by setting a
 parallel processing plan using the <code>future</code> package:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org" class="external-link">future</a></span><span class="op">)</span>
-<span class="fu"><a href="https://future.futureverse.org/reference/re-exports.html" class="external-link">availableCores</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; system </span>
-<span class="co">#&gt;      4</span>
-<span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
+
+<span class="kw">if</span> <span class="op">(</span><span class="fu">parallelly</span><span class="fu">::</span><span class="fu"><a href="https://parallelly.futureverse.org/reference/supportsMulticore.html" class="external-link">supportsMulticore</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multicore</span><span class="op">)</span> 
+<span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+  <span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="fu">parallelly</span><span class="fu">::</span><span class="fu"><a href="https://parallelly.futureverse.org/reference/availableWorkers.html" class="external-link">availableWorkers</a></span><span class="op">(</span><span class="op">)</span> |&gt; <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; [1] 4</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span>
   <span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">rma_model</span>,
                 constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/clubSandwich/man/constraint_matrices.html" class="external-link">constrain_equal</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,
-                R <span class="op">=</span> <span class="fl">199</span>,
+                R <span class="op">=</span> <span class="fl">1999</span>,
                 seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   1.724   0.100  37.239</span>
+<span class="co">#&gt;  17.011   0.915 386.302</span>
 
 <span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></code></pre></div>
 </div>
@@ -466,9 +474,9 @@ estimation in meta-regression with dependent effect size estimates.
 <em>Research Synthesis Methods</em>, <em>1</em>(1), 39–65. <a href="https://doi.org/10.1002/jrsm.5" class="external-link">https://doi.org/10.1002/jrsm.5</a>
 </div>
 <div id="ref-joshi_pustejovsky_beretvas_2021" class="csl-entry">
-Joshi, M., Pustejovsky, J. E., &amp; Beretvas, S. N. (2021). <em>Cluster
+Joshi, M., Pustejovsky, J. E., &amp; Beretvas, S. N. (2022). <em>Cluster
 wild bootstrapping to handle dependent effect sizes in meta-analysis
-with a small number of studies</em>. <a href="https://doi.org/10.31222/osf.io/x6uhk" class="external-link">https://doi.org/10.31222/osf.io/x6uhk</a>
+with a small number of studies</em>. <a href="https://doi.org/10.1002/jrsm.1554" class="external-link">https://doi.org/10.1002/jrsm.1554</a>
 </div>
 <div id="ref-mackinnon2006bootstrap" class="csl-entry">
 MacKinnon, J. G. (2006). Bootstrap methods in econometrics. <em>Economic
