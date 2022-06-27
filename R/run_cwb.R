@@ -35,6 +35,10 @@
 #' @param future_args Optional list of additional arguments passed to the
 #'   \code{future_*()} functions used in calculating results across bootstrap
 #'   replications. Ignored if the future.apply package is not available.
+#' @param future_f_args Optional list of additional arguments passed to the
+#'   \code{future_*()} function used in calculating \code{f} results (but not
+#'   bootstrap outcome vectors) across bootstrap replications. Ignored if the
+#'   future.apply package is not available.
 #'
 #' @return A list or matrix containing either the bootstrapped outcomes or
 #'   bootstrapped test statistics.
@@ -72,9 +76,10 @@ run_cwb <- function(model,
                     adjust = "CR0",
                     simplify = FALSE,
                     seed = NULL,
-                    future_args = NULL) {
+                    future_args = NULL,
+                    future_f_args = NULL) {
 
-  future_available <- requireNamespace("future.sapply", quietly = TRUE)
+  future_available <- requireNamespace("future.apply", quietly = TRUE)
 
   if (!is.null(seed)) set.seed(seed)
 
@@ -131,7 +136,7 @@ run_cwb <- function(model,
 
   boot_stats <- if (future_available) {
     do.call(future.apply::future_sapply,
-            args = c(sapply_args, future_args))
+            args = c(sapply_args, future_args, future_f_args))
   } else {
     do.call(sapply, args = sapply_args)
   }

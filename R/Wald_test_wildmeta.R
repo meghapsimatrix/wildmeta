@@ -78,9 +78,13 @@ Wald_test_cwb <- function(full_model,
   if (is.null(cluster)) cluster <- get_cluster(null_model)
 
   # evaluate f on each bootstrap
-  if (inherits(full_model,"rma")) {
-    future_args$future.packages <- c("clubSandwich","metafor")
-    future_args$future.envir <- attr(full_model$random[[1]], ".Environment")
+  future_f_args <- if (inherits(full_model,"rma")) {
+    list(
+      future.packages = c("clubSandwich","metafor"),
+      future.envir = attr(full_model$random[[1]], ".Environment")
+    )
+  } else {
+    NULL
   }
 
   boots <- run_cwb(null_model,
@@ -93,7 +97,8 @@ Wald_test_cwb <- function(full_model,
                    adjust = adjust,
                    simplify = TRUE,
                    seed = seed,
-                   future_args = future_args)
+                   future_args = future_args,
+                   future_f_args = future_f_args)
 
   full_vcov <- clubSandwich::vcovCR(full_model, type = type, cluster = cluster)
   org_F <- clubSandwich::Wald_test(full_model,

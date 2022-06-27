@@ -15,7 +15,8 @@ run_cwb(
   adjust = "CR0",
   simplify = FALSE,
   seed = NULL,
-  future_args = NULL
+  future_args = NULL,
+  future_f_args = NULL
 )
 }
 \arguments{
@@ -58,6 +59,11 @@ list.}
 \item{future_args}{Optional list of additional arguments passed to the
 \code{future_*()} functions used in calculating results across bootstrap
 replications. Ignored if the future.apply package is not available.}
+
+\item{future_f_args}{Optional list of additional arguments passed to the
+\code{future_*()} function used in calculating \code{f} results (but not
+bootstrap outcome vectors) across bootstrap replications. Ignored if the
+future.apply package is not available.}
 }
 \value{
 A list or matrix containing either the bootstrapped outcomes or
