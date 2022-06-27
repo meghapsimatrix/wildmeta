@@ -255,6 +255,8 @@ test_that("Wald_test_cwb() results do not depend on sort order.", {
 
   skip_on_cran()
 
+  tol <- 1e-5
+
   ord <- sample(1:nrow(oswald2013))
   oswald_scram <- oswald2013[ord,]
 
@@ -300,8 +302,8 @@ test_that("Wald_test_cwb() results do not depend on sort order.", {
                            test = "Naive-F",
                            seed = 1)
 
-  expect_equal(attr(orig_A, "original"), attr(scram_A, "original"))
-  expect_equal(attr(orig_A, "bootstraps"), attr(scram_A, "bootstraps"))
+  expect_equal(attr(orig_A, "original"), attr(scram_A, "original"), tolerance = tol)
+  expect_equal(attr(orig_A, "bootstraps"), attr(scram_A, "bootstraps"), tolerance = tol)
 
 
   orig_D <- Wald_test_cwb(mod_C1, constraints = Cmat_D,
@@ -320,8 +322,8 @@ test_that("Wald_test_cwb() results do not depend on sort order.", {
                            test = "Naive-Fp",
                            seed = 2)
 
-  expect_equal(attr(orig_D, "original"), attr(scram_D, "original"))
-  expect_equal(attr(orig_D, "bootstraps"), attr(scram_D, "bootstraps"))
+  expect_equal(attr(orig_D, "original"), attr(scram_D, "original"), tolerance = tol)
+  expect_equal(attr(orig_D, "bootstraps"), attr(scram_D, "bootstraps"), tolerance = tol)
 
   orig_E <- Wald_test_cwb(mod_C2, constraints = Cmat_E,
                           R = 5,
@@ -339,8 +341,8 @@ test_that("Wald_test_cwb() results do not depend on sort order.", {
                            test = "HTZ",
                            seed = 3)
 
-  expect_equal(attr(orig_E, "original"), attr(scram_E, "original"))
-  expect_equal(attr(orig_E, "bootstraps"), attr(scram_E, "bootstraps"))
+  expect_equal(attr(orig_E, "original"), attr(scram_E, "original"), tolerance = tol)
+  expect_equal(attr(orig_E, "bootstraps"), attr(scram_E, "bootstraps"), tolerance = tol)
 
   orig_F <- Wald_test_cwb(mod_C2, constraints = Cmat_F,
                           R = 8,
@@ -358,8 +360,8 @@ test_that("Wald_test_cwb() results do not depend on sort order.", {
                            test = "EDT",
                            seed = 4)
 
-  expect_equal(attr(orig_F, "original"), attr(scram_F, "original"))
-  expect_equal(attr(orig_F, "bootstraps"), attr(scram_F, "bootstraps"))
+  expect_equal(attr(orig_F, "original"), attr(scram_F, "original"), tolerance = tol)
+  expect_equal(attr(orig_F, "bootstraps"), attr(scram_F, "bootstraps"), tolerance = tol)
 
 })
 
@@ -430,6 +432,7 @@ test_that("Wald_test_cwb() works with user-weighted rma.mv models.", {
                             seed = 19)
 
   expect_s3_class(test_wt1, "Wald_test_wildmeta")
+  expect_true(!is.na(test_wt1$p_val))
 
   mod_wt2 <- rma.mv(yi ~ 0 + Crit.Cat + Crit.Domain + IAT.Focus + Scoring,
                      V = V, W = wt,
@@ -443,6 +446,7 @@ test_that("Wald_test_cwb() works with user-weighted rma.mv models.", {
                             seed = 19)
 
   expect_s3_class(test_wt2, "Wald_test_wildmeta")
+  expect_true(!is.na(test_wt2$p_val))
 
   expect_equal(test_wt1, test_wt2)
 
