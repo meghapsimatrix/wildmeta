@@ -338,7 +338,7 @@ replications. Below is an example with 1999 bootstrap replications.</p>
                        seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;  20.556   0.452  23.981</span></code></pre></div>
+<span class="co">#&gt;  23.580   0.550  27.753</span></code></pre></div>
 <p>Computation speed can sometimes be improved by setting a parallel
 processing plan using the <code>future</code> package:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -359,7 +359,7 @@ processing plan using the <code>future</code> package:</p>
                        seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.733   0.065  19.960</span>
+<span class="co">#&gt;   1.034   0.086  27.188</span>
 
 <span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></code></pre></div>
 </div>
@@ -377,8 +377,8 @@ replications:</p>
                 R <span class="op">=</span> <span class="fl">1999</span>,
                 seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span>
 <span class="op">)</span>
-<span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt; 522.073  77.047 699.495</span></code></pre></div>
+<span class="co">#&gt;     user   system  elapsed </span>
+<span class="co">#&gt;  646.239   92.470 1106.146</span></code></pre></div>
 <p>Again, computation speed can sometimes be improved by setting a
 parallel processing plan using the <code>future</code> package:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -399,7 +399,7 @@ parallel processing plan using the <code>future</code> package:</p>
                 seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;  17.011   0.915 386.302</span>
+<span class="co">#&gt;  26.585   1.350 617.869</span>
 
 <span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></code></pre></div>
 </div>
@@ -473,10 +473,10 @@ Hedges, L. V., Tipton, E., &amp; Johnson, M. C. (2010). Robust variance
 estimation in meta-regression with dependent effect size estimates.
 <em>Research Synthesis Methods</em>, <em>1</em>(1), 39–65. <a href="https://doi.org/10.1002/jrsm.5" class="external-link">https://doi.org/10.1002/jrsm.5</a>
 </div>
-<div id="ref-joshi_pustejovsky_beretvas_2021" class="csl-entry">
-Joshi, M., Pustejovsky, J. E., &amp; Beretvas, S. N. (2022). <em>Cluster
+<div id="ref-joshi2022cluster" class="csl-entry">
+Joshi, M., Pustejovsky, J. E., &amp; Beretvas, S. N. (2022). Cluster
 wild bootstrapping to handle dependent effect sizes in meta-analysis
-with a small number of studies</em>. <a href="https://doi.org/10.1002/jrsm.1554" class="external-link">https://doi.org/10.1002/jrsm.1554</a>
+with a small number of studies. <em>Research Synthesis Methods</em>. <a href="https://doi.org/10.1002/jrsm.1554" class="external-link">https://doi.org/10.1002/jrsm.1554</a>
 </div>
 <div id="ref-mackinnon2006bootstrap" class="csl-entry">
 MacKinnon, J. G. (2006). Bootstrap methods in econometrics. <em>Economic
