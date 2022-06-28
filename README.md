@@ -183,8 +183,8 @@ Heyman, M. (2019). lmboot: Bootstrap in Linear Models. R package version
 
 Joshi, M., Pustejovsky, J. E., & Beretvas, S. N. (2022). Cluster wild
 bootstrapping to handle dependent effect sizes in meta-analysis with
-small number of studies. Research Synthesis Methods. \<
-<https://doi.org/10.1002/jrsm.1554>\>
+small number of studies. Research Synthesis Methods.
+<https://doi.org/10.1002/jrsm.1554>
 
 Pustejovsky, J. E. (2020). clubSandwich: Cluster-robust (sandwich)
 variance estimators with small-sample corrections \[R package version
