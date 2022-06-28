@@ -18,10 +18,27 @@ This is a resubmission. This release adds parallel processing capabilities (usin
 
 ## R CMD check results
 
-There were no ERRORs or WARNINGs or NOTEs. 
+There were no ERRORs or WARNINGs. There was one NOTE
+
+* Found the following (possibly) invalid URLs:
+  URL: https://doi.org/10.1002/jrsm.1554
+    From: inst/doc/cwbmeta.html
+          README.md
+    Status: 503
+    Message: Service Unavailable
+  URL: https://doi.org/10.1002/jrsm.5
+    From: inst/doc/cwbmeta.html
+    Status: 503
+    Message: Service Unavailable
+    
+* Found the following (possibly) invalid DOIs:
+  DOI: 10.1002/jrsm.1554
+    From: DESCRIPTION
+    Status: Service Unavailable
+    Message: 503
 
 
-
+The flagged URLs and DOI are correct.
 
 
 ## revdepcheck results
