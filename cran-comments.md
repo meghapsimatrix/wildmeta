@@ -1,5 +1,6 @@
 ## Resubmission
-This is a resubmission. This is a minor release which adds parallel processing capabilities to run cluster wild bootstrapping.
+
+This is a resubmission. This release adds parallel processing capabilities (using the future and future.apply packages) to run cluster wild bootstrapping.
 
 
 ## Test environments
@@ -22,4 +23,11 @@ There were no ERRORs or WARNINGs or NOTEs.
 
 
 
+
+## revdepcheck results
+
+We checked 1 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
+
+ * We saw 0 new problems
+ * We failed to check 0 packages
 
