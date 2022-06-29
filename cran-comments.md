@@ -2,6 +2,8 @@
 
 This is a resubmission. This release adds parallel processing capabilities (using the future and future.apply packages) to run cluster wild bootstrapping.
 
+Further, I reduced the number of boostraps in the examples in the vignette so the checks can hopefully run faster. 
+
 
 ## Test environments
 
