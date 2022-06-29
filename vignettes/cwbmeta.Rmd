@@ -114,7 +114,7 @@ Wald_test_cwb(full_model = robu_model,
 
 ## `metafor` models
 
-In the examples above, we used the `robumeta::robu()` function to fit the full model. In this section, we fit the full model using the `metafor::rma.mv()` function.
+In the examples above, we used the `robumeta::robu()` function to fit the full model. In this section, we fit the full model using the `metafor::rma.mv()` function. (We use a small, entirely insufficient number of replications in order to limit the computing time of this vignette.)
 
 ```{r, warning=FALSE, message=FALSE}
 library(metafor)
@@ -127,7 +127,7 @@ rma_model <- rma.mv(yi = d ~ 0 + study_type + hrs + test,
 
 Wald_test_cwb(full_model = rma_model,
               constraints = constrain_equal(1:3),
-              R = 99,
+              R = 19,
               seed = 20210314)
 ```
 
@@ -171,13 +171,19 @@ plan(sequential)
 
 ### `metafor` models
 
-CWB takes longer with models fit using `metafor::rma.mv()`. Below is an example with 99 bootstrap replications:
+```{r, echo = FALSE}
+reps <- if (file.exists('../website-key')) 1999 else 99
+```
+
+CWB takes longer with models fit using `metafor::rma.mv()`. Below is an example with `r reps` bootstrap replications:
 
 ```{r, warning = FALSE}
+reps
+
 system.time(
   Wald_test_cwb(full_model = rma_model,
                 constraints = constrain_equal(1:3),
-                R = 99,
+                R = reps,
                 seed = 20210314)
 )
 
@@ -198,7 +204,7 @@ parallelly::availableWorkers() |> length()
 system.time(
   Wald_test_cwb(full_model = rma_model,
                 constraints = constrain_equal(1:3),
-                R = 99,
+                R = reps,
                 seed = 20210314)
 )
 
