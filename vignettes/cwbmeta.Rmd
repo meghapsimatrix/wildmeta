@@ -199,7 +199,8 @@ if (parallelly::supportsMulticore()) {
 } else {
   plan(multisession)
 }
-parallelly::availableWorkers() |> length()
+
+nbrOfWorkers()
 
 system.time(
   Wald_test_cwb(full_model = rma_model,
