@@ -27,9 +27,10 @@ jobs:
 
       - name: Build site
         run: |
-          file.create("pkgdown-key")
+          file_path <- system.file(package = 'wildmeta')
+          file.create(file.path(file_path, "pkgdown-key"))
           pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
-          file.remove("pkgdown-key")
+          file.remove(file.path(file_path, "pkgdown-key"))
         shell: Rscript {0}
 
       - name: Deploy to GitHub pages 🚀

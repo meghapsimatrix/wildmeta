@@ -172,7 +172,7 @@ plan(sequential)
 ### `metafor` models
 
 ```{r, echo = FALSE}
-reps <- if (file.exists('../pkgdown-key')) 1999 else 99
+reps <- if (file.exists(system.file("pkgdown-key", package = "wildmeta"))) 1999 else 99
 ```
 
 CWB takes longer with models fit using `metafor::rma.mv()`. Below is an example with `r reps` bootstrap replications:
