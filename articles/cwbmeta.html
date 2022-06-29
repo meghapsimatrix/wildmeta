@@ -190,7 +190,7 @@
 <span>                       seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  15.506   0.064  15.576</span></span></code></pre></div>
+<span><span class="co">#&gt;  15.138   0.048  15.189</span></span></code></pre></div>
 <p>Computation speed can sometimes be improved by setting a parallel processing plan using the <code>future</code> package:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org" class="external-link">future</a></span><span class="op">)</span></span>
@@ -210,7 +210,7 @@
 <span>                       seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.329   0.104   8.262</span></span>
+<span><span class="co">#&gt;  15.771   0.544   8.331</span></span>
 <span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -218,16 +218,16 @@
 <h4 id="metafor-models-1">
 <code>metafor</code> models<a class="anchor" aria-label="anchor" href="#metafor-models-1"></a>
 </h4>
-<p>CWB takes longer with models fit using <code><a href="https://wviechtb.github.io/metafor/reference/rma.mv.html" class="external-link">metafor::rma.mv()</a></code>. Below is an example with 1999 bootstrap replications:</p>
+<p>CWB takes longer with models fit using <code><a href="https://wviechtb.github.io/metafor/reference/rma.mv.html" class="external-link">metafor::rma.mv()</a></code>. Below is an example with 99 bootstrap replications:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">rma_model</span>,</span>
 <span>                constraints <span class="op">=</span> <span class="fu"><a href="http://jepusto.github.io/clubSandwich/reference/constraint_matrices.html" class="external-link">constrain_equal</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,</span>
-<span>                R <span class="op">=</span> <span class="fl">1999</span>,</span>
+<span>                R <span class="op">=</span> <span class="fl">99</span>,</span>
 <span>                seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt; 392.156   0.200 392.386</span></span></code></pre></div>
+<span><span class="co">#&gt;  18.875   0.004  18.886</span></span></code></pre></div>
 <p>Again, computation speed can sometimes be improved by setting a parallel processing plan using the <code>future</code> package:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org" class="external-link">future</a></span><span class="op">)</span></span>
@@ -243,11 +243,11 @@
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">rma_model</span>,</span>
 <span>                constraints <span class="op">=</span> <span class="fu"><a href="http://jepusto.github.io/clubSandwich/reference/constraint_matrices.html" class="external-link">constrain_equal</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,</span>
-<span>                R <span class="op">=</span> <span class="fl">1999</span>,</span>
+<span>                R <span class="op">=</span> <span class="fl">99</span>,</span>
 <span>                seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt; 409.687   2.312 209.477</span></span>
+<span><span class="co">#&gt;  19.346   0.277  10.031</span></span>
 <span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></code></pre></div>
 </div>
