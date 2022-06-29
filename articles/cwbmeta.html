@@ -190,7 +190,7 @@
 <span>                       seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  19.171   0.048  19.221</span></span></code></pre></div>
+<span><span class="co">#&gt;  13.865   0.016  13.882</span></span></code></pre></div>
 <p>Computation speed can sometimes be improved by setting a parallel processing plan using the <code>future</code> package:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org" class="external-link">future</a></span><span class="op">)</span></span>
@@ -200,8 +200,10 @@
 <span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span><span class="fu">parallelly</span><span class="fu">::</span><span class="fu"><a href="https://parallelly.futureverse.org/reference/availableWorkers.html" class="external-link">availableWorkers</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 2</span></span>
+<span></span>
+<span><span class="fu"><a href="https://future.futureverse.org/reference/nbrOfWorkers.html" class="external-link">nbrOfWorkers</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; system </span></span>
+<span><span class="co">#&gt;      2</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span></span>
 <span>  <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">robu_model</span>,</span>
@@ -210,7 +212,7 @@
 <span>                       seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  19.798   0.563  10.337</span></span>
+<span><span class="co">#&gt;  14.191   0.339   7.474</span></span>
 <span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -218,17 +220,8 @@
 <h4 id="metafor-models-1">
 <code>metafor</code> models<a class="anchor" aria-label="anchor" href="#metafor-models-1"></a>
 </h4>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/home/runner/work/wildmeta/wildmeta/vignettes"</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"pkgdown-key"</span>, package <span class="op">=</span> <span class="st">"wildmeta"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/home/runner/work/_temp/Library/wildmeta/pkgdown-key"</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="st">"pkgdown-key"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] FALSE</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">".."</span>,<span class="st">"pkgdown-key"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
 <p>CWB takes longer with models fit using <code><a href="https://wviechtb.github.io/metafor/reference/rma.mv.html" class="external-link">metafor::rma.mv()</a></code>. Below is an example with 1999 bootstrap replications:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">reps</span></span>
 <span><span class="co">#&gt; [1] 1999</span></span>
 <span></span>
@@ -239,9 +232,9 @@
 <span>                seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt; 465.691   0.173 465.899</span></span></code></pre></div>
+<span><span class="co">#&gt; 314.286   0.152 314.468</span></span></code></pre></div>
 <p>Again, computation speed can sometimes be improved by setting a parallel processing plan using the <code>future</code> package:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org" class="external-link">future</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="fu">parallelly</span><span class="fu">::</span><span class="fu"><a href="https://parallelly.futureverse.org/reference/supportsMulticore.html" class="external-link">supportsMulticore</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
@@ -261,7 +254,7 @@
 <span>                seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt; 473.173   2.768 239.942</span></span>
+<span><span class="co">#&gt; 322.240   1.017 163.610</span></span>
 <span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -271,9 +264,9 @@
 <h2 id="bootstrap-distribution-plot">Bootstrap Distribution Plot<a class="anchor" aria-label="anchor" href="#bootstrap-distribution-plot"></a>
 </h2>
 <p>The function <a href="https://meghapsimatrix.github.io/wildmeta/reference/plot.Wald_test_wildmeta.html"><code>plot()</code></a> creates a <code>ggplot</code> figure representing the distribution of the bootstrap replicates based on the results from the <code><a href="../reference/Wald_test_cwb.html">Wald_test_cwb()</a></code> function. The dashed line represents the <span class="math inline">\(F\)</span> test statistic from the original full model. The bootstrapped p-value is the proportion of bootstrapped <span class="math inline">\(F\)</span> test statistics that are greater than the original <span class="math inline">\(F\)</span> statistic.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">res</span>, fill <span class="op">=</span> <span class="st">"darkred"</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
-<p><img src="cwbmeta_files/figure-html/unnamed-chunk-11-1.png" width="576"></p>
+<p><img src="cwbmeta_files/figure-html/unnamed-chunk-10-1.png" width="576"></p>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
