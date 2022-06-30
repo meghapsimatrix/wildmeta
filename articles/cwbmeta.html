@@ -190,7 +190,7 @@
 <span>                       seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  13.865   0.016  13.882</span></span></code></pre></div>
+<span><span class="co">#&gt;  14.452   0.016  14.469</span></span></code></pre></div>
 <p>Computation speed can sometimes be improved by setting a parallel processing plan using the <code>future</code> package:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org" class="external-link">future</a></span><span class="op">)</span></span>
@@ -212,7 +212,7 @@
 <span>                       seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  14.191   0.339   7.474</span></span>
+<span><span class="co">#&gt;   7.484   0.244   7.685</span></span>
 <span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -226,13 +226,17 @@
 <span><span class="co">#&gt; [1] 1999</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">rma_model</span>,</span>
-<span>                constraints <span class="op">=</span> <span class="fu"><a href="http://jepusto.github.io/clubSandwich/reference/constraint_matrices.html" class="external-link">constrain_equal</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,</span>
-<span>                R <span class="op">=</span> <span class="va">reps</span>,</span>
-<span>                seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span></span>
+<span>  <span class="va">res_seq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">rma_model</span>,</span>
+<span>                           constraints <span class="op">=</span> <span class="fu"><a href="http://jepusto.github.io/clubSandwich/reference/constraint_matrices.html" class="external-link">constrain_equal</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,</span>
+<span>                           R <span class="op">=</span> <span class="va">reps</span>,</span>
+<span>                           seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt; 314.286   0.152 314.468</span></span></code></pre></div>
+<span><span class="co">#&gt; 356.794   0.160 357.032</span></span>
+<span></span>
+<span><span class="va">res_seq</span></span>
+<span><span class="co">#&gt;   Test Adjustment CR_type Statistic    R    p_val</span></span>
+<span><span class="co">#&gt; 1  CWB        CR0     CR0   Naive-F 1999 0.237976</span></span></code></pre></div>
 <p>Again, computation speed can sometimes be improved by setting a parallel processing plan using the <code>future</code> package:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org" class="external-link">future</a></span><span class="op">)</span></span>
@@ -248,15 +252,19 @@
 <span><span class="co">#&gt;      2</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">rma_model</span>,</span>
-<span>                constraints <span class="op">=</span> <span class="fu"><a href="http://jepusto.github.io/clubSandwich/reference/constraint_matrices.html" class="external-link">constrain_equal</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,</span>
-<span>                R <span class="op">=</span> <span class="va">reps</span>,</span>
-<span>                seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span></span>
+<span>  <span class="va">res_para</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">rma_model</span>,</span>
+<span>                            constraints <span class="op">=</span> <span class="fu"><a href="http://jepusto.github.io/clubSandwich/reference/constraint_matrices.html" class="external-link">constrain_equal</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,</span>
+<span>                            R <span class="op">=</span> <span class="va">reps</span>,</span>
+<span>                            seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt; 322.240   1.017 163.610</span></span>
+<span><span class="co">#&gt; 186.176   1.164 187.480</span></span>
 <span></span>
-<span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">res_para</span></span>
+<span><span class="co">#&gt;   Test Adjustment CR_type Statistic    R    p_val</span></span>
+<span><span class="co">#&gt; 1  CWB        CR0     CR0   Naive-F 1999 0.237976</span></span></code></pre></div>
 </div>
 </div>
 </div>
