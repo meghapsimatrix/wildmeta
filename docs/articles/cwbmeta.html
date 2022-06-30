@@ -303,7 +303,9 @@ residuals using <code>CR2</code> matrices.</p>
 </h3>
 <p>In the examples above, we used the <code><a href="https://rdrr.io/pkg/robumeta/man/robu.html" class="external-link">robumeta::robu()</a></code>
 function to fit the full model. In this section, we fit the full model
-using the <code><a href="https://wviechtb.github.io/metafor/reference/rma.mv.html" class="external-link">metafor::rma.mv()</a></code> function.</p>
+using the <code><a href="https://wviechtb.github.io/metafor/reference/rma.mv.html" class="external-link">metafor::rma.mv()</a></code> function. (We use a small,
+entirely insufficient number of replications in order to limit the
+computing time of this vignette.)</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.metafor-project.org" class="external-link">metafor</a></span><span class="op">)</span>
 
@@ -315,10 +317,10 @@ using the <code><a href="https://wviechtb.github.io/metafor/reference/rma.mv.htm
 
 <span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">rma_model</span>,
               constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/clubSandwich/man/constraint_matrices.html" class="external-link">constrain_equal</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,
-              R <span class="op">=</span> <span class="fl">99</span>,
+              R <span class="op">=</span> <span class="fl">19</span>,
               seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span>
 <span class="co">#&gt;   Test Adjustment CR_type Statistic  R     p_val</span>
-<span class="co">#&gt; 1  CWB        CR0     CR0   Naive-F 99 0.2525253</span></code></pre></div>
+<span class="co">#&gt; 1  CWB        CR0     CR0   Naive-F 19 0.2105263</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="timing">Timing<a class="anchor" aria-label="anchor" href="#timing"></a>
@@ -338,7 +340,7 @@ replications. Below is an example with 1999 bootstrap replications.</p>
                        seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;  16.801   0.197  17.134</span></code></pre></div>
+<span class="co">#&gt;  19.007   0.336  19.918</span></code></pre></div>
 <p>Computation speed can sometimes be improved by setting a parallel
 processing plan using the <code>future</code> package:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -349,8 +351,10 @@ processing plan using the <code>future</code> package:</p>
 <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
   <span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
 <span class="op">}</span>
-<span class="fu">parallelly</span><span class="fu">::</span><span class="fu"><a href="https://parallelly.futureverse.org/reference/availableWorkers.html" class="external-link">availableWorkers</a></span><span class="op">(</span><span class="op">)</span> |&gt; <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; [1] 4</span>
+
+<span class="fu"><a href="https://future.futureverse.org/reference/nbrOfWorkers.html" class="external-link">nbrOfWorkers</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; system </span>
+<span class="co">#&gt;      4</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span>
   <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">robu_model</span>,
@@ -359,7 +363,7 @@ processing plan using the <code>future</code> package:</p>
                        seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.513   0.023  14.499</span>
+<span class="co">#&gt;   0.699   0.043  19.437</span>
 
 <span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></code></pre></div>
 </div>
@@ -371,14 +375,21 @@ processing plan using the <code>future</code> package:</p>
 <code><a href="https://wviechtb.github.io/metafor/reference/rma.mv.html" class="external-link">metafor::rma.mv()</a></code>. Below is an example with 99 bootstrap
 replications:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span>
-  <span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">rma_model</span>,
-                constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/clubSandwich/man/constraint_matrices.html" class="external-link">constrain_equal</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,
-                R <span class="op">=</span> <span class="fl">99</span>,
-                seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">reps</span>
+<span class="co">#&gt; [1] 99</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span>
+  <span class="va">res_seq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">rma_model</span>,
+                           constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/clubSandwich/man/constraint_matrices.html" class="external-link">constrain_equal</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,
+                           R <span class="op">=</span> <span class="va">reps</span>,
+                           seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;  21.005   2.764  24.071</span></code></pre></div>
+<span class="co">#&gt;  23.493   3.103  27.780</span>
+
+<span class="va">res_seq</span>
+<span class="co">#&gt;   Test Adjustment CR_type Statistic  R     p_val</span>
+<span class="co">#&gt; 1  CWB        CR0     CR0   Naive-F 99 0.2525253</span></code></pre></div>
 <p>Again, computation speed can sometimes be improved by setting a
 parallel processing plan using the <code>future</code> package:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -389,19 +400,25 @@ parallel processing plan using the <code>future</code> package:</p>
 <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
   <span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
 <span class="op">}</span>
-<span class="fu">parallelly</span><span class="fu">::</span><span class="fu"><a href="https://parallelly.futureverse.org/reference/availableWorkers.html" class="external-link">availableWorkers</a></span><span class="op">(</span><span class="op">)</span> |&gt; <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; [1] 4</span>
+
+<span class="fu"><a href="https://future.futureverse.org/reference/nbrOfWorkers.html" class="external-link">nbrOfWorkers</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; system </span>
+<span class="co">#&gt;      4</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span>
-  <span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">rma_model</span>,
-                constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/clubSandwich/man/constraint_matrices.html" class="external-link">constrain_equal</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,
-                R <span class="op">=</span> <span class="fl">99</span>,
-                seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span>
+  <span class="va">res_para</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">rma_model</span>,
+                            constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/clubSandwich/man/constraint_matrices.html" class="external-link">constrain_equal</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,
+                            R <span class="op">=</span> <span class="va">reps</span>,
+                            seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.833   0.058  18.002</span>
+<span class="co">#&gt;   1.618   0.109  36.494</span>
 
-<span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span>
+
+<span class="va">res_para</span>
+<span class="co">#&gt;   Test Adjustment CR_type Statistic  R     p_val</span>
+<span class="co">#&gt; 1  CWB        CR0     CR0   Naive-F 99 0.2525253</span></code></pre></div>
 </div>
 </div>
 </div>
@@ -418,7 +435,7 @@ full model. The bootstrapped p-value is the proportion of bootstrapped
 than the original <span class="math inline">\(F\)</span> statistic.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">res</span>, fill <span class="op">=</span> <span class="st">"darkred"</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
-<p><img src="cwbmeta_files/figure-html/unnamed-chunk-9-1.png" width="576"></p>
+<p><img src="cwbmeta_files/figure-html/unnamed-chunk-10-1.png" width="576"></p>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
