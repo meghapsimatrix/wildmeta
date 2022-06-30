@@ -182,12 +182,13 @@ CWB takes longer with models fit using `metafor::rma.mv()`. Below is an example 
 reps
 
 system.time(
-  Wald_test_cwb(full_model = rma_model,
-                constraints = constrain_equal(1:3),
-                R = reps,
-                seed = 20210314)
+  res_seq <- Wald_test_cwb(full_model = rma_model,
+                           constraints = constrain_equal(1:3),
+                           R = reps,
+                           seed = 20210314)
 )
 
+res_seq
 ```
 
 Again, computation speed can sometimes be improved by setting a parallel processing plan using the `future` package:
@@ -204,14 +205,17 @@ if (parallelly::supportsMulticore()) {
 nbrOfWorkers()
 
 system.time(
-  Wald_test_cwb(full_model = rma_model,
-                constraints = constrain_equal(1:3),
-                R = reps,
-                seed = 20210314)
+  res_para <- Wald_test_cwb(full_model = rma_model,
+                            constraints = constrain_equal(1:3),
+                            R = reps,
+                            seed = 20210314)
 )
 
 plan(sequential)
+
+res_para
 ```
+
 
 # Bootstrap Distribution Plot
 
