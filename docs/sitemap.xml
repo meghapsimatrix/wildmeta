@@ -19,9 +19,6 @@
     <loc>https://meghapsimatrix.github.io/wildmeta/news/index.html</loc>
   </url>
   <url>
-    <loc>https://meghapsimatrix.github.io/wildmeta/reference/Wald_test_cwb.html</loc>
-  </url>
-  <url>
     <loc>https://meghapsimatrix.github.io/wildmeta/reference/index.html</loc>
   </url>
   <url>
@@ -32,5 +29,8 @@
   </url>
   <url>
     <loc>https://meghapsimatrix.github.io/wildmeta/reference/run_cwb.html</loc>
+  </url>
+  <url>
+    <loc>https://meghapsimatrix.github.io/wildmeta/reference/Wald_test_cwb.html</loc>
   </url>
 </urlset>
