@@ -340,7 +340,7 @@ replications. Below is an example with 1999 bootstrap replications.</p>
                        seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   13.84    0.42   14.26</span></code></pre></div>
+<span class="co">#&gt;   19.36    0.70   20.28</span></code></pre></div>
 <p>Computation speed can sometimes be improved by setting a parallel
 processing plan using the <code>future</code> package:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -363,7 +363,7 @@ processing plan using the <code>future</code> package:</p>
                        seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.33    0.03   15.79</span>
+<span class="co">#&gt;    0.39    0.03   19.00</span>
 
 <span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></code></pre></div>
 </div>
@@ -372,11 +372,11 @@ processing plan using the <code>future</code> package:</p>
 <code>metafor</code> models<a class="anchor" aria-label="anchor" href="#metafor-models-1"></a>
 </h4>
 <p>CWB takes longer with models fit using
-<code><a href="https://wviechtb.github.io/metafor/reference/rma.mv.html" class="external-link">metafor::rma.mv()</a></code>. Below is an example with 1999 bootstrap
+<code><a href="https://wviechtb.github.io/metafor/reference/rma.mv.html" class="external-link">metafor::rma.mv()</a></code>. Below is an example with 99 bootstrap
 replications:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">reps</span>
-<span class="co">#&gt; [1] 1999</span>
+<span class="co">#&gt; [1] 99</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span>
   <span class="va">res_seq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">rma_model</span>,
@@ -385,11 +385,11 @@ replications:</p>
                            seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;  324.48    7.14  332.39</span>
+<span class="co">#&gt;   17.02    0.65   17.78</span>
 
 <span class="va">res_seq</span>
-<span class="co">#&gt;   Test Adjustment CR_type Statistic    R    p_val</span>
-<span class="co">#&gt; 1  CWB        CR0     CR0   Naive-F 1999 0.237976</span></code></pre></div>
+<span class="co">#&gt;   Test Adjustment CR_type Statistic  R     p_val</span>
+<span class="co">#&gt; 1  CWB        CR0     CR0   Naive-F 99 0.2525253</span></code></pre></div>
 <p>Again, computation speed can sometimes be improved by setting a
 parallel processing plan using the <code>future</code> package:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -412,13 +412,13 @@ parallel processing plan using the <code>future</code> package:</p>
                             seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.45    0.06  100.56</span>
+<span class="co">#&gt;    0.56    0.08   18.00</span>
 
 <span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span>
 
 <span class="va">res_para</span>
-<span class="co">#&gt;   Test Adjustment CR_type Statistic    R    p_val</span>
-<span class="co">#&gt; 1  CWB        CR0     CR0   Naive-F 1999 0.237976</span></code></pre></div>
+<span class="co">#&gt;   Test Adjustment CR_type Statistic  R     p_val</span>
+<span class="co">#&gt; 1  CWB        CR0     CR0   Naive-F 99 0.2525253</span></code></pre></div>
 </div>
 </div>
 </div>
