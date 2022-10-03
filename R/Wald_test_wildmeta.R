@@ -81,7 +81,7 @@ Wald_test_cwb <- function(full_model,
   future_f_args <- if (inherits(full_model,"rma")) {
     list(
       future.packages = c("clubSandwich","metafor"),
-      future.envir = attr(full_model$random[[1]], ".Environment")
+      future.envir = find_env(full_model)
     )
   } else {
     NULL

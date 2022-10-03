@@ -56,6 +56,14 @@ mod_F <- rma.mv(yi ~ Crit.Cat + Crit.Domain + IAT.Focus, V = V,
                 data = oswald2013,
                 sparse = TRUE)
 
+mod_Y <- rma.mv(yi ~ Crit.Cat + Crit.Domain + IAT.Focus + Scoring, V = V,
+                 data = oswald2013,
+                 sparse = TRUE)
+
+mod_Z <- rma.mv(yi ~ Crit.Cat + Crit.Domain + IAT.Focus, V = V,
+                data = oswald2013,
+                sparse = TRUE)
+
 Cmat_A <- constrain_equal("Crit.Cat", reg_ex = TRUE, coef(mod_B))
 Cmat_B <- constrain_zero(7:10, coef(mod_C1))
 Cmat_D <- constrain_zero("Crit.Cat", reg_ex = TRUE, coef(mod_C1))
@@ -83,6 +91,10 @@ test_that("estimate_null() works for rma.mv objects.", {
   mod_B_con <- estimate_null(mod_C1, Cmat_B)
   expect_equal(get_fitted(mod_B), get_fitted(mod_B_con))
   expect_equal(get_res(mod_B), get_res(mod_B_con))
+
+  mod_Z_con <- estimate_null(mod_Y, Cmat_F)
+  expect_equal(get_fitted(mod_Z), get_fitted(mod_Z_con))
+  expect_equal(get_res(mod_Z), get_res(mod_Z_con))
 
   oswald2013_mod <- oswald2013
   oswald2013_mod$X_null <- 2
@@ -144,6 +156,13 @@ test_that("get_boot_F() works for rma.mv objects.", {
     get_boot_F(mod_C2, y_boot = y_boot, C_mat = Cmat_F, cluster = get_cluster(mod_C2),
                type = "CR0", test = "HTA"),
     Wald_test(mod_C2, constraints = Cmat_F, vcov = "CR0", test = "HTA")$Fstat
+  )
+
+  expect_equal(
+    get_boot_F(mod_Y, y_boot = y_boot, C_mat = Cmat_F, cluster = oswald2013$Study,
+               type = "CR0", test = "HTA"),
+    Wald_test(mod_Y, constraints = Cmat_F, cluster = oswald2013$Study,
+              vcov = "CR0", test = "HTA")$Fstat
   )
 
   # get_boot_F_f
