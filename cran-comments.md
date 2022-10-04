@@ -1,13 +1,11 @@
 ## Resubmission
 
-This is a resubmission. This release adds parallel processing capabilities (using the future and future.apply packages) to run cluster wild bootstrapping.
-
-Further, I reduced the number of boostraps in the examples in the vignette so the checks can hopefully run faster. 
+This is a resubmission. This release extends bootstrapping functions to work with univariate meta-analysis models fit using metafor package. 
 
 
 ## Test environments
 
-* local OS Big Sur, R 4.1.2
+* local OS Big Sur, R 4.2.1
 * ubuntu 20.04.3 LTS (on Github), R devel, release, oldrelease
 * macOS-latest (on Github), R release
 * windows-latest (on Github), R release
