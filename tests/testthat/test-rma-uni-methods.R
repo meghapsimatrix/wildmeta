@@ -40,37 +40,39 @@ Cmat_D <- constrain_zero("Crit.Cat", reg_ex = TRUE, coef(mod_C))
 Cmat_E <- constrain_zero("Crit.Domain", reg_ex = TRUE, coef(mod_C))
 Cmat_F <- constrain_zero("Scoring", reg_ex = TRUE, coef(mod_C))
 
+tol <- 1e-6
+
 test_that("estimate_null() works for rma.uni objects.", {
 
   mod_A_con <- estimate_null(mod_B, C_mat = Cmat_A)
-  expect_equal(get_fitted(mod_A), get_fitted(mod_A_con))
-  expect_equal(get_res(mod_A), get_res(mod_A_con))
+  expect_equal(get_fitted(mod_A), get_fitted(mod_A_con), tolerance = tol)
+  expect_equal(get_res(mod_A), get_res(mod_A_con), tolerance = tol)
 
   mod_D_con <- estimate_null(mod_C, Cmat_D)
-  expect_equal(get_fitted(mod_D), get_fitted(mod_D_con))
-  expect_equal(get_res(mod_D), get_res(mod_D_con))
+  expect_equal(get_fitted(mod_D), get_fitted(mod_D_con), tolerance = tol)
+  expect_equal(get_res(mod_D), get_res(mod_D_con), tolerance = tol)
 
   mod_B_con <- estimate_null(mod_C, Cmat_B)
-  expect_equal(get_fitted(mod_B), get_fitted(mod_B_con))
-  expect_equal(get_res(mod_B), get_res(mod_B_con))
+  expect_equal(get_fitted(mod_B), get_fitted(mod_B_con), tolerance = tol)
+  expect_equal(get_res(mod_B), get_res(mod_B_con), tolerance = tol)
 
   oswald2013_mod <- oswald2013
   oswald2013_mod$X_null <- 2
 
   mod_G <- update(mod_C, data = oswald2013_mod)
   mod_F_Xnull <- estimate_null(mod_G, Cmat_F)
-  expect_equal(get_fitted(mod_F), get_fitted(mod_F_Xnull))
-  expect_equal(get_res(mod_F), get_res(mod_F_Xnull))
+  expect_equal(get_fitted(mod_F), get_fitted(mod_F_Xnull), tolerance = tol)
+  expect_equal(get_res(mod_F), get_res(mod_F_Xnull), tolerance = tol)
 
 })
 
 test_that("get_cluster() works for rma.uni objects.", {
   study_fac <- factor(1:nrow(oswald2013))
-  expect_equal(get_cluster(mod_A), study_fac)
-  expect_equal(get_cluster(mod_B), study_fac)
-  expect_equal(get_cluster(mod_C), study_fac)
-  expect_equal(get_cluster(mod_D), study_fac)
-  expect_equal(get_cluster(mod_F), study_fac)
+  expect_equal(get_cluster(mod_A), study_fac, tolerance = tol)
+  expect_equal(get_cluster(mod_B), study_fac, tolerance = tol)
+  expect_equal(get_cluster(mod_C), study_fac, tolerance = tol)
+  expect_equal(get_cluster(mod_D), study_fac, tolerance = tol)
+  expect_equal(get_cluster(mod_F), study_fac, tolerance = tol)
 })
 
 test_that("get_boot_F() works for rma.uni objects.", {
@@ -82,40 +84,40 @@ test_that("get_boot_F() works for rma.uni objects.", {
   expect_equal(
     get_boot_F(mod_A, y_boot = y_boot, C_mat = Cmat_int, cluster = get_cluster(mod_A)),
     Wald_test(mod_A, cluster = get_cluster(mod_A),
-              constraints = Cmat_int, vcov = "CR0", test = "Naive-F")$Fstat
+              constraints = Cmat_int, vcov = "CR0", test = "Naive-F")$Fstat, tolerance = tol
   )
 
   expect_equal(
     get_boot_F(mod_B, y_boot = y_boot, C_mat = Cmat_A, cluster = get_cluster(mod_B),
                type = "CR1", test = "HTZ"),
     Wald_test(mod_B, cluster = get_cluster(mod_B),
-              constraints = Cmat_A, vcov = "CR1", test = "HTZ")$Fstat
+              constraints = Cmat_A, vcov = "CR1", test = "HTZ")$Fstat, tolerance = tol
   )
 
   expect_equal(
     get_boot_F(mod_C, y_boot = y_boot, C_mat = Cmat_B, cluster = get_cluster(mod_C),
                type = "CR2", test = "EDT"),
     Wald_test(mod_C, cluster = get_cluster(mod_C),
-              constraints = Cmat_B, vcov = "CR2", test = "EDT")$Fstat
+              constraints = Cmat_B, vcov = "CR2", test = "EDT")$Fstat, tolerance = tol
   )
 
   expect_equal(
     get_boot_F(mod_C, y_boot = y_boot, C_mat = Cmat_D, cluster = get_cluster(mod_C),
                type = "CR3", test = "chi-sq"),
-    Wald_test(mod_C, cluster = get_cluster(mod_C), constraints = Cmat_D, vcov = "CR3", test = "chi-sq")$Fstat
+    Wald_test(mod_C, cluster = get_cluster(mod_C), constraints = Cmat_D, vcov = "CR3", test = "chi-sq")$Fstat, tolerance = tol
   )
 
   expect_equal(
     get_boot_F(mod_C, y_boot = y_boot, C_mat = Cmat_E, cluster = get_cluster(mod_C),
                type = "CR2", test = "Naive-Fp"),
-    Wald_test(mod_C, cluster = get_cluster(mod_C), constraints = Cmat_E, vcov = "CR2", test = "Naive-Fp")$Fstat
+    Wald_test(mod_C, cluster = get_cluster(mod_C), constraints = Cmat_E, vcov = "CR2", test = "Naive-Fp")$Fstat, tolerance = tol
   )
 
   expect_equal(
     get_boot_F(mod_C, y_boot = y_boot, C_mat = Cmat_F, cluster = get_cluster(mod_C),
                type = "CR0", test = "HTA"),
     Wald_test(mod_C, cluster = get_cluster(mod_C),
-              constraints = Cmat_F, vcov = "CR0", test = "HTA")$Fstat
+              constraints = Cmat_F, vcov = "CR0", test = "HTA")$Fstat, tolerance = tol
   )
 
 
@@ -126,7 +128,7 @@ test_that("get_boot_F() works for rma.uni objects.", {
   mod_H <- rma.uni(yi = yi_boot ~ Crit.Cat + Crit.Domain + IAT.Focus, vi = vi,
                    data = oswald2013)
   expect_false(all(coef(mod_F) == coef(mod_G)))
-  expect_equal(coef(mod_G), coef(mod_H))
+  expect_equal(coef(mod_G), coef(mod_H), tolerance = tol)
   expect_false(all(y_boot == oswald2013$yi_boot))
 
   Cmat_G <- constrain_equal("Crit.Cat", reg_ex = TRUE, coefs = coef(mod_G))
@@ -137,9 +139,9 @@ test_that("get_boot_F() works for rma.uni objects.", {
   H_stat <- get_boot_F(mod_H, y_boot = y_boot, C_mat = Cmat_G, cluster = get_cluster(mod_G),
                        type = "CR0", test = "HTZ")
 
-  expect_equal(G_stat, F_stat)
+  expect_equal(G_stat, F_stat, tolerance = tol)
 
-  expect_equal(H_stat, F_stat)
+  expect_equal(H_stat, F_stat, tolerance = tol)
 
   expect_false(G_stat == Wald_test(mod_G, cluster = get_cluster(mod_G), constraints = Cmat_G, vcov = "CR0", test = "HTZ")$Fstat)
 
@@ -316,8 +318,8 @@ test_that("Wald_test_cwb() works when rma.uni uses subset.", {
                             test = "Naive-F",
                             seed = 19)
 
-  expect_equal(attr(test_full, "original"), attr(test_sub, "original"))
-  expect_equal(attr(test_full, "bootstraps"), attr(test_sub, "bootstraps"))
+  expect_equal(attr(test_full, "original"), attr(test_sub, "original"), tolerance = tol)
+  expect_equal(attr(test_full, "bootstraps"), attr(test_sub, "bootstraps"), tolerance = tol)
 
 })
 
@@ -350,7 +352,7 @@ test_that("Wald_test_cwb() works with user-weighted rma.uni models.", {
   expect_s3_class(test_wt2, "Wald_test_wildmeta")
   expect_true(!is.na(test_wt2$p_val))
 
-  expect_equal(test_wt1, test_wt2)
+  expect_equal(test_wt1, test_wt2, tolerance = tol)
 
 })
 
