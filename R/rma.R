@@ -13,12 +13,12 @@ find_env.rma.uni <- function(mod) {
 #' @export
 
 find_env.rma.mv <- function(mod) {
-  if (inherits(mod$formula.yi, "formula")) {
+  if (inherits(mod$random[[1]], "formula")) {
+    environment(mod$random[[1]])
+  } else if (inherits(mod$formula.yi, "formula")) {
     environment(mod$formula.yi)
   } else if (inherits(mod$formula.mods, "formula")) {
     environment(mod$formula.mods)
-  } else if (inherits(mod$random[[1]], "formula")) {
-    environment(mod$random[[1]])
   } else {
     parent.frame()
   }
