@@ -1,3 +1,28 @@
+#' @export
+
+find_env.rma.uni <- function(mod) {
+  if (inherits(mod$formula.yi, "formula")) {
+    environment(mod$formula.yi)
+  } else if (inherits(mod$formula.mods, "formula")) {
+    environment(mod$formula.mods)
+  } else {
+    parent.frame()
+  }
+}
+
+#' @export
+
+find_env.rma.mv <- function(mod) {
+  if (inherits(mod$random[[1]], "formula")) {
+    environment(mod$random[[1]])
+  } else if (inherits(mod$formula.yi, "formula")) {
+    environment(mod$formula.yi)
+  } else if (inherits(mod$formula.mods, "formula")) {
+    environment(mod$formula.mods)
+  } else {
+    parent.frame()
+  }
+}
 
 # estimate null model -----------------------------------------------------
 #' @importFrom stats reformulate
@@ -5,16 +30,15 @@
 #' @importFrom clubSandwich findCluster.rma.mv
 #' @export
 
-estimate_null.rma.mv <- function(full_model,
-                                 C_mat) {
+estimate_null.rma <- function(full_model, C_mat) {
 
   # set up child environment ---------------------------------------------------
-  eval_env <- attr(full_model$random[[1]], ".Environment")
+  eval_env <- find_env(full_model)
   null_env <- new.env(parent = eval_env)
 
   # handle formulas in yi call
   yi <- full_model$call$yi
-  if (length(yi) > 1) full_model$call$yi <- yi[[2]]
+  if (inherits(yi, "call")) full_model$call$yi <- yi[[2]]
 
   # Find name for null predictor matrix
   data_names <- names(eval(full_model$call$data, envir = eval_env))
@@ -55,11 +79,45 @@ get_cluster.rma.mv <- function(full_model) {
 
 }
 
+#' @export
+
+get_cluster.rma.uni <- function(full_model) {
+
+  cluster <- factor(1:full_model$k)
+
+  return(cluster)
+
+}
+
+
+
+# get fitted values -------------------------------------------------------
+#' @importFrom metafor fitted.rma
+#' @export
+
+get_fitted.rma <- function(model) {
+
+  fits <- fitted.rma(model)
+
+  return(fits)
+}
+
+# get residuals -------------------------------------------------------
+#' @importFrom metafor residuals.rma
+#' @export
+
+get_res.rma <- function(model) {
+
+  res <- residuals.rma(model)
+  return(res)
+}
+
+
 
 # get the F  --------------------------------------------------------------
 #' @export
 
-get_boot_F.rma.mv <- function(full_model,
+get_boot_F.rma <- function(full_model,
                               y_boot,
                               C_mat,
                               cluster,
@@ -67,11 +125,12 @@ get_boot_F.rma.mv <- function(full_model,
                               test = "Naive-F") {
 
   # set up child environment ---------------------------------------------------
-  boot_env <- new.env(parent = attr(full_model$random[[1]], ".Environment"))
+  eval_env <- find_env(full_model)
+  boot_env <- new.env(parent = eval_env)
 
   # handle formulas in yi call
   yi <- full_model$call$yi
-  if (length(yi) > 1) {
+  if (inherits(yi, "call")) {
     y_name <- paste(as.character(yi[[2]]), "boot", sep = "_")
     yi[[2]] <- NULL
     full_model$call$mods <- yi
@@ -96,7 +155,7 @@ get_boot_F.rma.mv <- function(full_model,
   boot_mod <- tryCatch(eval(boot_model_call, envir = boot_env),
                        error = function(e) NA)
 
-  if (inherits(boot_mod, "rma.mv")) {
+  if (inherits(boot_mod, "rma")) {
 
     cov_mat <- clubSandwich::vcovCR(boot_mod, cluster = cluster, type = type)
 
@@ -178,25 +237,4 @@ get_boot_F_f.rma.mv <- function(full_model,
 
   }
 
-}
-
-# get fitted values -------------------------------------------------------
-#' @importFrom metafor fitted.rma
-#' @export
-
-get_fitted.rma.mv <- function(model){
-
-  fits <- metafor::fitted.rma(model)
-
-  return(fits)
-}
-
-# get residuals -------------------------------------------------------
-#' @importFrom metafor residuals.rma
-#' @export
-
-get_res.rma.mv <- function(model) {
-
-  res <- metafor::residuals.rma(model)
-  return(res)
 }

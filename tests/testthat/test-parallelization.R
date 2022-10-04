@@ -10,7 +10,23 @@ robu_mod <- robu(d ~ hrs + test,
                   small = FALSE,
                   data = SATcoaching_full)
 
-rma_mod <- rma.mv(d ~ hrs + test,
+uni_main <- rma.uni(yi = d, vi = V,
+                   data = SATcoaching_full)
+
+uni_yi <- rma.uni(yi = d ~ hrs + test, vi = V,
+                 data = SATcoaching_full)
+
+uni_mod <- rma.uni(yi = d, mod = ~ hrs + test, vi = V,
+                  data = SATcoaching_full)
+
+rma_FE <- rma.mv(yi = d ~ hrs + test, V = V, data = SATcoaching_full)
+
+rma_yi <- rma.mv(d ~ hrs + test,
+                  V = V,
+                  random = ~ 1 | study,
+                  data = SATcoaching_full)
+
+rma_mod <- rma.mv(yi = d, mods = ~ hrs + test,
                   V = V,
                   random = ~ 1 | study,
                   data = SATcoaching_full)
@@ -48,12 +64,40 @@ test_that("run_cwb works without setting a future plan.",{
   expect_s3_class(robu_test, "Wald_test_wildmeta")
   expect_true(!is.na(robu_test$p_val))
 
-  rma_test <- Wald_test_cwb(rma_mod,
-                            constraints = constrain_zero(2:3),
-                            R = 21, seed = 5)
+  uni_yi_test <- Wald_test_cwb(uni_yi, cluster = SATcoaching_full$study,
+                               constraints = constrain_zero(2:3),
+                               R = 21, seed = 5)
 
-  expect_s3_class(rma_test, "Wald_test_wildmeta")
-  expect_true(!is.na(rma_test$p_val))
+  expect_s3_class(uni_yi_test, "Wald_test_wildmeta")
+  expect_true(!is.na(uni_yi_test$p_val))
+
+  uni_mod_test <- Wald_test_cwb(uni_mod, cluster = SATcoaching_full$study,
+                                constraints = constrain_zero(2:3),
+                                R = 21, seed = 5)
+
+  expect_s3_class(uni_mod_test, "Wald_test_wildmeta")
+  expect_true(!is.na(uni_mod_test$p_val))
+
+  rma_FE_test <- Wald_test_cwb(rma_FE, cluster = SATcoaching_full$study,
+                               constraints = constrain_zero(2:3),
+                               R = 21, seed = 5)
+
+  expect_s3_class(rma_FE_test, "Wald_test_wildmeta")
+  expect_true(!is.na(rma_FE_test$p_val))
+
+  rma_yi_test <- Wald_test_cwb(rma_yi,
+                               constraints = constrain_zero(2:3),
+                               R = 21, seed = 5)
+
+  expect_s3_class(rma_yi_test, "Wald_test_wildmeta")
+  expect_true(!is.na(rma_yi_test$p_val))
+
+  rma_mod_test <- Wald_test_cwb(rma_mod,
+                                constraints = constrain_zero(2:3),
+                                R = 21, seed = 5)
+
+  expect_s3_class(rma_mod_test, "Wald_test_wildmeta")
+  expect_true(!is.na(rma_mod_test$p_val))
 
   sub_test <- Wald_test_cwb(rma_sub,
                             constraints = constrain_zero(2:3),
@@ -71,8 +115,8 @@ test_that("run_cwb works without setting a future plan.",{
   expect_s3_class(miss_test, "Wald_test_wildmeta")
   expect_true(!is.na(miss_test$p_val))
 
-  expect_equal(rma_test, sub_test)
-  expect_equal(rma_test, miss_test)
+  expect_equal(rma_mod_test, sub_test)
+  expect_equal(rma_mod_test, miss_test)
 
 })
 
@@ -155,6 +199,10 @@ test_that("Wald_test_cwb() returns the same results with plan(sequential) and pl
                             constraints = constrain_zero(2:3),
                             R = 12, seed = 100)
 
+  uni_seq <- Wald_test_cwb(uni_mod,
+                           constraints = constrain_zero(2:3),
+                           R = 19, seed = 99)
+
   rma_seq <- Wald_test_cwb(rma_mod,
                            constraints = constrain_zero(2:3),
                            R = 18, seed = 101)
@@ -182,6 +230,10 @@ test_that("Wald_test_cwb() returns the same results with plan(sequential) and pl
                               constraints = constrain_zero(2:3),
                               R = 12, seed = 100)
 
+  uni_multi <- Wald_test_cwb(uni_mod,
+                             constraints = constrain_zero(2:3),
+                             R = 19, seed = 99)
+
   rma_multi <- Wald_test_cwb(rma_mod,
                              constraints = constrain_zero(2:3),
                              R = 18, seed = 101)
@@ -197,6 +249,7 @@ test_that("Wald_test_cwb() returns the same results with plan(sequential) and pl
   )
 
   expect_equal(robu_seq, robu_multi)
+  expect_equal(uni_seq, uni_multi)
   expect_equal(rma_seq, rma_multi)
   expect_equal(sub_seq, sub_multi)
   expect_equal(mis_seq, mis_multi)

@@ -12,6 +12,12 @@ get_cluster <- function(full_model) {
 
 }
 
+find_env <- function(mod) {
+
+  UseMethod("find_env")
+
+}
+
 
 #' @importFrom clubSandwich vcovCR
 #' @importFrom clubSandwich Wald_test
