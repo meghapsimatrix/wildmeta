@@ -340,7 +340,7 @@ replications. Below is an example with 1999 bootstrap replications.</p>
 <span>                       seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  19.725   0.386  20.910</span></span></code></pre></div>
+<span><span class="co">#&gt;   23.66    0.75   25.02</span></span></code></pre></div>
 <p>Computation speed can sometimes be improved by setting a parallel
 processing plan using the <code>future</code> package:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -354,7 +354,7 @@ processing plan using the <code>future</code> package:</p>
 <span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/nbrOfWorkers.html" class="external-link">nbrOfWorkers</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; system </span></span>
-<span><span class="co">#&gt;      4</span></span>
+<span><span class="co">#&gt;      8</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span></span>
 <span>  <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">robu_model</span>,</span>
@@ -363,7 +363,7 @@ processing plan using the <code>future</code> package:</p>
 <span>                       seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   1.729   0.212  22.255</span></span>
+<span><span class="co">#&gt;    0.24    0.01   15.44</span></span>
 <span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -385,7 +385,7 @@ replications:</p>
 <span>                           seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  28.869   3.767  39.892</span></span>
+<span><span class="co">#&gt;   18.36    0.89   19.46</span></span>
 <span></span>
 <span><span class="va">res_seq</span></span>
 <span><span class="co">#&gt;   Test Adjustment CR_type Statistic  R     p_val</span></span>
@@ -403,7 +403,7 @@ parallel processing plan using the <code>future</code> package:</p>
 <span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/nbrOfWorkers.html" class="external-link">nbrOfWorkers</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; system </span></span>
-<span><span class="co">#&gt;      4</span></span>
+<span><span class="co">#&gt;      8</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span></span>
 <span>  <span class="va">res_para</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">rma_model</span>,</span>
@@ -412,7 +412,7 @@ parallel processing plan using the <code>future</code> package:</p>
 <span>                            seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   1.793   0.110  21.110</span></span>
+<span><span class="co">#&gt;    0.46    0.07   17.80</span></span>
 <span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span>
 <span></span>
