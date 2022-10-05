@@ -80,8 +80,8 @@ hypothesis tests using cluster wild bootstrapping.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>full_model</dt>
-<dd><p>Model fit using <code><a href="https://rdrr.io/pkg/robumeta/man/robu.html" class="external-link">robumeta::robu()</a></code> and
-<code><a href="https://wviechtb.github.io/metafor/reference/rma.mv.html" class="external-link">metafor::rma.mv()</a></code> that includes the full set of moderators in the
+<dd><p>Model fit using <code><a href="https://rdrr.io/pkg/robumeta/man/robu.html" class="external-link">robumeta::robu()</a></code>,
+<code><a href="https://wviechtb.github.io/metafor/reference/rma.mv.html" class="external-link">metafor::rma.mv()</a></code>, or <code><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html" class="external-link">metafor::rma.uni()</a></code> that includes the full set of moderators in the
 meta-regression model.</p></dd>
 
 
@@ -168,15 +168,15 @@ the bootstrapped p-value.</p>
 <span class="r-in"><span><span class="fu">Wald_test_cwb</span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">model</span>,</span></span>
 <span class="r-in"><span>              constraints <span class="op">=</span> <span class="va">C_mat</span>,</span></span>
 <span class="r-in"><span>              R <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Test Adjustment CR_type Statistic  R p_val</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  CWB        CR0     CR0   Naive-F 12  0.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Test Adjustment CR_type Statistic  R     p_val</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  CWB        CR0     CR0   Naive-F 12 0.3333333</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Equivalent, using constrain_equal()</span></span></span>
 <span class="r-in"><span><span class="fu">Wald_test_cwb</span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">model</span>,</span></span>
 <span class="r-in"><span>              constraints <span class="op">=</span> <span class="fu"><a href="http://jepusto.github.io/clubSandwich/reference/constraint_matrices.html" class="external-link">constrain_equal</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>              R <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Test Adjustment CR_type Statistic  R     p_val</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  CWB        CR0     CR0   Naive-F 12 0.5833333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Test Adjustment CR_type Statistic  R p_val</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  CWB        CR0     CR0   Naive-F 12   0.5</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
