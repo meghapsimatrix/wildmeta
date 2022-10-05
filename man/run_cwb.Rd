@@ -20,7 +20,8 @@ run_cwb(
 )
 }
 \arguments{
-\item{model}{Fitted \code{robumeta::robu()} or \code{metafor::rma.mv()}
+\item{model}{Fitted \code{robumeta::robu()},
+\code{metafor::rma.mv()}, or \code{metafor::rma.uni()}
 model. For cluster wild bootstrapping, a null model is recommended, with
 null model indicating a model containing all variables except the ones
 being tested.}
@@ -72,7 +73,7 @@ bootstrapped test statistics.
 \description{
 Calculate bootstrap outcomes or test statistics using cluster
 wild bootstrapping for meta-analytic models fit using
-\code{robumeta::robu()} and \code{metafor::rma.mv()}.
+\code{robumeta::robu()}, \code{metafor::rma.mv()}, and \code{metafor::rma.uni()}.
 }
 \examples{
 library(clubSandwich)

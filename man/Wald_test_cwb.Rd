@@ -19,8 +19,8 @@ Wald_test_cwb(
 )
 }
 \arguments{
-\item{full_model}{Model fit using \code{robumeta::robu()} and
-\code{metafor::rma.mv()} that includes the full set of moderators in the
+\item{full_model}{Model fit using \code{robumeta::robu()},
+\code{metafor::rma.mv()}, or \code{metafor::rma.uni()} that includes the full set of moderators in the
 meta-regression model.}
 
 \item{constraints}{A q X p constraint matrix be tested. Alternately, a
