@@ -4,8 +4,8 @@
 #' @description Calculate p-values for single coefficient and multiple contrast
 #'   hypothesis tests using cluster wild bootstrapping.
 #'
-#' @param full_model Model fit using \code{robumeta::robu()} and
-#'   \code{metafor::rma.mv()} that includes the full set of moderators in the
+#' @param full_model Model fit using \code{robumeta::robu()},
+#'   \code{metafor::rma.mv()}, or \code{metafor::rma.uni()} that includes the full set of moderators in the
 #'   meta-regression model.
 #' @param constraints A q X p constraint matrix be tested. Alternately, a
 #'   function to create such a matrix, specified using
