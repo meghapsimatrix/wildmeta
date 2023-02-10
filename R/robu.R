@@ -82,7 +82,7 @@ get_boot_F_f.robu <- function(full_model,
                               type = "CR0",
                               test = "Naive-F") {
 
-  function(y_boot) {
+  function(y_boot, cluster = cluster) {
 
     # use update robu to fit bootstrapped model
 

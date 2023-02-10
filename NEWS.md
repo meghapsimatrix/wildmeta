@@ -1,5 +1,7 @@
 wildmeta 0.3.0.9999
 =======================
+* Implemented functionals for calculating bootstrap F statistics. 
+
 
 wildmeta 0.3.0
 =======================
