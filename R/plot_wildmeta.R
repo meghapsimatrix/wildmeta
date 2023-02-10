@@ -42,7 +42,7 @@ plot.Wald_test_wildmeta <- function(x, ...) {
   bootstraps <- data.frame(boot_F = boots)
   stat <- paste(x$Statistic, "statistic")
 
-  ggplot2::ggplot(bootstraps, ggplot2::aes_string(x = "boot_F")) +
+  ggplot2::ggplot(bootstraps, ggplot2::aes(x = .data[["boot_F"]])) +
     ggplot2::geom_density(...) +
     ggplot2::geom_vline(xintercept = org_F, linetype = "dashed") +
     ggplot2::labs(x = stat, y = "Density") +
