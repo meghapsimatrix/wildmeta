@@ -1,3 +1,6 @@
+wildmeta 0.3.0.9999
+=======================
+
 wildmeta 0.3.0
 =======================
 * Added methods for rma.uni objects.
