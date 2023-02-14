@@ -283,7 +283,6 @@ test_that("Wald_test_cwb() results do not depend on sort order.", {
 })
 
 
-
 test_that("Wald_test_cwb() works when rma.uni uses subset.", {
 
   oswald_sub <- subset(oswald2013_full, Crit.Cat == "Microbehavior")
@@ -319,6 +318,108 @@ test_that("Wald_test_cwb() works when rma.uni uses subset.", {
 
   expect_equal(attr(test_full, "original"), attr(test_sub, "original"), tolerance = tol)
   expect_equal(attr(test_full, "bootstraps"), attr(test_sub, "bootstraps"), tolerance = tol)
+
+  test_sub2 <- Wald_test_cwb(mod_sub,
+                            constraints = constrain_equal("IAT.Focus", reg_ex = TRUE),
+                            R = 3,
+                            auxiliary_dist = "Rademacher",
+                            adjust = "CR0",
+                            type = "CR0",
+                            test = "Naive-F",
+                            seed = 19)
+
+  expect_equal(attr(test_sub2, "original"), attr(test_sub, "original"), tolerance = tol)
+  expect_equal(attr(test_sub2, "bootstraps"), attr(test_sub, "bootstraps"), tolerance = tol)
+
+})
+
+test_that("Wald_test_cwb() works when rma.uni has missing observations.", {
+
+  set.seed(20230212)
+  oswald_missX <- oswald2013_full
+  oswald_missX$IAT.Focus[sample(1:nrow(oswald2013_full), size = 40)] <- NA
+  oswald_sub <- subset(oswald_missX, Crit.Cat == "Microbehavior")
+  oswald_complete <- subset(oswald_missX, Crit.Cat == "Microbehavior" & !is.na(IAT.Focus))
+
+  mod_complete <- rma.uni(yi = yi, vi = vi,
+                          mods = ~ 0 + IAT.Focus + Crit.Domain,
+                          data = oswald_complete)
+
+  expect_warning(
+    mod_sub <- rma.uni(yi = yi, vi = vi,
+                       mods = ~ 0 + IAT.Focus + Crit.Domain,
+                       data = oswald_sub)
+  )
+
+  expect_warning(
+    mod_missX <- rma.uni(yi = yi, vi = vi,
+                         mods = ~ 0 + IAT.Focus + Crit.Domain,
+                         data = oswald_missX,
+                         subset = Crit.Cat == "Microbehavior")
+  )
+
+  compare_mod_results(mod_complete, mod_sub)
+  compare_mod_results(mod_complete, mod_missX)
+
+  test_complete <- Wald_test_cwb(mod_sub,
+                                 constraints = constrain_equal("IAT.Focus", reg_ex = TRUE),
+                                 R = 5,
+                                 auxiliary_dist = "Rademacher",
+                                 adjust = "CR0",
+                                 type = "CR0",
+                                 test = "Naive-F",
+                                 seed = 19)
+
+  test_sub <- Wald_test_cwb(mod_sub,
+                            constraints = constrain_equal("IAT.Focus", reg_ex = TRUE),
+                            R = 5,
+                            auxiliary_dist = "Rademacher",
+                            adjust = "CR0",
+                            type = "CR0",
+                            test = "Naive-F",
+                            seed = 19)
+
+  expect_equal(attr(test_complete, "original"), attr(test_sub, "original"), tolerance = tol)
+  expect_equal(attr(test_complete, "bootstraps"), attr(test_sub, "bootstraps"), tolerance = tol)
+
+  test_missX <- Wald_test_cwb(mod_missX,
+                              constraints = constrain_equal("IAT.Focus", reg_ex = TRUE),
+                              R = 5,
+                              auxiliary_dist = "Rademacher",
+                              adjust = "CR0",
+                              type = "CR0",
+                              test = "Naive-F",
+                              seed = 19)
+
+  expect_equal(attr(test_complete, "original"), attr(test_missX, "original"), tolerance = tol)
+  expect_equal(attr(test_complete, "bootstraps"), attr(test_missX, "bootstraps"), tolerance = tol)
+
+  test_missX2 <- Wald_test_cwb(mod_missX,
+                               constraints = constrain_equal("IAT.Focus", reg_ex = TRUE),
+                               cluster = oswald_missX$esID,
+                               R = 5,
+                               auxiliary_dist = "Rademacher",
+                               adjust = "CR0",
+                               type = "CR0",
+                               test = "Naive-F",
+                               seed = 19)
+
+  expect_equal(attr(test_missX2, "original"), attr(test_missX, "original"), tolerance = tol)
+  expect_equal(attr(test_missX2, "bootstraps"), attr(test_missX, "bootstraps"), tolerance = tol)
+
+  test_sub2 <- Wald_test_cwb(mod_sub,
+                             constraints = constrain_equal("IAT.Focus", reg_ex = TRUE),
+                             cluster = oswald_sub$esID,
+                             R = 5,
+                             auxiliary_dist = "Rademacher",
+                             adjust = "CR0",
+                             type = "CR0",
+                             test = "Naive-F",
+                             seed = 19)
+
+  expect_equal(attr(test_sub2, "original"), attr(test_sub, "original"), tolerance = tol)
+  expect_equal(attr(test_sub2, "bootstraps"), attr(test_sub, "bootstraps"), tolerance = tol)
+
 
 })
 

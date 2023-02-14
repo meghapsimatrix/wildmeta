@@ -12,6 +12,13 @@ get_cluster <- function(full_model) {
 
 }
 
+get_obs_rows <- function(full_model) {
+
+  UseMethod("get_obs_rows")
+
+}
+
+
 find_env <- function(mod) {
 
   UseMethod("find_env")

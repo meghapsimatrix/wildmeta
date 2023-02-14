@@ -112,7 +112,20 @@ get_res.rma <- function(model) {
   return(res)
 }
 
+# get indicators for complete observations----------------------------
+#' @export
 
+get_obs_rows.rma <- function(model) {
+
+  if (is.null(model$subset)) {
+    obs_rows <- model$not.na
+  } else {
+    obs_rows <- model$subset
+    obs_rows[model$subset] <- model$not.na
+  }
+
+  return(obs_rows)
+}
 
 # get the F  --------------------------------------------------------------
 #' @export
@@ -193,25 +206,40 @@ get_boot_F_f.rma <- function(full_model,
     y_name <- paste(as.character(yi), "boot", sep = "_")
   }
 
+
   if (is.null(full_model$subset)) {
     obs_rows <- full_model$not.na
   } else {
     obs_rows <- full_model$subset
     obs_rows[full_model$subset] <- full_model$not.na
+    full_model$call$subset <- NULL
   }
 
-  dat <- full_model$data
+  boot_env <- new.env()
+  boot_env$dat <- full_model$data[obs_rows,,drop=FALSE]
 
   arg_list <- list(object = full_model, yi = as.symbol(y_name), data = as.symbol('dat'), evaluate = FALSE)
 
+  if (inherits(full_model, "rma.mv")) {
+    if (!is.null(full_model$call$V)) {
+      boot_env$Vmat <- full_model$V
+      arg_list$V <- as.symbol('Vmat')
+    }
+    if (!is.null(full_model$call$W)) {
+      boot_env$Wmat <- full_model$W
+      arg_list$W <- as.symbol('Wmat')
+    }
+  }
+
   function(y_boot, cluster = cluster) {
 
-    y_new <- rep(NA, length = length(obs_rows))
-    y_new[obs_rows] <- y_boot
-    dat[[y_name]] <- y_new
+    boot_env$dat[[y_name]] <- y_boot
 
     boot_model_call <- do.call(metafor::update.rma, args = arg_list)
-    boot_mod <- tryCatch(eval(boot_model_call), error = function(e) NA)
+    boot_mod <- tryCatch(
+      eval(boot_model_call, envir = boot_env),
+      error = function(e) NA
+    )
 
     if (inherits(boot_mod, "rma")) {
 
