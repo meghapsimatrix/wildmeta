@@ -1,2 +1,2 @@
 
-utils::globalVariables(c("var.eff.size","study"))
+utils::globalVariables(c("var.eff.size","study",".data"))

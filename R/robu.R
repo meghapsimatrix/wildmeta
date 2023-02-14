@@ -47,6 +47,7 @@ get_cluster.robu <- function(model) {
 }
 
 # get indicators for complete observations----------------------------
+#' @importFrom stats get_all_vars
 #' @export
 
 get_obs_rows.robu <- function(model) {
@@ -57,7 +58,7 @@ get_obs_rows.robu <- function(model) {
   mf <- mf[c(1L, m)]
   mf[[1L]] <- as.name("get_all_vars")
   mf <- eval(mf, model$data)
-  complete.cases(mf)
+  stats::complete.cases(mf)
 
 }
 
