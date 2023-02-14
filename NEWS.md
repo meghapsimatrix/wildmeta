@@ -1,7 +1,8 @@
 wildmeta 0.3.0.9999
 =======================
 * Implemented functionals for calculating bootstrap F statistics. 
-
+* Fixed bugs in parallel processing setup that led to NA results for models estimated with rma.mv().
+* Updated internals of plot.Wald_test_wildmeta to avoid use of ggplot2::aes_string(), which is now deprecated.
 
 wildmeta 0.3.0
 =======================
