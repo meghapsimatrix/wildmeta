@@ -1,6 +1,6 @@
 ## Resubmission
 
-This is a resubmission. This release extends bootstrapping functions to work with univariate meta-analysis models fit using metafor package. 
+This is a resubmission. This release fixed a small bug with parallelization. 
 
 
 ## Test environments
