@@ -1,6 +1,7 @@
 ## Resubmission
 
-This is a resubmission. This release fixed a small bug with parallelization. 
+This is a resubmission. This version implements functionals for calculating bootstrap F statistics, fixes bugs in parallel processing setup that led to NA results for models estimated with rma.mv() and updates updated internals of plot.Wald_test_wildmeta to avoid use of ggplot2::aes_string(), which is now deprecated.
+ 
 
 
 ## Test environments
