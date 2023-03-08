@@ -1,3 +1,7 @@
+wildmeta 0.3.2
+=======================
+* Fixed argument names inconsistency 
+
 wildmeta 0.3.1
 =======================
 * Implemented functionals for calculating bootstrap F statistics. 
