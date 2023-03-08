@@ -3,7 +3,7 @@ pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   cwbmeta: cwbmeta.html
-last_built: 2023-02-15T19:19Z
+last_built: 2023-03-08T15:46Z
 urls:
   reference: https://meghapsimatrix.github.io/wildmeta/reference
   article: https://meghapsimatrix.github.io/wildmeta/articles
