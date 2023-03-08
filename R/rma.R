@@ -115,13 +115,13 @@ get_res.rma <- function(model) {
 # get indicators for complete observations----------------------------
 #' @export
 
-get_obs_rows.rma <- function(model) {
+get_obs_rows.rma <- function(full_model) {
 
-  if (is.null(model$subset)) {
-    obs_rows <- model$not.na
+  if (is.null(full_model$subset)) {
+    obs_rows <- full_model$not.na
   } else {
-    obs_rows <- model$subset
-    obs_rows[model$subset] <- model$not.na
+    obs_rows <- full_model$subset
+    obs_rows[full_model$subset] <- full_model$not.na
   }
 
   return(obs_rows)

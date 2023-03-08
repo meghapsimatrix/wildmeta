@@ -38,10 +38,10 @@ estimate_null.robu <- function(full_model,
 # get the cluster ---------------------------------------------------------
 #' @export
 
-get_cluster.robu <- function(model) {
+get_cluster.robu <- function(full_model) {
 
-  ord <- order(order(model$study_orig_id))
-  cluster <- model$data.full$study[ord]
+  ord <- order(order(full_model$study_orig_id))
+  cluster <- full_model$data.full$study[ord]
 
   return(cluster)
 }
@@ -50,14 +50,14 @@ get_cluster.robu <- function(model) {
 #' @importFrom stats get_all_vars
 #' @export
 
-get_obs_rows.robu <- function(model) {
+get_obs_rows.robu <- function(full_model) {
 
-  mf <- model$cl
+  mf <- full_model$cl
   m <- match(c("formula", "studynum", "var.eff.size", "userweights"), names(mf))
   m <- m[!is.na(m)]
   mf <- mf[c(1L, m)]
   mf[[1L]] <- as.name("get_all_vars")
-  mf <- eval(mf, model$data)
+  mf <- eval(mf, full_model$data)
   stats::complete.cases(mf)
 
 }
