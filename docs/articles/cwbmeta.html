@@ -340,7 +340,7 @@ replications. Below is an example with 1999 bootstrap replications.</p>
 <span>                       seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  29.499   0.585  38.940</span></span></code></pre></div>
+<span><span class="co">#&gt;  32.373   0.613  54.210</span></span></code></pre></div>
 <p>Computation speed can sometimes be improved by setting a parallel
 processing plan using the <code>future</code> package:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -363,7 +363,7 @@ processing plan using the <code>future</code> package:</p>
 <span>                       seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   2.121   0.243  27.409</span></span>
+<span><span class="co">#&gt;   2.357   0.100  31.291</span></span>
 <span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -385,7 +385,7 @@ replications:</p>
 <span>                           seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  31.557   4.251  39.713</span></span>
+<span><span class="co">#&gt;  40.581   4.889  75.803</span></span>
 <span></span>
 <span><span class="va">res_seq</span></span>
 <span><span class="co">#&gt;   Test Adjustment CR_type Statistic  R     p_val</span></span>
@@ -412,7 +412,7 @@ parallel processing plan using the <code>future</code> package:</p>
 <span>                            seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   3.097   0.599  34.532</span></span>
+<span><span class="co">#&gt;   3.758   0.213  42.862</span></span>
 <span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span>
 <span></span>
