@@ -113,8 +113,8 @@ package runs the fast version of cluster wild bootstrapping proposed by
 Roodman et al. (2019) and is based on the Stata’s boottest package
 (Fischer & Roodman, 2021). The package runs bootstrapping for linear
 regression models and fixed effects models. To the best of our
-knowledge, meta-analytic models, weighted linear regression models, and
-multiple contrast hypothesis tests are not supported by the package.
+knowledge, meta-analytic models, and multiple contrast hypothesis tests
+are not supported by the package.
 
 The [`multiwayvcov`](https://CRAN.R-project.org/package=multiwayvcov)
 package implements cluster robust variance estimation as well as
