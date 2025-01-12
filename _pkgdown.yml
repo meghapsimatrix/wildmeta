@@ -1,7 +1,10 @@
 url: https://meghapsimatrix.github.io/wildmeta/
+
 template:
   bootstrap: 5
-  bootswatch: litera
+  light-switch: true
+  theme: arrow-light
+  theme-dark: arrow-dark
 
 authors:
   Megha Joshi:
