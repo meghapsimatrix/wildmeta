@@ -147,8 +147,8 @@ clustered data.
 # Acknowledgments
 
 Huge shout out to my extremely talented friend
-[RAZ](https://ms-raz.com/) for creating our hex sticker within minutes.
-We are also extremely thankful to [Wolfgang
+[RAZ](https://ms-raz.com/) for creating our apt hex sticker. We are also
+extremely thankful to [Wolfgang
 Viechtbauer](https://wvbauer.com/doku.php/home) for helping us solve
 [this
 issue](https://stat.ethz.ch/pipermail/r-help/2021-November/472977.html)
