@@ -6,10 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Cluster Wild Bootstrapping for Meta-Analysis • wildmeta</title>
-<script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<!-- katex math --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><script src="../katex-auto.js"></script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Cluster Wild Bootstrapping for Meta-Analysis">
 </head>
 <body>
@@ -148,10 +149,11 @@ hypothesis tests.</p>
 </h2>
 <p>General bootstrapping can be used to estimate measures of
 uncertainty, like standard errors, p-values and confidence intervals,
-even when other methods fail <span class="citation">(Boos et al.,
-2003)</span>. Bootstrapping involves re-sampling from the original data
-many times to create an empirical distribution which is used in place of
-the distribution of an estimate or test statistic <span class="citation">(Boos et al., 2003)</span>.</p>
+even when other methods fail <span class="citation">(<span class="nocase">Boos et al.</span>, 2003)</span>. Bootstrapping involves
+re-sampling from the original data many times to create an empirical
+distribution which is used in place of the distribution of an estimate
+or test statistic <span class="citation">(<span class="nocase">Boos et
+al.</span>, 2003)</span>.</p>
 <p>Several bootstrapping data generating processes are available. The
 most common one is pair bootstrapping, which involves re-sampling with
 replacement the set of outcome and covariate data for each case <span class="citation">(Freedman, 1981, 1984)</span>. For data involving
@@ -208,11 +210,11 @@ the predicted values from the null model fit on the original
 data.</p></li>
 <li><p>Re-estimate the full model with the new calculated outcome scores
 and obtain the test statistic.</p></li>
-<li><p>Repeat steps 3-5
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>
-times. Calculate p-value:</p></li>
+<li><p>Repeat steps 3-5 <span class="math inline">R</span> times.
+Calculate p-value:</p></li>
 </ol>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mfrac><mn>1</mn><mi>R</mi></mfrac><munderover><mo>∑</mo><mrow><mi>r</mi><mo>=</mo><mn>1</mn></mrow><mi>R</mi></munderover><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>F</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>r</mi><mo stretchy="true" form="postfix">)</mo></mrow></msup><mo>&gt;</mo><mi>F</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">p = \frac{1}{R} \sum_{r = 1}^R I\left(F^{(r)} &gt; F\right)</annotation></semantics></math></p>
+<p><span class="math display">p = \frac{1}{R} \sum_{r = 1}^R
+I\left(F^{(r)} &gt; F\right)</span></p>
 <p>The results of the simulation studies conducted in <span class="citation">Joshi et al. (2022)</span> did not show any difference
 in Type 1 error rates or power when multiplying the results by CR2
 adjustments matrices. However, the authors did not study major
@@ -333,12 +335,11 @@ replications. Below is an example with 1999 bootstrap replications.</p>
 <span>                       seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   7.859   0.061   7.925</span></span></code></pre></div>
+<span><span class="co">#&gt;   3.366   0.016   3.384</span></span></code></pre></div>
 <p>Computation speed can sometimes be improved by setting a parallel
 processing plan using the <code>future</code> package:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org" class="external-link">future</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: package 'future' was built under R version 4.3.3</span></span>
 <span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="fu">parallelly</span><span class="fu">::</span><span class="fu"><a href="https://parallelly.futureverse.org/reference/supportsMulticore.html" class="external-link">supportsMulticore</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multicore</span><span class="op">)</span> </span>
@@ -347,8 +348,7 @@ processing plan using the <code>future</code> package:</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/nbrOfWorkers.html" class="external-link">nbrOfWorkers</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; system </span></span>
-<span><span class="co">#&gt;      8</span></span>
+<span><span class="co">#&gt; [1] 10</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span></span>
 <span>  <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">robu_model</span>,</span>
@@ -357,7 +357,7 @@ processing plan using the <code>future</code> package:</p>
 <span>                       seed <span class="op">=</span> <span class="fl">20201229</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.779   0.052   7.725</span></span>
+<span><span class="co">#&gt;   5.774   0.878   0.983</span></span>
 <span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -379,7 +379,7 @@ replications:</p>
 <span>                           seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   9.879   0.077   9.958</span></span>
+<span><span class="co">#&gt;   4.920   0.029   4.954</span></span>
 <span></span>
 <span><span class="va">res_seq</span></span>
 <span><span class="co">#&gt;   Test Adjustment CR_type Statistic  R     p_val</span></span>
@@ -396,8 +396,7 @@ parallel processing plan using the <code>future</code> package:</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/nbrOfWorkers.html" class="external-link">nbrOfWorkers</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; system </span></span>
-<span><span class="co">#&gt;      8</span></span>
+<span><span class="co">#&gt; [1] 10</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span></span>
 <span>  <span class="va">res_para</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Wald_test_cwb.html">Wald_test_cwb</a></span><span class="op">(</span>full_model <span class="op">=</span> <span class="va">rma_model</span>,</span>
@@ -406,7 +405,7 @@ parallel processing plan using the <code>future</code> package:</p>
 <span>                            seed <span class="op">=</span> <span class="fl">20210314</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.905   0.069   8.605</span></span>
+<span><span class="co">#&gt;   7.915   0.709   1.176</span></span>
 <span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span>
 <span></span>
@@ -423,29 +422,26 @@ parallel processing plan using the <code>future</code> package:</p>
 creates a <code>ggplot</code> figure representing the distribution of
 the bootstrap replicates based on the results from the
 <code><a href="../reference/Wald_test_cwb.html">Wald_test_cwb()</a></code> function. The dashed line represents the
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
-test statistic from the original full model. The bootstrapped p-value is
-the proportion of bootstrapped
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
-test statistics that are greater than the original
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
-statistic.</p>
+<span class="math inline">F</span> test statistic from the original full
+model. The bootstrapped p-value is the proportion of bootstrapped <span class="math inline">F</span> test statistics that are greater than the
+original <span class="math inline">F</span> statistic.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">res</span>, fill <span class="op">=</span> <span class="st">"darkred"</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
-<p><img src="cwbmeta_files/figure-html/unnamed-chunk-10-1.png" width="576"></p>
+<p><img src="cwbmeta_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" alt="" width="576"></p>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0" line-spacing="2">
 <div id="ref-becker2000multivariate" class="csl-entry">
 Becker, B. J. (2000). Multivariate meta-analysis. In <em>Handbook of
 applied multivariate statistics and mathematical modeling</em> (pp.
 499–525). Elsevier.
 </div>
 <div id="ref-boos2003introduction" class="csl-entry">
-Boos, D. D. et al. (2003). Introduction to the bootstrap world.
-<em>Statistical Science</em>, <em>18</em>(2), 168–174.
+<span class="nocase">Boos, D. D. et al.</span> (2003). Introduction to
+the bootstrap world. <em>Statistical Science</em>, <em>18</em>(2),
+168–174.
 </div>
 <div id="ref-cameron_bootstrap-based_nodate" class="csl-entry">
 Cameron, A. C., Gelbach, J. B., &amp; Miller, D. L. (2008).
@@ -554,7 +550,7 @@ clustered errors</em>. Queen’s Economics Department Working Paper.
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>
