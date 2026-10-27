@@ -22,8 +22,9 @@ URL: https://meghapsimatrix.github.io/wildmeta/index.html
 BugReports: https://github.com/meghapsimatrix/wildmeta/issues
 License: GPL-3
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
+Depends:
+    R (>= 3.5.0)
 Imports: 
     clubSandwich (>= 0.5.4),
     sandwich,
