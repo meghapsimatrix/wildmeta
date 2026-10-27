@@ -19,7 +19,12 @@ oswald2013 <- subset(oswald2013, Study %in% study_sample)
 
 
 # Fit some models
-V <- impute_covariance_matrix(vi = oswald2013$vi, cluster = oswald2013$Study, r = 0.4)
+V <- vcalc(
+  vi = vi, cluster = Study, obs = esID,
+  data = oswald2013,
+  rho = 0.4,
+  sparse = TRUE
+)
 
 mod_A <- rma.mv(yi = yi, V = V,
                 random = ~ 1 | Study / esID,
@@ -239,8 +244,12 @@ test_that("Wald_test_cwb() results do not depend on sort order.", {
   ord <- sample(1:nrow(oswald2013))
   oswald_scram <- oswald2013[ord,]
 
-  V_scram <- impute_covariance_matrix(vi = oswald_scram$vi, cluster = oswald_scram$Study, r = 0.4)
-
+  V_scram <- vcalc(
+    vi = vi, cluster = Study, obs = esID,
+    data = oswald_scram,
+    rho = 0.4,
+    sparse = TRUE
+  )
 
   scram_A <- rma.mv(yi = yi, V = V_scram,
                     random = ~ 1 | Study / esID,
@@ -354,9 +363,24 @@ test_that("Wald_test_cwb() works when rma.mv uses subset.", {
   oswald_sub <- subset(oswald_missX, Crit.Cat == "Microbehavior")
   oswald_complete <- subset(oswald_missX, Crit.Cat == "Microbehavior" & !is.na(IAT.Focus))
 
-  V_missX <- impute_covariance_matrix(vi = oswald_missX$vi, cluster = oswald_missX$Study, r = 0.4)
-  V_sub <- impute_covariance_matrix(vi = oswald_sub$vi, cluster = oswald_sub$Study, r = 0.4)
-  V_complete <- impute_covariance_matrix(vi = oswald_complete$vi, cluster = oswald_complete$Study, r = 0.4)
+  V_missX <- vcalc(
+    vi = vi, cluster = Study, obs = esID,
+    data = oswald_missX,
+    rho = 0.4,
+    sparse = TRUE
+  )
+  V_sub <- vcalc(
+    vi = vi, cluster = Study, obs = esID,
+    data = oswald_sub,
+    rho = 0.4,
+    sparse = TRUE
+  )
+  V_complete <- vcalc(
+    vi = vi, cluster = Study, obs = esID,
+    data = oswald_complete,
+    rho = 0.4,
+    sparse = TRUE
+  )
 
   mod_complete <- rma.mv(yi = yi, V = V_complete,
                          mods = ~ 0 + IAT.Focus + Crit.Domain,
@@ -452,7 +476,12 @@ test_that("Wald_test_cwb() works with user-weighted rma.mv models.", {
 
   skip_if(packageVersion("clubSandwich") < '0.5.5.9999')
 
-  W_mat <- impute_covariance_matrix(vi = oswald2013$wt, cluster = oswald2013$Study, r = 0, return_list = FALSE)
+  W_mat <- vcalc(
+    vi = wt, cluster = Study, obs = esID,
+    data = oswald2013,
+    rho = 0,
+    sparse = TRUE
+  )
 
   mod_wt1 <- rma.mv(yi ~ 0 + Crit.Cat + Crit.Domain + IAT.Focus + Scoring,
                      V = V, W = W_mat,
