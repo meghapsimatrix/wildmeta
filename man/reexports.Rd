@@ -12,6 +12,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{clubSandwich}{\code{\link[clubSandwich:constraint_matrices]{constrain_equal}}, \code{\link[clubSandwich:constraint_matrices]{constrain_zero}}}
+  \item{clubSandwich}{\code{\link[clubSandwich:constrain_equal]{constrain_equal()}}, \code{\link[clubSandwich:constrain_zero]{constrain_zero()}}}
 }}
 

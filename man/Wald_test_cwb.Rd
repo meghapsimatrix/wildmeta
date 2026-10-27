@@ -10,6 +10,7 @@ Wald_test_cwb(
   constraints,
   R,
   cluster = NULL,
+  retry = 1L,
   auxiliary_dist = "Rademacher",
   adjust = "CR0",
   type = "CR0",
@@ -35,17 +36,24 @@ belong to the same cluster. If \code{NULL} (the default), then the
 clustering variable will be inferred based on the structure of
 \code{full_mod}.}
 
-\item{auxiliary_dist}{Character string indicating the auxiliary distribution
-to be used for cluster wild bootstrapping, with available options:
-"Rademacher", "Mammen", "Webb six", "uniform", "standard normal". The
-default is set to "Rademacher." We recommend the Rademacher distribution
-for models that have at least 10 clusters. For models with less than 10
-clusters, we recommend the use of "Webb six" distribution.}
+\item{retry}{Number of times to repeat bootstrapping if \code{f()}
+returns \code{NA}. Default is 1, so that missing values are
+simply returned.}
 
-\item{adjust}{Character string specifying which small-sample adjustment
-should be used to multiply the residuals by. The available options are
-\code{"CRO"}, \code{"CR1"}, \code{"CR2"}, \code{"CR3"}, or \code{"CR4"},
-with a default of \code{"CRO"}.}
+\item{auxiliary_dist}{Character string indicating the
+auxiliary distribution to be used for cluster wild
+bootstrapping, with available options: "Rademacher",
+"Mammen", "Webb six", "uniform", "standard normal". The
+default is set to "Rademacher." We recommend the Rademacher
+distribution for models that have at least 10 clusters. For
+models with less than 10 clusters, we recommend the use of
+"Webb six" distribution.}
+
+\item{adjust}{Character string specifying which small-sample
+adjustment should be used to multiply the residuals by. The
+available options are \code{"CRO"}, \code{"CR1"},
+\code{"CR2"}, \code{"CR3"}, or \code{"CR4"}, with a default
+of \code{"CRO"}.}
 
 \item{type}{Character string specifying which small-sample adjustment is used
 to calculate the Wald test statistic. The available options are
@@ -58,9 +66,12 @@ adjustment is used in calculating the test statistic. Default is
 
 \item{seed}{Optional seed value to ensure reproducibility.}
 
-\item{future_args}{Optional list of additional arguments passed to the
-\code{future_*()} functions used in calculating results across bootstrap
-replications. Ignored if the future.apply package is not available.}
+\item{future_args}{Optional list of additional arguments
+passed to the \code{future_*()} functions used in
+calculating results across bootstrap replications,
+including calculating \code{f} results on the bootstrap
+outcome vectors. Ignored if the future.apply package is not
+available.}
 }
 \value{
 A \code{data.frame} containing the name of the test, the adjustment
