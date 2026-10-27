@@ -16,8 +16,7 @@ run_cwb(
   adjust = "CR0",
   simplify = FALSE,
   seed = NULL,
-  future_args = NULL,
-  future_f_args = NULL
+  future_args = NULL
 )
 }
 \arguments{

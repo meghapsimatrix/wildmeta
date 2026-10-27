@@ -85,8 +85,7 @@ run_cwb <- function(model,
                     adjust = "CR0",
                     simplify = FALSE,
                     seed = NULL,
-                    future_args = NULL,
-                    future_f_args = NULL) {
+                    future_args = NULL) {
 
   future_available <- future_apply_is_available()
 
