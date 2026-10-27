@@ -34,11 +34,13 @@ test_that("Wald_test_cwb() works with `retry > 1L` when future.apply package is 
     plan(multisession)
   }
 
+  seed <- 459191506
+
   wald_CWB_results <- Wald_test_cwb(
     full_model = rma_fit,
     constraints = constrain_zero(2:C),
     R = 69,
-    seed = 459191506
+    seed = seed
   )
   full_booties <- attr(wald_CWB_results, "bootstraps")
   na_vals <- is.na(full_booties)
@@ -49,7 +51,7 @@ test_that("Wald_test_cwb() works with `retry > 1L` when future.apply package is 
     constraints = constrain_zero(2:C),
     R = 69,
     retry = 4L,
-    seed = 459191506
+    seed = seed
   )
 
   retry_booties <- attr(Wald_CWB_retries, "bootstraps")
@@ -63,12 +65,16 @@ test_that("Wald_test_cwb() works with `retry > 1L` when future.apply package is 
 
 test_that("Wald_test_cwb() works with `retry > 1L` when future.apply package is absent.", {
 
+  skip_on_cran()
+
+  seed <- 459191509
+
   wald_CWB_results <- testthat::with_mocked_bindings(
     Wald_test_cwb(
       full_model = rma_fit,
       constraints = constrain_zero(2:C),
       R = 69,
-      seed = 459191508
+      seed = seed
     ),
     future_apply_is_available = \(x) FALSE
   )
@@ -83,7 +89,7 @@ test_that("Wald_test_cwb() works with `retry > 1L` when future.apply package is 
       constraints = constrain_zero(2:C),
       R = 69,
       retry = 4L,
-      seed = 459191506
+      seed = seed
     ),
     future_apply_is_available = \(x) FALSE
   )
@@ -94,4 +100,5 @@ test_that("Wald_test_cwb() works with `retry > 1L` when future.apply package is 
   expect_identical(na_retries, 0L)
 
   expect_identical(full_booties[!na_vals], retry_booties[1:sum(!na_vals)])
+
 })
