@@ -47,8 +47,8 @@ You can install the development version from
 
 ``` r
 
-# install.packages("devtools")
-devtools::install_github("meghapsimatrix/wildmeta")
+# install.packages("pak")
+pak::pak("meghapsimatrix/wildmeta")
 ```
 
 ## Example

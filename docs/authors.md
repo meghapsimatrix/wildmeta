@@ -16,13 +16,13 @@ Source:
 [`DESCRIPTION`](https://github.com/meghapsimatrix/wildmeta/blob/HEAD/DESCRIPTION)
 
 Joshi M, Pustejovsky J, Cappelli P (2026). *wildmeta: Cluster Wild
-Bootstrapping for Meta-Analysis*. R package version 0.3.2,
+Bootstrapping for Meta-Analysis*. R package version 0.3.3,
 <https://meghapsimatrix.github.io/wildmeta/index.html>.
 
     @Manual{,
       title = {wildmeta: Cluster Wild Bootstrapping for Meta-Analysis},
       author = {Megha Joshi and James Pustejovsky and Pierce Cappelli},
       year = {2026},
-      note = {R package version 0.3.2},
+      note = {R package version 0.3.3},
       url = {https://meghapsimatrix.github.io/wildmeta/index.html},
     }

@@ -16,12 +16,12 @@ run_cwb(
   R,
   f = NULL,
   ...,
+  retry = 1L,
   auxiliary_dist = "Rademacher",
   adjust = "CR0",
   simplify = FALSE,
   seed = NULL,
-  future_args = NULL,
-  future_f_args = NULL
+  future_args = NULL
 )
 ```
 
@@ -56,6 +56,11 @@ run_cwb(
 
   Optional arguments to be passed to the function specified in `f`.
 
+- retry:
+
+  Number of times to repeat bootstrapping if `f()` returns `NA`. Default
+  is 1, so that missing values are simply returned.
+
 - auxiliary_dist:
 
   Character string indicating the auxiliary distribution to be used for
@@ -84,15 +89,9 @@ run_cwb(
 - future_args:
 
   Optional list of additional arguments passed to the `future_*()`
-  functions used in calculating results across bootstrap replications.
+  functions used in calculating results across bootstrap replications,
+  including calculating `f` results on the bootstrap outcome vectors.
   Ignored if the future.apply package is not available.
-
-- future_f_args:
-
-  Optional list of additional arguments passed to the `future_*()`
-  function used in calculating `f` results (but not bootstrap outcome
-  vectors) across bootstrap replications. Ignored if the future.apply
-  package is not available.
 
 ## Value
 

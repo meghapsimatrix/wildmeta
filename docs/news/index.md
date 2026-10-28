@@ -1,5 +1,11 @@
 # Changelog
 
+## wildmeta 0.3.3
+
+- Added a `retry` option to allow bootstraps to be re-run in the event
+  that the computed test statistic is `NA`. Default is `retry = 1L`, so
+  that missing values are simply returned.
+
 ## wildmeta 0.3.2
 
 CRAN release: 2023-03-08

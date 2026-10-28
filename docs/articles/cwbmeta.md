@@ -281,7 +281,7 @@ system.time(
                        seed = 20201229)
 )
 #>    user  system elapsed 
-#>   3.366   0.016   3.384
+#>   3.321   0.015   3.338
 ```
 
 Computation speed can sometimes be improved by setting a parallel
@@ -307,7 +307,7 @@ system.time(
                        seed = 20201229)
 )
 #>    user  system elapsed 
-#>   5.774   0.878   0.983
+#>   0.082   0.003   1.301
 
 plan(sequential)
 ```
@@ -330,7 +330,7 @@ system.time(
                            seed = 20210314)
 )
 #>    user  system elapsed 
-#>   4.920   0.029   4.954
+#>   4.861   0.018   4.884
 
 res_seq
 #>   Test Adjustment CR_type Statistic  R     p_val
@@ -360,7 +360,7 @@ system.time(
                             seed = 20210314)
 )
 #>    user  system elapsed 
-#>   7.915   0.709   1.176
+#>   0.086   0.004   3.136
 
 plan(sequential)
 

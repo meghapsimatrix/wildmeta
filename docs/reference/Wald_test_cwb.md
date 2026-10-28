@@ -11,6 +11,7 @@ Wald_test_cwb(
   constraints,
   R,
   cluster = NULL,
+  retry = 1L,
   auxiliary_dist = "Rademacher",
   adjust = "CR0",
   type = "CR0",
@@ -49,6 +50,11 @@ Wald_test_cwb(
   cluster. If `NULL` (the default), then the clustering variable will be
   inferred based on the structure of `full_mod`.
 
+- retry:
+
+  Number of times to repeat bootstrapping if `f()` returns `NA`. Default
+  is 1, so that missing values are simply returned.
+
 - auxiliary_dist:
 
   Character string indicating the auxiliary distribution to be used for
@@ -83,7 +89,8 @@ Wald_test_cwb(
 - future_args:
 
   Optional list of additional arguments passed to the `future_*()`
-  functions used in calculating results across bootstrap replications.
+  functions used in calculating results across bootstrap replications,
+  including calculating `f` results on the bootstrap outcome vectors.
   Ignored if the future.apply package is not available.
 
 ## Value

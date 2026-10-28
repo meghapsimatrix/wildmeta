@@ -5,5 +5,5 @@ to see their documentation.
 
 - clubSandwich:
 
-  [`constrain_equal`](http://jepusto.github.io/clubSandwich/reference/constraint_matrices.md),
-  [`constrain_zero`](http://jepusto.github.io/clubSandwich/reference/constraint_matrices.md)
+  [`constrain_equal()`](http://jepusto.github.io/clubSandwich/reference/constraint_matrices.md),
+  [`constrain_zero()`](http://jepusto.github.io/clubSandwich/reference/constraint_matrices.md)

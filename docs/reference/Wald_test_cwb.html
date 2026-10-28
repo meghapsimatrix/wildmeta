@@ -9,7 +9,7 @@ hypothesis tests using cluster wild bootstrapping."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">wildmeta</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,6 +57,7 @@ hypothesis tests using cluster wild bootstrapping.</p>
 <span>  <span class="va">constraints</span>,</span>
 <span>  <span class="va">R</span>,</span>
 <span>  cluster <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  retry <span class="op">=</span> <span class="fl">1L</span>,</span>
 <span>  auxiliary_dist <span class="op">=</span> <span class="st">"Rademacher"</span>,</span>
 <span>  adjust <span class="op">=</span> <span class="st">"CR0"</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"CR0"</span>,</span>
@@ -94,20 +95,29 @@ clustering variable will be inferred based on the structure of
 <code>full_mod</code>.</p></dd>
 
 
+<dt id="arg-retry">retry<a class="anchor" aria-label="anchor" href="#arg-retry"></a></dt>
+<dd><p>Number of times to repeat bootstrapping if <code>f()</code>
+returns <code>NA</code>. Default is 1, so that missing values are
+simply returned.</p></dd>
+
+
 <dt id="arg-auxiliary-dist">auxiliary_dist<a class="anchor" aria-label="anchor" href="#arg-auxiliary-dist"></a></dt>
-<dd><p>Character string indicating the auxiliary distribution
-to be used for cluster wild bootstrapping, with available options:
-"Rademacher", "Mammen", "Webb six", "uniform", "standard normal". The
-default is set to "Rademacher." We recommend the Rademacher distribution
-for models that have at least 10 clusters. For models with less than 10
-clusters, we recommend the use of "Webb six" distribution.</p></dd>
+<dd><p>Character string indicating the
+auxiliary distribution to be used for cluster wild
+bootstrapping, with available options: "Rademacher",
+"Mammen", "Webb six", "uniform", "standard normal". The
+default is set to "Rademacher." We recommend the Rademacher
+distribution for models that have at least 10 clusters. For
+models with less than 10 clusters, we recommend the use of
+"Webb six" distribution.</p></dd>
 
 
 <dt id="arg-adjust">adjust<a class="anchor" aria-label="anchor" href="#arg-adjust"></a></dt>
-<dd><p>Character string specifying which small-sample adjustment
-should be used to multiply the residuals by. The available options are
-<code>"CRO"</code>, <code>"CR1"</code>, <code>"CR2"</code>, <code>"CR3"</code>, or <code>"CR4"</code>,
-with a default of <code>"CRO"</code>.</p></dd>
+<dd><p>Character string specifying which small-sample
+adjustment should be used to multiply the residuals by. The
+available options are <code>"CRO"</code>, <code>"CR1"</code>,
+<code>"CR2"</code>, <code>"CR3"</code>, or <code>"CR4"</code>, with a default
+of <code>"CRO"</code>.</p></dd>
 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
@@ -128,9 +138,12 @@ adjustment is used in calculating the test statistic. Default is
 
 
 <dt id="arg-future-args">future_args<a class="anchor" aria-label="anchor" href="#arg-future-args"></a></dt>
-<dd><p>Optional list of additional arguments passed to the
-<code>future_*()</code> functions used in calculating results across bootstrap
-replications. Ignored if the future.apply package is not available.</p></dd>
+<dd><p>Optional list of additional arguments
+passed to the <code>future_*()</code> functions used in
+calculating results across bootstrap replications,
+including calculating <code>f</code> results on the bootstrap
+outcome vectors. Ignored if the future.apply package is not
+available.</p></dd>
 
 </dl></div>
     <div class="section level2">
