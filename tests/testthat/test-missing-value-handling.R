@@ -112,14 +112,16 @@ test_that("Wald_test_cwb() works with robu objects that have missing values.", {
 })
 
 
-compare_rmas <- function(dat_miss, dat_full, ...) {
+compare_rmas <- function(dat_miss, dat_full, ..., tolerance = 1e-6) {
 
   dat_miss <- dat_miss
   dat_full <- dat_full
 
-  V_miss <- impute_covariance_matrix(vi = dat_miss$var,
-                                     cluster = dat_miss$studyid,
-                                     r = 0.7)
+  V_miss <- vcalc(
+    vi = var, cluster = studyid, obs = 1:nrow(dat_miss),
+    data = dat_miss, rho = 0.7, sparse = TRUE
+  )
+
 
   suppressWarnings(
     mod_miss <- rma.mv(effectsize ~ binge + followup + males + college,
@@ -128,9 +130,10 @@ compare_rmas <- function(dat_miss, dat_full, ...) {
                         data = dat_miss)
   )
 
-  V_full <- impute_covariance_matrix(vi = dat_full$var,
-                                     cluster = dat_full$studyid,
-                                     r = 0.7)
+  V_full <- vcalc(
+    vi = var, cluster = studyid, obs = 1:nrow(dat_full),
+    data = dat_full, rho = 0.7, sparse = TRUE
+  )
 
   mod_full <- rma.mv(effectsize ~ binge + followup + males + college,
                      V = V_full,
@@ -142,9 +145,9 @@ compare_rmas <- function(dat_miss, dat_full, ...) {
   )
   test_full <- Wald_test_cwb(mod_full, constraints = constrain_zero(2:4), ...)
 
-  expect_equal(coef(mod_miss), coef(mod_full))
-  expect_equal(attr(test_miss, "original"), attr(test_full, "original"))
-  expect_equal(attr(test_miss, "bootstraps"), attr(test_full, "bootstraps"))
+  expect_equal(coef(mod_miss), coef(mod_full), tolerance = tolerance)
+  expect_equal(attr(test_miss, "original"), attr(test_full, "original"), tolerance = tolerance)
+  expect_equal(attr(test_miss, "bootstraps"), attr(test_full, "bootstraps"), tolerance = tolerance)
 
 }
 

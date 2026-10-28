@@ -59,6 +59,7 @@ Wald_test_cwb <- function(full_model,
                           constraints,
                           R,
                           cluster = NULL,
+                          retry = 1L,
                           auxiliary_dist = "Rademacher",
                           adjust = "CR0",
                           type = "CR0",
@@ -76,15 +77,6 @@ Wald_test_cwb <- function(full_model,
                                 C_mat = constraints)
   )
 
-  # evaluate f on each bootstrap
-
-  future_f_args <- if (inherits(full_model,"rma")) {
-    list(
-      future.packages = c("clubSandwich","metafor")
-    )
-  } else {
-    NULL
-  }
 
   get_boot_F <- get_boot_F_f(full_model = full_model, C_mat = constraints, type = type, test = test)
 
@@ -97,16 +89,33 @@ Wald_test_cwb <- function(full_model,
     cluster <- cluster[obs_rows]
   }
 
+
+  # determine arguments that need to be passed to future.apply
+
+  if (inherits(full_model,"rma")) {
+    if (is.null(future_args)) {
+      future_args <- list(future.packages = c("clubSandwich","metafor"))
+    } else {
+      if ("future.packages" %in% names(future_args)) {
+        future_args$future.packages <- unique(c(future_args$future.packages, c("clubSandwich","metafor")))
+      } else {
+        future_args$future.packages <- c("clubSandwich","metafor")
+      }
+    }
+  }
+
+  # evaluate f on each bootstrap
+
   boots <- run_cwb(null_model,
                    cluster = cluster,
                    R = R,
                    f = get_boot_F,
+                   retry = retry,
                    auxiliary_dist = auxiliary_dist,
                    adjust = adjust,
                    simplify = TRUE,
                    seed = seed,
-                   future_args = future_args,
-                   future_f_args = future_f_args)
+                   future_args = future_args)
 
   full_vcov <- clubSandwich::vcovCR(full_model, type = type, cluster = cluster)
   org_F <- clubSandwich::Wald_test(full_model,

@@ -32,21 +32,27 @@ export(Wald_test_cwb)
 export(constrain_equal)
 export(constrain_zero)
 export(run_cwb)
-importFrom(clubSandwich,Wald_test)
-importFrom(clubSandwich,constrain_equal)
-importFrom(clubSandwich,constrain_zero)
-importFrom(clubSandwich,findCluster.rma.mv)
-importFrom(clubSandwich,vcovCR)
-importFrom(metafor,fitted.rma)
-importFrom(metafor,residuals.rma)
-importFrom(metafor,update.rma)
+importFrom(clubSandwich,
+  Wald_test,
+  constrain_equal,
+  constrain_zero,
+  findCluster.rma.mv,
+  vcovCR
+)
+importFrom(metafor,
+  fitted.rma,
+  residuals.rma,
+  update.rma
+)
 importFrom(robumeta,robu)
 importFrom(sandwich,bread)
-importFrom(stats,coef)
-importFrom(stats,get_all_vars)
-importFrom(stats,lm.wfit)
-importFrom(stats,model.matrix)
-importFrom(stats,reformulate)
-importFrom(stats,residuals)
-importFrom(stats,rnorm)
-importFrom(stats,runif)
+importFrom(stats,
+  coef,
+  get_all_vars,
+  lm.wfit,
+  model.matrix,
+  reformulate,
+  residuals,
+  rnorm,
+  runif
+)
