@@ -39,7 +39,7 @@ test_that("Wald_test_cwb() works with `retry > 1L` when future.apply package is 
   wald_CWB_results <- Wald_test_cwb(
     full_model = rma_fit,
     constraints = constrain_zero(2:C),
-    R = 69,
+    R = 199,
     seed = seed
   )
   full_booties <- attr(wald_CWB_results, "bootstraps")
@@ -49,10 +49,11 @@ test_that("Wald_test_cwb() works with `retry > 1L` when future.apply package is 
   Wald_CWB_retries <- Wald_test_cwb(
     full_model = rma_fit,
     constraints = constrain_zero(2:C),
-    R = 69,
+    R = 199,
     retry = 4L,
     seed = seed
   )
+
 
   retry_booties <- attr(Wald_CWB_retries, "bootstraps")
   na_retries <- sum(is.na(retry_booties))
@@ -73,7 +74,7 @@ test_that("Wald_test_cwb() works with `retry > 1L` when future.apply package is 
     Wald_test_cwb(
       full_model = rma_fit,
       constraints = constrain_zero(2:C),
-      R = 69,
+      R = 199,
       seed = seed
     ),
     future_apply_is_available = \(x) FALSE
@@ -87,7 +88,7 @@ test_that("Wald_test_cwb() works with `retry > 1L` when future.apply package is 
     Wald_test_cwb(
       full_model = rma_fit,
       constraints = constrain_zero(2:C),
-      R = 69,
+      R = 199,
       retry = 4L,
       seed = seed
     ),
