@@ -1,7 +1,5 @@
 # wildmeta
 
-![](reference/figures/wildmeta_hex.png)
-
 Typical methods to conduct meta-analysis—pooling effect sizes or
 analyzing moderating effects with meta-regression—work under the
 assumption that the effect size estimates are independent. However,
